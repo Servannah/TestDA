@@ -1,0 +1,341 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.HocSinhData
+
+<!-- Main content -->
+<div class="studentDetail">
+    <div class="container">
+        @using (Html.BeginForm())
+        {          
+            @Html.AntiForgeryToken()
+            <div class="formStudent">
+                <h3>Thông tin học sinh </h3>
+                <hr style="border:1px solid #afacac" />
+                <div class="col-md-9">
+                    <div class="col-md-5">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.maHocSinh, htmlAttributes: new { @class = "col-sm-5" })
+                                <div class="col-sm-7">
+                                    <b> @Html.DisplayFor(model => model.maHocSinh)</b>
+                                    @Html.HiddenFor(model => model.maHocSinh)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ngaySinh, htmlAttributes: new { @class = "col-sm-5" })
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(model => model.ngaySinh, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                                    @Html.ValidationMessageFor(model => model.ngaySinh, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.danToc, htmlAttributes: new { @class = "col-sm-5" })
+                                <div class="col-sm-7">
+                                    @Html.EditorFor(model => model.danToc, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.danToc, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tonGiao, htmlAttributes: new { @class = "col-sm-5" })
+                                <div class="col-sm-7">
+                                    @Html.EditorFor(model => model.tonGiao, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.tonGiao, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.gioiTinh, htmlAttributes: new { @class = "col-sm-5" })
+                                <div class="col-sm-6">
+                                    @Html.DropDownListFor(model => model.gioiTinh,
+                                            new List<SelectListItem> {
+                                                new SelectListItem { Text="Nam", Value="1" },
+                                                new SelectListItem { Text="Nữ", Value="0" }
+                                            }, "--Chọn giới tính-- ", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.gioiTinh, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tenThuongGoi, htmlAttributes: new { @class = "col-sm-5" })
+                                <div class="col-sm-7">
+                                    @Html.EditorFor(model => model.tenThuongGoi, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.tenThuongGoi, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>@*end*@
+                    <div class="col-md-7">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.hoTen, htmlAttributes: new { @class = "col-sm-3" })
+                                <div class="col-sm-9">
+                                    <b> @Html.DisplayFor(model => model.hoTen)</b>
+                                    @Html.HiddenFor(model => model.hoTen)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.maUuTien, htmlAttributes: new { @class = "col-sm-3" })
+                                <div class="col-sm-9">
+                                    @Html.DisplayFor(model => model.tenDTUuTien, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.HiddenFor(model => model.maUuTien)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.queQuan, htmlAttributes: new { @class = "col-sm-3" })
+                                <div class="col-sm-9">
+                                    @Html.EditorFor(model => model.queQuan, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.queQuan, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.diaChiTamTru, htmlAttributes: new { @class = "col-sm-3" })
+                                <div class="col-sm-9">
+                                    @Html.EditorFor(model => model.diaChiTamTru, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.diaChiTamTru, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tinhCach, htmlAttributes: new { @class = "col-sm-3" })
+                                <div class="col-sm-9">
+                                    @Html.TextAreaFor(model => model.tinhCach, new { @class = "form-control", @rows = 5 })
+                                    @Html.ValidationMessageFor(model => model.tinhCach, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>@*end*@
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    @*/upload hình ảnh*@
+                    <div class="">
+                        <a id="chooseImage" href="#">Chọn ảnh</a>
+                        @Html.TextBoxFor(model => model.hinhAnh, new { @id = "UploadedFile", @class = "form-control", @readonly = true })
+                    </div>
+                    <div class="InfoContainer">
+                        <div id="Imagecontainer" style="height: 25rem;">
+                            <img src="@ViewBag.hinhAnh" alt="@Html.DisplayFor(model =>model.hoTen)" id="ImageHS" style="width:100%;height:auto;">
+                        </div>
+                    </div>
+                    <div id="" class="info">
+                        @*Kích thước: <span id="FileSize"></span>*@
+                    </div>
+                    @Html.ValidationMessageFor(model => model.hinhAnh, null, new { @class = "text-danger" })
+                    @*//hình ảnh*@
+                </div>
+                <div class="clearfix"></div>
+                @*thông tin cha mẹ*@
+                <div class="fieldsetStudent">
+                    <fieldset class="the-fieldset">
+                        <legend class="the-legend">Thông tin cha mẹ:</legend>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.hoTenCha)
+                            @Html.EditorFor(model => model.hoTenCha, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.hoTenCha, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.ngaySinhCha)
+                            @Html.TextBoxFor(model => model.ngaySinhCha, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                            @Html.ValidationMessageFor(model => model.ngaySinhCha, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.ngheNghiepCha)
+                            @Html.EditorFor(model => model.ngheNghiepCha, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ngheNghiepCha, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.hoTenMe)
+                            @Html.EditorFor(model => model.hoTenMe, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.hoTenMe, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.ngaySinhMe)
+                            @Html.TextBoxFor(model => model.ngaySinhMe, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                            @Html.ValidationMessageFor(model => model.ngaySinhMe, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.ngheNghiepMe)
+                            @Html.EditorFor(model => model.ngheNghiepMe, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ngheNghiepMe, null, new { @class = "text-danger" })
+                        </div>
+                    </fieldset>
+                </div>
+                @*end*@
+                <div class="clearfix"></div>
+                @*thông tin liên hệ*@
+                <div class="fieldsetStudent">
+                    <fieldset class="the-fieldset">
+                        <legend class="the-legend">Thông tin liên hệ:</legend>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.emailLienHe, htmlAttributes: new { @class = "col-sm-5", @style = "padding-left: 0px;" })
+                                <div class="col-sm-7">
+                                    @Html.EditorFor(model => model.emailLienHe, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.emailLienHe, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.dienThoaiLienHe, htmlAttributes: new { @class = "col-sm-4" })
+                                <div class="col-sm-7">
+                                    @Html.EditorFor(model => model.dienThoaiLienHe, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.dienThoaiLienHe, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                @*end*@
+                <div class="clearfix"></div>
+                @*thông tin học tập*@
+                <div class="fieldsetStudent">
+                    <fieldset class="the-fieldset">
+                        <legend class="the-legend">Thông tin học tập:</legend>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ngayVaoHoc, "Ngày vào học: ")
+                                @Html.DisplayFor(model => model.ngayVaoHoc)
+                                @Html.HiddenFor(model => model.ngayVaoHoc)
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.daNghiHoc, "Đã nghỉ học: ")
+                                @Html.HiddenFor(model => model.daNghiHoc)
+                                @if (Model.daNghiHoc == "1")
+                                {
+                                    <span>Đang học</span>
+                                }
+                                else
+                                {
+                                    <span>Đã nghỉ học</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ngayNghiHoc, "Ngày nghỉ học: ")
+                                @Html.DisplayFor(model => model.ngayNghiHoc)
+                                @Html.HiddenFor(model => model.ngayNghiHoc)
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.hoanThanhMauGiao, "Đã hoàn thành mẫu giáo: ")
+                                @Html.HiddenFor(model => model.hoanThanhMauGiao)
+                                @if (Model.hoanThanhMauGiao == "0")
+                                {
+                                    <span>Chưa hoàn thành mẫu giáo</span>
+                                }
+                                else
+                                {
+                                    <span>Đã hoàn thành mẫu giáo</span>
+                                }
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                @*end*@
+                <div class="clearfix"></div>
+                <div class="">
+                    @Html.LabelFor(model => model.ghiChu, htmlAttributes: new { @class = "col-sm-2" })
+                    <div class="col-sm-6">
+                        @Html.TextAreaFor(model => model.ghiChu, new { @class = "form-control", @rows = 5 })
+                        @Html.ValidationMessageFor(model => model.ghiChu, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="" style="margin-top:10px;">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="reset" class="btn btn-primary" style="margin-right:10px;"><i class="fa fa-refresh"></i>Làm mới</button><button type="submit" value="Lưu thông tin" class="btn btn-primary"><i class="fa fa-save"></i>Lưu thông tin</button>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                @*end*@
+            </div>
+            if (@TempData["Success"] != null)
+            {
+                <div class="add-sucess">
+                    <script>
+                        confirm('Chỉnh sửa hồ sơ thành công')
+                    </script>
+                </div>
+            }
+        }
+    </div>
+</div>
+<style>
+    fieldset.the-fieldset {
+        border: 1px dotted #252424 !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+    }
+
+    legend.the-legend {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: inherit;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+
+    .studentDetail {
+        background: #eee;
+    }
+
+    .formStudent {
+        padding: 40px 0;
+    }
+
+        .formStudent h3 {
+            padding: 10px 0;
+        }
+</style>
+@section Scripts{
+
+    @*add checkeditor*@
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+
+    @*add ckfinder*@
+    <script src="~/Scripts/ckfinder/ckfinder.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            //tạo thư mục upload ảnh sử dụng ckfinder
+            $('#chooseImage').click(function (e) {
+                e.preventDefault();
+                var finder = new CKFinder();
+                ////
+                finder.selectActionFunction = function (url, data) {
+                    //console.log(file[0]['value'].data);
+                    console.log(data);
+                    var selectedFile = data['fileUrl'];
+                    console.log(selectedFile);
+                    if (selectedFile) {
+                        var FileSize = 0;
+                        if (data['fileSize'] > 1024) {
+                            FileSize = Math.round(data['fileSize'] * 100 / 1024) / 100 + " MB";
+                        }
+                        else {
+                            FileSize = data['fileSize'] + " KB";
+                        }
+                        // here we will add the code of thumbnail preview of upload images
+                        $("#FileSize").text(FileSize);
+                    }
+                    $("#Imagecontainer").empty();
+                    var img = new Image()
+                    img.src = selectedFile;
+                    img.className = "thumb";
+                    img.style = "width:100%;hieght:auto";
+                    $("#Imagecontainer").append(img);
+                    //hiển thị đường dẫn ảnh lên textbox
+                    $('#UploadedFile').val(url);
+                }
+                finder.popup();
+            });
+        });
+    </script>
+}
+
+
+
+
+

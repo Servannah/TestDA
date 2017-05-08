@@ -1,0 +1,281 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.MonAnData
+
+@{
+    ViewBag.Title = "ChucNang";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Món ăn
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Món ăn</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container body-content body-suaMonAn">
+        <h3>@ViewBag.ChucNang </h3>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="body-monAn">
+                <div class="">
+                    <fieldset class="the-fieldset">
+                        <legend class="the-legend">Thông tin</legend>
+                        <div class="col-md-5">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.maMonAn, new { htmlAttributes = new { @id = "maMA" } })
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tenMonAn, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.tenMonAn, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.tenMonAn, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.maLoaiMonAn, htmlAttributes: new { @class = "control-label" })
+                                @Html.DropDownListFor(model => model.maLoaiMonAn, null, "Chọn nhóm thực phẩm", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.maLoaiMonAn, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.soLuongNguoi, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.soLuongNguoi, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.soLuongNguoi, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ghiChu, htmlAttributes: new { @class = "control-label" })
+                                @Html.TextAreaFor(model => model.ghiChu, new { @class = "form-control", @rows = 4 })
+                                @Html.ValidationMessageFor(model => model.ghiChu, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Lưu thông tin</button>
+                                <br />@Html.ActionLink("<< Quay lại danh sách món ăn", "Index", "MonAn")
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            @*<div class="pull-right" style="margin-bottom: 10px;">
+                                <a href="/Manager/MonAn/SuaTPMA?type=Edit&maMonAn=@Model.maMonAn" class="lnkEdit btn btn-primary" data-value="@Model.maMonAn">Sửa thành phần món ăn</a>
+                            </div>*@
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.chuanBi, htmlAttributes: new { @class = "control-label" })
+                                @Html.TextAreaFor(model => model.chuanBi, new { @class = "form-control", @rows = 8 })
+                                @Html.ValidationMessageFor(model => model.chuanBi, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.cheBien, htmlAttributes: new { @class = "control-label" })
+                                @Html.TextAreaFor(model => model.cheBien, new { @class = "form-control", @rows = 8 })
+                                @Html.ValidationMessageFor(model => model.cheBien, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                @** Thành phần dinh dưỡng*@
+                <div class="form-horizontal">
+                    <fieldset class="the-fieldset">
+                        <legend class="the-legend">Thành phần dinh dưỡng:</legend>
+                        <div class="col-md-2 sua-thphdinhduong">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongProtidDV, "ProtidDV (g)", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-md-7">
+                                    @Html.EditorFor(model => model.tongProtidDV, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.tongProtidDV, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongProtidTV, "ProtidTV (g)", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-md-7">
+                                    @Html.EditorFor(model => model.tongProtidTV, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.tongProtidTV, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongLipidDV, "LipidDV(g)", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-md-7">
+                                    @Html.EditorFor(model => model.tongLipidDV, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.tongLipidDV, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 sua-thphdinhduong">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongLipidTV, "LipidTV (g)", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-md-7">
+                                    @Html.EditorFor(model => model.tongLipidTV, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.tongLipidTV, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongGlucid, "Glucid (g)", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-md-7">
+                                    @Html.EditorFor(model => model.tongGlucid, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.tongGlucid, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongCalo, "Calo (KCal)", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-md-7">
+                                    @Html.EditorFor(model => model.tongCalo, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.tongCalo, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 sua-thphdinhduong">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongCanxi, "Canxi (g)", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-md-7">
+                                    @Html.EditorFor(model => model.tongCanxi, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.tongCanxi, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongPhotpho, "Photpho (%)", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-md-7">
+                                    @Html.EditorFor(model => model.tongPhotpho, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.tongPhotpho, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 sua-thphdinhduong">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongSat, "Sat (mg)", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-md-7">
+                                    @Html.EditorFor(model => model.tongSat, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.tongSat, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongVitaminA, "VitaminA (mg)", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-sm-7">
+                                    @Html.EditorFor(model => model.tongVitaminA, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.tongVitaminA, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 sua-thphdinhduong">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongVitaminB1, "VitaminB1 (mg)", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-md-7">
+                                    @Html.EditorFor(model => model.tongVitaminB1, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.tongVitaminB1, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongVitaminB2, "VitaminB2 (mg)", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-md-7">
+                                    @Html.EditorFor(model => model.tongVitaminB2, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.tongVitaminB2, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 sua-thphdinhduong">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongVitaminPP, "VitaminPP (mcg)", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-md-7">
+                                    @Html.EditorFor(model => model.tongVitaminPP, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.tongVitaminPP, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongVitaminC, "VitaminC (mcg)", htmlAttributes: new { @class = "col-md-5" })
+                                <div class="col-sm-7">
+                                    @Html.EditorFor(model => model.tongVitaminC, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                    @Html.ValidationMessageFor(model => model.tongVitaminC, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>@*thành phần dinh dưỡng*@
+                @*/kết thúc thông tin món ăn/*@
+            </div>
+        }
+        <div class="clearfix"></div>
+    </div>
+</section>
+@section Scripts
+    {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //sửa thông tin thực phẩm
+            //$("a.lnkEdit").on("click", function () {
+            //    var id = $(this).data('value');//lấy giá trị id ==mã thực phẩm
+            //    $('#msoLuongGam').show();
+            //    $('#msoLuongGam').on("keyup", function () {
+            //        var maTP = $("#thucPham").val();//lấy id mã thựpc hẩm
+            //        var soLuong = $("#soLuongTP").val();//lấy số lượng món ăn
+            //        //kiểm tra thông tin nhập vào
+            //        var checkNumber = /[0-9]*\.?[0-9]+/;
+            //        if (!checkNumber.test(soLuong) || (soLuong == "")) {
+            //            $("#soLuongTP").css("border-color", "#a70909");
+            //            $(".message-error-sl").html("Số lượng >0");
+            //            return false;
+            //        } else {
+            //           //end ajax
+            //        }
+            //    });///
+            //});
+            //thêm mới một thành phần món ăn
+            @*$("a.lnkThemTP").on("click", function () {
+                    var id = $(this).data('value');//lấy giá trị id == mã món ăn
+                    var thp = $("#thucPham").val();//lấy id mã thựpc hẩm
+                    var soLuong = $("#soLuongTP").val();//lấy số lượng món ăn
+                    console.log(soLuong);
+                    //kiểm tra thông tin nhập vào
+                    var checkNumber = /[0-9]*\.?[0-9]+/;
+                    if (thp == "" || thp == null) {
+                        $(".message-error-tp").html("Lựa chọn thực phẩm");
+                        $("#thucPham").css("border-color", "#a70909");
+                        return false;
+                    }
+                    else if (!checkNumber.test(soLuong) || (soLuong == "")) {
+                        $("#soLuongTP").css("border-color", "#a70909");
+                        $(".message-error-sl").html("Số lượng >0");
+                        return false;
+                    } else {
+                        //thêm mới dữ liệu vào bảng thành phần món ăn
+                        $.ajax({
+                            type: "POST",
+                            url: "@(Url.Action("ThemTPMonAn", "MonAn"))",
+                            data: { maMonAn: id, maThucPham: thp, soLuong: soLuong },
+                            success: function (data) {
+                                if (data == 1) {
+                                    location.reload();
+                                } else {
+                                    //
+                                }
+                            },
+                            error: function (error) {
+                            }
+                        });//end ajax
+                    }
+                });*@
+            //kết thúc thêm mới một thành phần món ăn
+            //xóa một bản ghi
+            @*$("a.lnkDelete").on("click", function () {
+                var id = $(this).data('value');//lấy giá trị id của bản ghi
+                console.log(id);
+                var $tr = $(this).closest('tr');
+                var answer = confirm("Bạn có chắc chắn xóa bản ghi này?. Tiếp tục?");
+                if (answer)
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("XoaTPMonAn", "MonAn"))",
+                        data: { maMonAnCT: id },
+                        success: function (data) {
+                            if (data == 0) {
+                                $tr.css("background-color", "#ec645e");
+                                location.reload();
+                            } else {
+                                //
+                            }
+                        },
+                        error: function (error) {
+                        }
+                    });
+                return false;
+            });*@
+        })//Xóa một bản ghi
+    </script>
+}

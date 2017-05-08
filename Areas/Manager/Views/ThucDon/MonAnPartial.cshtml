@@ -1,0 +1,13 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.ThucDonMonAn
+
+@{
+    if (Model.danhSachMA.Count > 0)
+    {
+        //int j = 0;
+        foreach (var i in Model.danhSachMA)
+        {
+            <p> @Html.DisplayFor(m => i.tenMonAn)</p>
+        }
+    }
+}
+

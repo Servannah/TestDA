@@ -1,0 +1,195 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.ConfigData
+
+@{
+    ViewBag.Title = "BannserIndex";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        @ViewBag.header
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">@ViewBag.header</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- Main content -->
+    <div class="container body-content">
+        <div class="content-slide">
+            <h2>@ViewBag.header</h2>
+            @using (Html.BeginForm("ThemeIndex", "Config", FormMethod.Post, new { @class = "theme" }))
+            {
+                if (@TempData["Success"] != null)
+                {
+                    <div class="add-sucess">
+                        <script>
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("@TempData["Success"]");
+                        </script>
+                    </div>
+                }
+                /////thêm mới slide
+                <div class="form-inline" style=" margin: 10px 0;">
+                    @if (@ViewBag.loai == 1)
+                    {
+                        <a href="/Manager/Config/EditTheme?t=Insert&type=slide" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>@ViewBag.add</a>
+                        <a href="javarscript:void()" class="btn btn-primary lnkView" data-toggle="modal" data-target="#chitietModal"><i class="fa fa-view"></i>Xem slide</a>
+                        <div id="chitietModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Slide hiển thị</h4>
+                                    </div>
+                                    <div class="modal-body overflow-modal" style="overflow: auto;">
+                                        @Html.Action("SlideShow", "Config")
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Đóng</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                    @if (@ViewBag.loai == 2)
+                    {
+                        <a href="/Manager/Config/EditTheme?t=Insert&type=info" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>@ViewBag.add</a>
+                    }
+                    @if (@ViewBag.loai == 3)
+                    {
+                        <a href="/Manager/Config/EditTheme?t=Insert&type=class" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>@ViewBag.add</a>
+                    }
+                    @*Xem slide*@
+                </div>
+                <table class="table table-bordered table-hover" id="Image-Slide">
+                    <thead>
+                        <tr class="th-style">
+                            <th>Hiển thị</th>
+                            <th>Tiêu đề</th>
+                            <th>Hình ảnh</th>
+                            <th>Nội dung</th>
+                            <th style="width:10%;">Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                if (Model.listData.Count > 0)
+                {
+                    // int j = 0;
+                    foreach (var i in Model.listData)
+                    {
+                        // j++;
+                        <tr>
+                            <td style="text-align:center;">
+                                @*@j.ToString()*@
+                                @if (i.ord == 1)
+                                {
+                                    <div class="input-slide">
+                                        <input type="checkbox" id="slide" checked disabled />
+                                        <label for="slide"></label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="input-slide">
+                                        <input type="checkbox" id="slide" disabled />
+                                        <label for="slide"></label>
+                                    </div>
+                                }
+                            </td>
+                            <td> @Html.DisplayFor(m => i.name)</td>
+                            <td>
+                                <img src="@i.image" alt="@i.name" class="image-slide" width="200" height="100" />
+                            </td>
+                            <td>@Html.DisplayFor(m => i.content)</td>
+                            <td>
+                                @if (@ViewBag.loai == 1)
+                                {
+                                    <a href="/Manager/Config/EditTheme?t=Edit&type=slide&id=@i.id" class="lnkEdit" data-value="@i.id" id="slide_@i.id">Sửa | </a>
+                                }
+                                @if (@ViewBag.loai == 2)
+                                {
+                                    <a href="/Manager/Config/EditTheme?t=Edit&type=info&id=@i.id" class="lnkEdit" data-value="@i.id" id="slide_@i.id">Sửa | </a>
+                                }
+                                @if (@ViewBag.loai == 3)
+                                {
+                                    <a href="/Manager/Config/EditTheme?t=Edit&type=class&id=@i.id" class="lnkEdit" data-value="@i.id" id="slide_@i.id">Sửa | </a>
+                                }
+                                <a href="javarscript:void(0)" class="lnkDelete" data-value="@i.id" id="slidegr_@i.id">Xóa</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5"> <p style="text-align:center;">Không có bản ghi nào</p></td>
+                    </tr>
+                }
+
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            //xóa một bản ghi
+            $("a.lnkDelete").on("click", function () {
+                var id = $(this).data('value');//lấy giá trị id của bản ghi
+                console.log(id);
+                var $tr = $(this).closest('tr');
+                var answer = confirm("Bạn có chắc chắn xóa bản ghi này. Tiếp tục?");
+                if (answer)
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("DeleteData", "Config"))",
+                        data: { id: id },
+                        success: function (data) {
+                            if (data == 0) {
+                                $tr.css("background-color", "#ec645e");
+                                location.reload();
+                            } else {
+                                alert("Đã xảy ra lỗi!");
+                            }
+                        },
+                        error: function (error) {
+                        }
+                    });
+                return false;
+            });///
+            ///
+        });
+        ///
+    </script>
+}
+
+
+
+
+

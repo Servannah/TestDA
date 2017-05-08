@@ -1,0 +1,166 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.OptionData
+
+<!-- header -->
+<div class="header">
+    @{
+        if (Model.danhSachDuLieu.Count > 0)
+        {
+            <div class="top-header">
+                <div class="container">
+                    <div class="social-contact">
+                        <ul class="social-icon">
+                            @foreach (var i in Model.danhSachDuLieu)
+                            {
+                                if (@i.type == "social" && @i.order == 1)
+                                {
+                                    <li><a href="@i.link"><i class="fa fa-facebook"></i></a></li>
+                                }
+                                if (@i.type == "social" && @i.order == 4)
+                                {
+                                    <li><a href="@i.link"><i class="fa fa-twitter"></i></a></li>
+                                }
+                                if (@i.type == "social" && @i.order == 3)
+                                {
+                                    <li><a href="@i.link"><i class="fa fa-google-plus"></i></a></li>
+                                }
+                                if (@i.type == "social" && @i.order == 2)
+                                {
+                                    <li><a href="@i.link"><i class="fa fa-linkedin"></i></a></li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                    <div class="info-contact">
+                        <ul>
+                            @foreach (var i in Model.danhSachDuLieu)
+                            {
+                                if (@i.type == "info" && @i.order == 5)
+                                {
+                                    <li><i class="fa fa-phone"></i>@Html.DisplayFor(m => i.content)</li>
+                                }
+                                if (@i.type == "info" && @i.order == 6)
+                                {
+                                    <li><i class="fa fa-envelope-o"></i>@Html.DisplayFor(m => i.content)</li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                    <div class="search-index">
+                        @using (Html.BeginForm("GroupNews", "News", FormMethod.Get))
+                        {
+                            <input type="search" placeholder="Tìm kiếm..." name="SearchTerm" value="@ViewBag.SearchTerm">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="menu-index">
+                <div class="container">
+                    <div class="header-nav">
+                        <nav class="navbar navbar-default">
+                            <!-- Brand and toggle get grouped for better mobile display -->
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <h2><a class="navbar-brand" href="~/Home/Index"><i class="glyphicon glyphicon-education" aria-hidden="true"></i></a></h2>
+                            </div>
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
+                                <ul class="nav navbar-nav">
+                                    <li><a class="hvr-overline-from-center button2 active" href="~/Home/Index">Trang chủ</a></li>
+                                    <li><a class="hvr-overline-from-center button2" href="~/News/GroupNews">Tin tức</a>
+
+                                    </li>
+                                    @foreach (var i in Model.danhSachDuLieu)
+                                    {
+                                        if (@i.type == "page" && @i.order == 1)
+                                        {
+                                            <li><a class="hvr-overline-from-center button2" href="~/News/ViewPage?t=View&id=@i.id">@Html.DisplayFor(m => i.name)</a></li>
+                                        }
+                                    }
+                                    @*<li class="pull-right"><a class="hvr-overline-from-center button2" href="~/Login/DangNhap" >Đăng nhập</a></li>*@
+                                    @if (@Context.User.Identity.Name != "")
+                                    {
+                                        <li class="login dropdown">
+                                            <a href="#tt" class="dropdown-toggle hvr-overline-from-center button2" data-toggle="dropdown"><span>Hi,@Context.User.Identity.Name.ToString() </span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="~/Parent/DetailStudent?id=@Context.User.Identity.Name">Xem hồ sơ</a></li>
+                                                <li><a href="~/Parent/CourseStudent?id=@Context.User.Identity.Name">Xem học phí</a></li>
+                                                <li><a href="~/Parent/MenuStudent?id=@Context.User.Identity.Name">Xem thực đơn</a></li>
+                                                <li><a href="~/Parent/ChangePass?id=@Context.User.Identity.Name">Đổi mật khẩu</a></li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="logout"><a href="~/Parent/LogOut">| Đăng xuất</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="~/Parent/Login" class="lnkLoginParent">Đăng nhập</a></li>
+                                    }
+                                    @*<li class="dropdown">
+                                            <!-- Menu toggle button -->
+                                            <a href="#" class="dropdown-toggle hvr-overline-from-center button2" data-toggle="dropdown">
+                                                <span class="">Đăng nhập</span>
+
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                @if (@Context.User.Identity.Name != "")
+                                                {
+                                                    <li>Hi,@Context.User.Identity.Name.ToString() <a href="#a">| Đăng xuất</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li><a href="~/Parent/Login" class="lnkLoginParent">Phụ huynh</a></li>
+                                                }
+
+                                                @*<li><a href="~/Manager/TaiKhoan/DangNhap" class="">Quản trị</a></li>
+                                            </ul>
+                                        </li>*@
+                                </ul>
+                            </div><!-- /navbar-collapse -->
+                            <!-- search-scripts -->
+                            <script src="~/Scripts/classie.js"></script>
+                            <!-- //search-scripts -->
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+        }
+    }
+</div>
+<style>
+    .navbar-nav {
+        width: 65%;
+    }
+
+    .navbar-default .navbar-nav > .login > a, .navbar-default .navbar-nav > .logout > a {
+        text-transform: none;
+    }
+
+    .dropdown-menu {
+        width: 250px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .dropdown li a {
+        text-align: center;
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    .dropdown li:hover {
+        background: none;
+    }
+
+    .dropdown li a:hover {
+        color: #d0021b;
+        background: none;
+        border-bottom: 1px solid #d0021b;
+    }
+</style>

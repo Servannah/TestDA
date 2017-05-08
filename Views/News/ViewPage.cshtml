@@ -1,0 +1,17 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.OptionData
+
+@{
+    ViewBag.Title = "ViewPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page">
+    <div class="container">
+        <h2>@Html.DisplayFor(model => model.name)</h2>
+        <p class="date-publish"></p>
+        <div class="content-page">
+            @Html.Raw(Model.content)
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>

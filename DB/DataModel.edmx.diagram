@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="00b9125099af422aab4fb79f57832fee" Name="Diagram1">
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_config" Width="1.5" PointX="5.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_dmhocphi" Width="1.5" PointX="7.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_doituonguutien" Width="1.5" PointX="10.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_hdchitiet" Width="1.5" PointX="5.25" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_hoadon" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_hoantrahocphi" Width="1.5" PointX="15.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_hocphi" Width="1.5" PointX="15.25" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_hocsinh" Width="1.5" PointX="13" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_hocsinhlop" Width="1.5" PointX="18.25" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_loaichiphi" Width="1.5" PointX="9.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_loaimonan" Width="1.5" PointX="3.75" PointY="25.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_lop" Width="1.5" PointX="16" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_monan" Width="1.5" PointX="6" PointY="23.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_nhacungcap" Width="1.5" PointX="10.75" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_nhanvien" Width="1.5" PointX="1.5" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_nhomlop" Width="1.5" PointX="11.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_nhomthucpham" Width="1.5" PointX="0.75" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_nhomtin" Width="1.5" PointX="7.75" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_nhucaudinhduong" Width="1.5" PointX="9.75" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_nhucaunangluong" Width="1.5" PointX="11.75" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_option" Width="1.5" PointX="13.75" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_phuhuynh" Width="1.5" PointX="15.75" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_quyennguoidung" Width="1.5" PointX="17.75" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_taikhoan" Width="1.5" PointX="17.75" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_thanhphanmonan" Width="1.5" PointX="8.25" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_thucdon" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_thucpham" Width="1.5" PointX="3" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_tintuc" Width="1.5" PointX="17.75" PointY="17" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_tpkho" Width="1.5" PointX="5.25" PointY="17.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_tpxuatkho" Width="1.5" PointX="5.25" PointY="20" IsExpanded="true" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_hosohocsinh_tbl_doituonguutien" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_hdchitiet_tbl_hoadon" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_khothucpham_tbl_thucpham" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_hoadon_tbl_thucdon" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_hoantrahocphi_tbl_hocsinh" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_hocphi_tbl_hosohocsinh" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_hocphi_tbl_hosonhanvien" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_hocsinhlop_tbl_hocsinh" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_hocsinhlop_tbl_lop" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_monan_tbl_loaimonan" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_thanhphanmonan_tbl_monan" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_thucdon_tbl_nhanvien" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_thucpham_tbl_nhomthucpham" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_thanhphanmonan_tbl_thucpham" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_tpkho_tbl_thucpham" ManuallyRouted="false" />
+        <AssociationConnector Association="DoAnTotNghiepModel.FK_tbl_tpxuatkho_tbl_thucpham" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

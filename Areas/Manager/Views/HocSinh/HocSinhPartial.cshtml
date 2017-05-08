@@ -1,0 +1,338 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.HocSinhData
+
+<!-- Main content -->
+<div class="container body-content">
+    <div class="content-task">
+        <h4>Danh sách học sinh</h4>
+        @*//form tìm kiếm*@
+        <div class="form-search">
+            @using (Html.BeginForm("Index", "HocSinh", FormMethod.Get, new { @class = "form-inline", role = "search", id = "search-form", onsubmit = "return empty();" }))
+            {
+                @*@Html.AntiForgeryToken()*@
+                if (@TempData["Success"] != null)
+                {
+                    <div class="add-sucess">
+                        <script>
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("@TempData["Success"]");
+                        </script>
+                    </div>
+                }
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="choice-type btn btn-default disabled">Tìm kiếm thông tin <i class="fa fa-angle-double-right" aria-hidden="true"></i></label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Nhập thông tin cần tìm...." name="tukhoa" value="@ViewBag.TuKhoaTK" id="search-box" style="width:200px;">
+                    </div>
+                    @*<div class="form-group">
+                        <input type="date" class="form-control" placeholder="Tìm theo ngày sinh..." name="tukhoa" value="@ViewBag.NamSinh" id="search-box" style="width:200px;">
+                    </div>*@
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search">Tìm kiếm</i></button>
+                    </div>
+                    <div class="clearfix">  </div>
+                    @Html.Raw("<span class='pull-right'> Tổng số bản ghi là: " + Model.danhSachHocSinh.Count().ToString() +@*"/"+ ViewBag.Total +*@ "</span>")
+                </div>
+            }
+        </div>
+        @*thêm mới bản ghi*@
+        <div class="form-inline" style=" margin: 10px 0;">
+            <div class="form-group">
+                <a href="/Manager/HocSinh/ChucNang?type=Insert" class="btn btn-primary hidden-xs"><i class="glyphicon glyphicon-plus"></i>Thêm mới học sinh</a>
+            </div>
+            <div class="form-group">
+                @*thêm biểu tượng in*@
+            </div>
+        </div>
+    </div>
+    @*kết thúc form tìm kiếm*@
+    <table class="table table-bordered table-hover" id="dsHocSinh">
+        <thead>
+            <tr class="th-style">
+                <th>STT</th>
+                <th>Mã học sinh</th>
+                <th>Tên học sinh</th>
+                <th>Hình ảnh</th>
+                <th>Ngày sinh</th>
+                <th>Giới tính</th>
+                <th>Quê quán</th>
+                <th>Thông tin cha mẹ</th>
+                <th>Ghi chú</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (Model.danhSachHocSinh.Count > 0)
+                {
+                    int j = 0;
+                    foreach (var i in Model.danhSachHocSinh)
+                    {
+                        j++;
+                        <tr>
+                            <td>
+                                <span>@j.ToString()</span>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => i.maHocSinh)
+                                <br />
+                                <a href="/Manager/HocSinh/ChiTietHocSinh?type=Detail&maHocSinh=@i.maHocSinh" class="lnkView" data-value="@i.maHocSinh">Xem | </a>
+                                <a href="/Manager/HocSinh/ChucNang?type=Edit&maHocSinh=@i.maHocSinh" class="lnkEdit" data-value="@i.maHocSinh" id="nhomlop_@i.maHocSinh">Sửa | </a>
+                                <a href="javascript:void(0)" class="lnkDelete" data-value="@i.maHocSinh" id="grouplop_@i.maHocSinh">Xóa</a>
+                            </td>
+                            <td>@Html.DisplayFor(m => i.hoTen)</td>
+                            <td><img src="@i.hinhAnh" alt="@i.hinhAnh" class="news-avatar" width="100" height="100" style="border-radius:50%;"/></td>
+                            <td> @Html.DisplayFor(m => i.ngaySinh)</td>
+                            <td>
+                                @if (i.gioiTinh == "1")
+                                {
+                                    <span class="gioiTinh">Nam</span>
+                                }
+                                else
+                                {
+                                    <span class="gioiTinh">Nữ</span>
+                                }
+                            </td>
+                            <td> @Html.DisplayFor(m => i.queQuan)</td>
+                            <td>
+                                <a href="#chitiet" class="lnkTTChaMe" data-value="@i.maHocSinh" id="TTChaMe_@i.maHocSinh" data-toggle="modal" data-target="#chitietModal">Chi tiết</a>
+                                @*xem chi tiết nguyên liệu món ăn*@
+                                <div id="chitietModal" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Thông tin cha mẹ</h4>
+                                            </div>
+                                            <div class="modal-body overflow-modal" style="overflow: auto;">
+                                                <table class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr class="th-style" style=" text-align:center; background:#ffefd5;">
+                                                            <th colspan="4">Thông tin cha mẹ</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>Họ tên</td>
+                                                            <td>Ngày sinh</td>
+                                                            <td>Nghề nghiệp</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Cha</td>
+                                                            <td>@Html.DisplayFor(m => i.hoTenCha)</td>
+                                                            <td>@Html.DisplayFor(m => i.ngaySinhCha)</td>
+                                                            <td>@Html.DisplayFor(m => i.ngheNghiepCha)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Mẹ</td>
+                                                            <td>@Html.DisplayFor(m => i.hoTenMe)</td>
+                                                            <td>@Html.DisplayFor(m => i.ngaySinhMe)</td>
+                                                            <td>@Html.DisplayFor(m => i.ngheNghiepMe)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="4" class="th-style"><b>Thông tin liên hệ</b></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Email</td>
+                                                            <td colspan="3">@Html.DisplayFor(m => i.emailLienHe)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Điện thoại</td>
+                                                            <td colspan="3">@Html.DisplayFor(m => i.dienThoaiLienHe)</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>@*kết thúc*@
+                            </td>
+                            <td> @Html.DisplayFor(m => i.ghiChu)</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="11"> <p style="text-align:center;">Không có bản ghi nào</p></td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+    <!--Phân trang-->
+    @if (ViewBag.TotalPage > 1)
+    {
+        var pageDisplay = (int)ViewBag.MaxPage;
+        int totalPage = (int)ViewBag.TotalPage;
+        int currentPage = ((int)ViewBag.Page);
+
+        // Create numeric links
+        var startPageIndex = Math.Max(1, currentPage - pageDisplay / 2);
+        var endPageIndex = Math.Min(totalPage, currentPage + pageDisplay / 2);
+
+        var link = "/Manager/HocSinh/Index";
+        <nav>
+            <ul class="pagination">
+                @if (currentPage > ViewBag.First)
+                {
+                    <li><a href="@link?page=@ViewBag.First" title="Trang đầu" class="first"><i class="fa fa-angle-double-left"></i></a></li>
+                    <li>
+                        <a href="@link?page=@ViewBag.Prev" title="Trang trước" class="prev"><i class="fa fa-angle-left"></i></a>
+                    </li>
+
+                }
+                @for (int i = startPageIndex; i <= endPageIndex; i++)
+                {
+                    if (currentPage == i)
+                    {
+
+                        <li> <a href="@link?page=@i" class="active" title="Trang @i">@i</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@link?page=@i" title="Trang @i" class="pos">@i</a></li>
+                    }
+                }
+                @if (currentPage < totalPage)
+                {
+                    <li><a href="@link?page=@ViewBag.Next" class="next" title="Trang sau"><i class="fa fa-angle-right"></i></a></li>
+                    <li> <a href="@link?page=@ViewBag.Last" class="last" title="Trang cuối"><i class="fa fa-angle-double-right"></i></a></li>
+                }
+
+            </ul>
+        </nav>
+
+    }
+    else
+    {
+        @*<span>Không có bản ghi nào</span>*@
+    }
+    @*kết thúc phân trang*@
+    @*xóa một bản ghi*@
+    <div id="dialog-confirm" class="modal" style="display: none">
+        <p>
+            @*<i class="fa fa-warning" style="float: left; margin: 0 7px 20px 0; color:#ffd800;"></i>*@
+            <span>Bạn chắc chắn xóa bản ghi này. Tiếp tục?</span>
+        </p>
+    </div>
+    @*kết thúc xóa một bản ghi*@
+</div>
+@*xóa bỏ một lớp học*@
+<script type="text/javascript">
+    function message_success(notice) {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        toastr["success"](notice);
+    };
+    $(function () {
+        //xóa một bản ghi
+        $("a.lnkDelete").on("click", function (e) {
+            var id = $(this).data('value');//lấy giá trị id của bản ghi
+            var $tr = $(this).closest('tr');//lấy hàng
+            $("#dialog-confirm").dialog({
+                autoOpen: false,
+                resizable: false,
+                width: 350,
+                show: { effect: 'drop', direction: "up" },
+                modal: true,
+                draggable: true,
+                open: function (event, ui) {
+                    $(".ui-dialog-titlebar-close").hide();
+                },
+                buttons: [
+                    {
+                        "text": "Đồng ý",
+                        "class": 'btn btn-default',
+                        click: function () {
+                            $(this).dialog("close");
+                            $.ajax({
+                                type: "POST",
+                                url: "@(Url.Action("XoaHocSinh", "HocSinh"))",
+                                data: { maHocSinh: id },
+                                success: function (data) {
+                                    if (data == 0) {
+                                        $tr.css("background-color", "#ec645e");
+                                        $tr.fadeOut(1600, "linear", function () { $tr.remove(); });
+                                        $("#listHocSinh").load("@(Url.Action("HocSinhPartial", "HocSinh"))");
+                                        //hiển thị thông báo ra màn hình
+                                        message_success("Xóa bản ghi thành công");
+                                    } else {
+                                        alert("Bản ghi này có chứa trong bảng khác. Hãy xóa những dữ liệu đó trước!");
+                                    }
+                                },
+                                error: function (error) {
+
+                                }
+
+                            });
+                            $(this).dialog("destroy");
+                        }
+
+                    },
+
+                {
+                    "text": "Hủy bỏ",
+                    "class": 'btn btn-default',
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+                ]
+            });
+            $("#dialog-confirm").dialog("open");
+            return false;
+        });
+    });
+</script>
+<script>
+    function empty() {
+        var x = $('#search-box').val();
+        if (x == " " || x == null) {
+            var url = window.location.pathname;
+            window.location(url);
+            // return false;
+        }
+    }
+</script>
+
+
+

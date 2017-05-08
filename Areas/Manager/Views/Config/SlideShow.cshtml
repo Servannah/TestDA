@@ -1,0 +1,161 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.ConfigData
+
+<!-- banner -->
+<div class="banner">
+    <div class="container">
+        <div id="top" class="callbacks_container">
+            <ul class="rslides" id="slider3">
+
+                @if (Model.listData.Count > 0)
+                {
+                    // int j = 0;
+                    foreach (var i in Model.listData)
+                    {
+                        <li>
+                            <img src="@i.image" alt="@i.name" class="image-Show" />
+                            <div class="banner-info carousel-caption custom-caption">
+                                <h3>@Html.DisplayFor(m => i.content)</h3>
+                            </div>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li>Không có hình ảnh được chọn</li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+@*/////*@
+<script src="~/Scripts/responsiveslides.min.js"></script>
+<style>
+    .image-Show {
+        width: 100%;
+        height: 250px;
+    }
+
+    .callbacks_container {
+        position: relative;
+        float: left;
+        width: 100%;
+    }
+
+    #slider3 {
+        -webkit-box-shadow: none;
+        margin: 0 auto;
+    }
+
+    .rslides {
+        position: relative;
+        list-style: none;
+        overflow: hidden;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+        .rslides li {
+            -webkit-backface-visibility: hidden;
+            position: absolute;
+            display: none;
+            width: 100%;
+            left: 0;
+            top: 0;
+        }
+
+        .rslides li {
+            position: relative;
+            display: block;
+        }
+
+    .callbacks_tabs {
+        list-style: none;
+        position: absolute;
+        z-index: 999;
+        left: 46%;
+        top: 68%;
+        padding: 0;
+        margin: 0;
+    }
+
+    ul.callbacks_tabs.callbacks2_tabs {
+        top: 73%;
+        left: 46%;
+    }
+
+    .callbacks_tabs li {
+        margin-left: 5px;
+        display: inline-block;
+    }
+
+    .callbacks_tabs a {
+        visibility: hidden;
+    }
+
+    .callbacks_tabs a {
+        visibility: hidden;
+    }
+
+        .callbacks_tabs a:after {
+            content: "\f111";
+            font-size: 0;
+            font-family: FontAwesome;
+            visibility: visible;
+            display: block;
+            height: 28px;
+            width: 7px;
+            transform: rotate(221deg);
+            display: inline-block;
+            background: #d0021b;
+        }
+
+    .callbacks_here a:after {
+        background: #fff;
+    }
+
+    a.callbacks_nav.callbacks2_nav.prev {
+        left: 86% !important;
+        top: 9%;
+    }
+
+    a.callbacks_nav.callbacks2_nav.next {
+        right: 0% !important;
+        top: 9%;
+    }
+
+    .banner-info {
+            top: 20%;
+    }
+
+    .banner-info h3 {
+        line-height: 1.4em;
+        color: #fff;
+        text-align: center;
+    }
+    .custom-caption{
+        left:15%;
+        right:15%;
+    }
+</style>
+<script>
+    // You can also use "$(window).load(function() {"
+    $(function () {
+        // Slideshow 4
+        $("#slider3").responsiveSlides({
+            auto: true,
+            pager: true,
+            nav: false,
+            speed: 500,
+            namespace: "callbacks",
+            before: function () {
+                $('.events').append("<li>before event fired.</li>");
+            },
+            after: function () {
+                $('.events').append("<li>after event fired.</li>");
+            }
+        });
+    });
+</script>
+<!--end banner-->

@@ -1,0 +1,29 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.TinTucData
+
+@{
+    ViewBag.Title = "ViewNews";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page">
+    <div class="container">
+        @*<div class="col-md-3 skin-blue sidebar-mini">
+            @Html.Action("SidebarPartial", "News")
+        </div>*@
+        <div class="col-md-3 new-article">
+            @Html.Action("NewArticlePartial", "News")
+        </div>
+        <div class="col-md-9">
+            <h2>@Html.DisplayFor(model => model.tieuDe)</h2>
+            <p class="date-publish">Ngày đăng: @Html.DisplayFor(model => model.ngaySua)</p>
+            <div class="content-page">
+                @Html.Raw(Model.noiDung)
+            </div>
+            <div class="pull-right">(Hết)</div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<style>
+
+</style>

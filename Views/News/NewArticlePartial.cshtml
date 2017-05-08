@@ -1,0 +1,38 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.TinTucData
+
+<div class="content-newArticle">
+    <h3>TIN MỚI NHẤT</h3>
+    @{
+        if (Model.danhSachTin.Count > 0)
+        {
+            foreach (var i in Model.danhSachTin)
+            {
+                <div class="grid-content-newsArticle">
+                    <div class="detail">
+                        <h5><b><a href="~/News/ViewNews?id=@i.maTin">@Html.DisplayFor(m => i.tieuDe)</a></b></h5>
+                        <div class="some-area">@Html.Raw(i.noiDung)</div>
+                    </div>
+                </div>
+            }
+        }
+    }
+</div>
+<style>
+    .content-newArticle h3 {
+        background: #393939;
+        color: #fff;
+        padding: 10px 5px;
+    }
+
+    .content-newArticle .grid-content-newsArticle {
+        margin: 10px 0;
+        border-bottom: 1px solid #000;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $("div.some-area").text(function (index, currentText) {
+            return currentText.substr(0, 100) + " ...";
+        });
+    });
+</script>

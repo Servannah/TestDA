@@ -1,0 +1,67 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.HocPhiData
+
+<h4>DANH SÁCH HỌC SINH</h4>
+<table class="table table-bordered table-hover" id="dsTimKiem">
+    <thead>
+        <tr class="th-style">
+            <th>Phiếu thu</th>
+            <th>Mã học sinh</th>
+            <th>Tên học sinh</th>
+            <th>Lớp</th>
+            <th>Năm học</th>
+            <th>Người thu</th>
+            <th>Ngày thu</th>
+            <th>Tổng học phí</th>
+            <th>Hình thức thu</th>
+            <th>Còn nợ</th>
+            <th>Ghi chú</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (Model.danhSachHocPhi.Count > 0)
+            {
+                //int j = 0;
+                foreach (var i in Model.danhSachHocPhi)
+                {
+                    // j++;
+                    if (i.conNo != 0)
+                    {
+                        <tr>
+                            @*<td>@j.ToString()</td>*@
+                            <td>
+                                @Html.DisplayFor(m => i.maHocPhi)
+                            </td>
+                            <td>@Html.DisplayFor(m => i.maHocSinh)</td>
+                            <td>@Html.DisplayFor(m => i.tenHocSinh)</td>
+                            <td>@Html.DisplayFor(m => i.tenLop)</td>
+                            <td>@Html.DisplayFor(m => i.namHoc)</td>
+                            <td>@Html.DisplayFor(m => i.tenNguoiThu)</td>
+                            <td>@Html.DisplayFor(m => i.ngayThu)</td>
+                            <td>@Html.DisplayFor(m => i.tongHocPhi)</td>
+                            <td>
+                                @if (i.loaiHP == "1")
+                                {
+                                    <span>Theo tháng</span>
+                                }
+                                else
+                                {
+                                    <span>Theo năm</span>
+                                }
+                            </td>
+                            <td>@Html.DisplayFor(m => i.conNo)</td>
+                            <td> @Html.DisplayFor(m => i.ghiChu)</td>
+                        </tr>
+                    }
+
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="10"> <p style="text-align:center;font-weight:bold;">Không có bản ghi nào</p></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

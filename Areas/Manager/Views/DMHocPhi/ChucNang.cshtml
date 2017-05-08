@@ -1,0 +1,79 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.DMHocPhiData
+
+@{
+    ViewBag.Title = "ChucNang";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Định mức học phí
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Định mức học phí</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container body-content ">
+        <h3>@ViewBag.ChucNang </h3>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class=" form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.maLoaiChiPhi, htmlAttributes: new { @class = "col-sm-2" })
+                    <div class="col-sm-5">
+                        @Html.DropDownListFor(model => model.maLoaiChiPhi, null, "--Chọn loại chi phí-- ", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.maLoaiChiPhi, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.soTien, htmlAttributes: new { @class = "col-sm-2" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.soTien, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.soTien, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ngayApDung, htmlAttributes: new { @class = " col-sm-2" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.ngayApDung, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                        @Html.ValidationMessageFor(model => model.ngayApDung, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.namHoc, htmlAttributes: new { @class = "col-sm-2" })
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(model => model.namHoc, null, "--Chọn năm học-- ", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.namHoc, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.loaiApDung, htmlAttributes: new { @class = "col-sm-2" })
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(model => model.loaiApDung, null, "--Chọn hình thức áp dụng-- ", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.loaiApDung, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ghiChu, htmlAttributes: new { @class = "col-sm-2" })
+                    <div class="col-sm-7">
+                        @Html.TextAreaFor(model => model.ghiChu, new { @class = "form-control", @rows = 5 })
+                        @Html.ValidationMessageFor(model => model.ghiChu, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.ActionLink("<< Quay lại danh sách", "Index", "DMHocPhi")
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="reset" class="btn btn-primary" style="margin-right:10px;"><i class="fa fa-refresh"></i>Làm mới</button><button type="submit" value="Lưu thông tin" class="btn btn-primary"><i class="fa fa-save"></i>Lưu thông tin</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>

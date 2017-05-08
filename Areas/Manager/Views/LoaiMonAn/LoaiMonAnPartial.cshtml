@@ -1,0 +1,335 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.LoaiMonAnData
+
+<!-- Main content -->
+<div class="container body-content">
+    <div class="col-md-6">
+        @using (Html.BeginForm("Index", "LoaiMonAn", FormMethod.Post, new { @id = "themLoaiMonAn" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="">
+                <h4>Thêm mới một loại món ăn</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.tenLoaiMonAn)
+                    @Html.EditorFor(model => model.tenLoaiMonAn, new { htmlAttributes = new { @class = "form-control", @id = "name-group" } })
+                    <span>Đặt tên loại món ăn sử dụng.</span><br />
+                    @Html.ValidationMessageFor(model => model.tenLoaiMonAn, null, new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ghiChu)
+                    @Html.TextAreaFor(model => model.ghiChu, new { @class = "form-control", @id = "ckeContent", @rows = 8 })
+                    @*<script type="text/javascript"> CKEDITOR.replace('ckeContent', { customConfig: '/Scripts/ckeditor/config.js', height: 200, }); </script>*@
+                    @Html.ValidationMessageFor(model => model.ghiChu, null, new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <div class="add-button">
+                        <input type="submit" value="Thêm mới loại món ăn" class="btn btn-default btn-primary" id="ThemLoaiMonAn" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-md-6  list-group-news">
+        <h4>Danh sách loại món ăn</h4>
+        @*<span class="alert-success" id="success">@ViewBag.Message</span>*@
+        @*//form tìm kiếm*@
+        <div class="form-search">
+            @using (Html.BeginForm("Index", "LoaiMonAn", FormMethod.Get, new { @class = "form-inline", role = "search", id = "search-form", onsubmit = "return empty();" }))
+            {
+                <div class="pull-right">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Nhập thông tin cần tìm...." name="tukhoa" value="@ViewBag.TuKhoaTK" id="search-box" style="width:200px;">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default btn-primary hidden-xs"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                    @*<br /><span>(Tìm kiếm thông tin theo tên danh mục.)</span>*@
+                </div>
+                <div class="clearfix">  </div>
+                @Html.Raw("<span class='pull-right'> Tổng số bản ghi là: " + Model.danhSachLoaiMonAn.Count().ToString() + "</span>")
+            }
+        </div>
+        @*kết thúc form tìm kiếm*@
+        <table class="table table-bordered table-hover" id="dsNhomTP">
+            <thead>
+                <tr>
+                    <th>Loại món ăn</th>
+                    <th>Ghi chú</th>
+                    <th>Chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (Model.danhSachLoaiMonAn.Count > 0)
+                    {
+                        //int j = 0;
+                        foreach (var i in Model.danhSachLoaiMonAn)
+                        {
+                            // j++;
+                            <tr>
+                                @*<td>@j.ToString()</td>*@
+                                <td>@Html.DisplayFor(m => i.tenLoaiMonAn)</td>
+                                <td> @Html.DisplayFor(m => i.ghiChu)</td>
+                                <td class="chuc-nang">
+                                    <a href="javascript:void(0)" class="lnkEdit" data-value="@i.maLoaiMonAn" id="nhomtp_@i.maLoaiMonAn">Sửa | </a>
+                                    <a href="javascript:void(0)" class="lnkDelete" data-value="@i.maLoaiMonAn" id="group_@i.maLoaiMonAn">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4"> <p style="text-align:center;">Không có bản ghi nào</p></td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+        @*chỉnh sửa nhóm thực phẩm*@
+        <div id="openModal" style="display:none">
+
+            <input type="hidden" id="maLoaiMonAn" />
+            <div class="form-group">
+                @Html.LabelFor(model => model.tenLoaiMonAn)
+                @Html.EditorFor(model => model.tenLoaiMonAn, new { htmlAttributes = new { @class = "form-control", @id = "loaiMonAn" } })
+                <span>Đặt tên nhóm thực phẩm sử dụng.<br /></span>
+                <p class="text-danger" id="sumValidate"></p>
+                @Html.ValidationMessageFor(model => model.tenLoaiMonAn, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ghiChu)
+                @Html.TextAreaFor(model => model.ghiChu, new { @class = "form-control", @id = "ckeContentSua", @rows = 5 })
+                <p class="text-danger" id="sumValidateGhiChu"></p>
+                @*<script type="text/javascript"> CKEDITOR.replace('ckeContentSua', { customConfig: '/Scripts/ckeditor/config.js', }); </script>*@
+                @Html.ValidationMessageFor(model => model.ghiChu, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        @*kết thúc chỉnh sửa nhóm thực phẩm*@
+    </div>
+</div>
+@*xóa bỏ một loại món ăn*@
+<script type="text/javascript">
+    $(function () {
+        //thêm mới một loại món ăn
+        $("#ThemLoaiMonAn").on("click", function () {
+            var $form = $('#themLoaiMonAn');
+            $.validator.unobtrusive.parse($form);
+            $form.validate();
+            //$.each($form.validate().errorList, function (key, value) {
+            //    console.log(value.element.id + value.message);
+            //    $errorSpan = $("span[data-valmsg-for='" + value.element.id + "']");
+            //    $errorSpan.html("<span style='color:red'>" + value.message + "</span>");
+            //    $errorSpan.show();
+            //});
+            if ($form.valid()) {
+                $.ajax({
+                    url: "@(Url.Action("ThemLoaiMonAn", "LoaiMonAn"))",
+                    type: 'POST',
+                    data: $form.serialize(),
+                    success: function (data) {
+                        //console.log(data);
+                        //hiển thị thông báo ra màn hình
+                        if (data == 1) {
+                            $("#listLoaiMonAn").load("@(Url.Action("LoaiMonAnPartial", "LoaiMonAn"))");
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("Thêm mới thành công");
+                        }
+                        else {
+                            //console.log(data);
+                            $.each(data, function (key, value) {
+                                console.log(key);
+                                var name = key;
+                                $.each(value, function (key, value) {
+                                    $errorSpan = $("span[data-valmsg-for='" + name + "']");
+                                    $errorSpan.html("<span style='color:#b94a48'>" + value + "</span>");
+                                    $errorSpan.show();
+                                });
+                            });
+                        }
+                    },
+                    error: function (result) {
+                        ////error
+                    }
+                });
+            }
+
+            return false;
+        });
+        //kết thúc thêm  mới loại món ăn
+        //xóa một bản ghi
+        $("a.lnkDelete").on("click", function () {
+            var id = $(this).data('value');//lấy giá trị id của bản ghi
+            console.log(id);
+            var $tr = $(this).closest('tr');
+            var answer = confirm("Bạn có chắc chắn xóa bản ghi là " + id + " . Tiếp tục?");
+            if (answer)
+                //DeleteCategory(id);
+                $.ajax({
+                    type: "POST",
+                    url: "@(Url.Action("XoaLoaiMonAn", "LoaiMonAn"))",
+                    data: { maLoaiMonAn: id },
+                    success: function (data) {
+                        if (data == 0) {
+                            //location.reload();
+                            $tr.css("background-color", "#ec645e");
+                            $tr.fadeOut(1600, "linear", function () { $tr.remove(); });
+                            $("#listLoaiMonAn").load("@(Url.Action("LoaiMonAnPartial", "LoaiMonAn"))");
+                            //hiển thị thông báo ra màn hình
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+
+                            toastr["success"]("Xóa bản ghi thành công");
+
+                        } else {
+                            alert("Loại món ăn đã chọn có chứa món ăn trong bảng khác. Hãy xóa món ăn của loại món ăn này trước!");
+                        }
+                    },
+                    error: function (error) {
+                    }
+                });
+            return false;
+        });
+        //chỉnh sửa danh mục nhóm tin
+        $("a.lnkEdit").click(function () {
+            var myModal = $('#openModal');
+            //clear validate
+            $(".text-danger").hide();
+            // get the values from the table
+            var a = $("#loaiMonAn").val($(this).closest('tr').children()[0].textContent);
+            var b = $("#ckeContentSua").val($(this).closest('tr').children()[1].textContent);
+            console.log(a.val());
+            //lấy id của danh mục nhóm tin
+            var id = $(this).data('value');
+            console.log(id);
+            $('#maLoaiMonAn', myModal).val(id);
+            $('#loaiMonAn', myModal).val(a.val());
+            $('#ckeContentSua', myModal).val(b.val());
+            //lấy hàng trong bảng dữ liệu
+            var $tr = $(this).closest('tr');
+            //call modal
+            $("#openModal").dialog({
+                autoOpen: false,
+                title: 'Chỉnh sửa loại món ăn',
+                modal: true,
+                width: 500,
+                dialogClass: 'mod-no-close',
+                buttons: {
+                    Save: function () {
+                        var maLoaiMA = $("#maLoaiMonAn").val().trim();
+                        var tenLoaiMA = $("#loaiMonAn").val().trim();
+                        //lấy chiều dài tên
+                        var lengthTen = $("#loaiMonAn").val().length;
+                        console.log(lengthTen);
+                        var ghiChu = $("#ckeContentSua").val().trim();
+                        var lengthGhiChu = $("#ckeContentSua").val().length;
+                        if (tenLoaiMA == null || tenLoaiMA == "") {
+                            $('#sumValidate').html("Tên loại món ăn không bỏ trống.");
+                            $('#sumValidate').css("display", "block");
+                            return false;
+                        }
+                        else if (lengthTen > 50) {
+                            $('#sumValidate').html("Tên loại món ăn nhỏ hơn 50 kí tự");
+                            $('#sumValidate').css("display", "block");
+                            return false;
+                        }
+                        else if (lengthGhiChu > 250) {
+                            $('#sumValidateGhiChu').html("Ghi chú nhỏ hơn 250 kí tự");
+                            $('#sumValidateGhiChu').css("display", "block");
+                            return false;
+                        }
+                        else {
+                            $.ajax({
+                                type: "POST",
+                                url: "@(Url.Action("SuaLoaiMonAn", "LoaiMonAn"))",
+                                data: { maLoaiMonAn: maLoaiMA, tenLoaiMonAn: tenLoaiMA, ghiChu: ghiChu },
+                                success: function (data) {
+                                    // $tr.css("border", "1px solid #ec645e");
+                                    $tr.css({
+                                        "border-color": "#ec645e",
+                                        "border-width": "1px",
+                                        "border-style": "solid"
+                                    });
+                                    $tr.fadeOut(1600, "linear");
+                                    $("#listLoaiMonAn").load("@(Url.Action("LoaiMonAnPartial","LoaiMonAn"))");
+                                    // $('#success').html(data);
+                                    //hiển thị thông báo ra màn hình
+                                    toastr.options = {
+                                        "closeButton": true,
+                                        "debug": false,
+                                        "newestOnTop": false,
+                                        "progressBar": false,
+                                        "positionClass": "toast-bottom-right",
+                                        "preventDuplicates": false,
+                                        "onclick": null,
+                                        "showDuration": "300",
+                                        "hideDuration": "1000",
+                                        "timeOut": "2000",
+                                        "extendedTimeOut": "1000",
+                                        "showEasing": "swing",
+                                        "hideEasing": "linear",
+                                        "showMethod": "fadeIn",
+                                        "hideMethod": "fadeOut"
+                                    };
+
+                                    toastr["success"](data);
+                                },
+                                error: function (error) {
+                                }
+                            });
+                        }
+                        $(this).dialog("destroy");
+                    },
+                    Cancel: function () { $(this).dialog("destroy"); }
+                }
+            });
+            $("#openModal").dialog("open");
+            // myModal.modal({ width: 500, show: true });
+        });/////edn modal
+
+    });
+</script>
+<script>
+    function empty() {
+        var x = $('#search-box').val();
+        if (x == " " || x == null) {
+            var url = window.location.pathname;
+            window.location(url);
+            // return false;
+        }
+    }
+</script>

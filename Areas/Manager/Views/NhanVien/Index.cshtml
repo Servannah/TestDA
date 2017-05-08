@@ -1,0 +1,278 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.NhanVienData
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o" aria-hidden="true"></i>
+        Nhân viên
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Nhân viên</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- Main content -->
+    <div class="container body-content">
+        <div class="content-task">
+            <h4>Danh sách nhân viên</h4>
+            @*//form tìm kiếm*@
+            <div class="form-search">
+                @using (Html.BeginForm("Index", "NhanVien", FormMethod.Get, new { @class = "form-inline", role = "search", id = "search-form", onsubmit = "return empty();" }))
+                {
+                    @*@Html.AntiForgeryToken()*@
+                    if (@TempData["Success"] != null)
+                    {
+                        <div class="add-sucess">
+                            <script>
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "newestOnTop": false,
+                                    "progressBar": false,
+                                    "positionClass": "toast-bottom-right",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "5000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+                                toastr["success"]("@TempData["Success"]");
+                            </script>
+                        </div>
+                    }
+                    <div class="formTimKiem">
+                        <fieldset class="the-fieldset">
+                            <legend class="the-legend">Thực hiện:</legend>
+                            <div class="">
+                                <div class="form-group col-md-3">
+                                    <input type="text" class="form-control" placeholder="Nhập thông tin cần tìm...." name="inputtext" value="@ViewBag.TuKhoaTK" id="search-box" style="width:200px;">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    @Html.DropDownList("daNghiViec", ViewBag.daNghiViec as SelectList, "--Tình trạng-- ", new { @class = "form-control" })
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Tìm kiếm</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>/////
+                }
+            </div>
+            @*thêm mới bản ghi*@
+            <div class="form-inline" style=" margin: 10px 0;">
+                <div class="form-group">
+                    <a href="/Manager/NhanVien/ChucNang?type=Insert" class="btn btn-primary hidden-xs"><i class="glyphicon glyphicon-plus"></i>Thêm mới nhân viên</a>
+                </div>
+                <div class="form-group pull-right">
+                    @Html.Raw("<span class=''> Tổng số bản ghi là: " + Model.dsNhanVien.Count().ToString() +@*"/"+ ViewBag.Total +*@ "</span>")
+                    @*thêm biểu tượng in*@
+                </div>
+            </div>
+        </div>
+        @*kết thúc form tìm kiếm*@
+        <table class="table table-bordered table-hover" id="dsNhanVien">
+            <thead>
+                <tr class="th-style">
+                    <th>Mã nhân viên</th>
+                    <th>Họ tên</th>
+                    <th>Giới tính</th>
+                    <th>Điện thoại</th>
+                    <th>Email</th>
+                    <th>Chức vụ</th>
+                    <th>Loại hợp đồng</th>
+                    <th>Tình trạng</th>
+                    <th>Ngày vào làm việc</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (Model.dsNhanVien.Count > 0)
+                    {
+                        // int j = 0;
+                        foreach (var i in Model.dsNhanVien)
+                        {
+                            //j++;
+                            <tr>
+                                @*<td>
+                                        <span>@j.ToString()</span>
+                                    </td>*@
+                                <td>
+                                    @Html.DisplayFor(m => i.maNV)
+                                    <br />
+                                    @if (i.maNV == "admin")
+                                    {
+                                        <a href="/Manager/NhanVien/ChiTietNhanVien?type=Detail&maNV=@i.maNV" class="lnkView" data-value="@i.maNV">Xem | </a>
+                                        <a href="/Manager/NhanVien/ChucNang?type=Edit&maNV=@i.maNV" class="lnkEdit" data-value="@i.maNV" id="nhanvien_@i.maNV">Sửa</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/Manager/NhanVien/ChiTietNhanVien?type=Detail&maNV=@i.maNV" class="lnkView" data-value="@i.maNV">Xem | </a>
+                                        <a href="/Manager/NhanVien/ChucNang?type=Edit&maNV=@i.maNV" class="lnkEdit" data-value="@i.maNV" id="nhanvien_@i.maNV">Sửa | </a>
+                                        <a href="javascript:void(0)" class="lnkDelete" data-value="@i.maNV" id="grouplop_@i.maNV">Xóa</a>
+                                    }
+                                </td>
+                                <td>@Html.DisplayFor(m => i.hoTen)</td>
+
+                                <td>
+                                    @if (i.gioiTinh == "F")
+                                    {
+                                        <span class="gioiTinh">Nữ</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="gioiTinh">Nam</span>
+                                    }
+                                </td>
+                                <td> @Html.DisplayFor(m => i.dienThoai)</td>
+                                <td> @Html.DisplayFor(m => i.email)</td>
+                                <td>
+                                    @Html.DisplayFor(m => i.chucVu)
+                                </td>
+                                <td> @Html.DisplayFor(m => i.loaiHopDong)</td>
+                                <td>
+                                    @if (i.daNghiViec == "1")
+                                    {
+                                        <span class="tintrang">Đang làm việc</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="tinhtrang">Đã nghỉ việc</span>
+                                    }
+                                </td>
+                                <td> @Html.DisplayFor(m => i.ngayVaoLamViec)</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="9"> <p style="text-align:center;">Không có bản ghi nào</p></td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+        <!--Phân trang-->
+        @if (ViewBag.TotalPage > 1)
+        {
+            var pageDisplay = (int)ViewBag.MaxPage;
+            int totalPage = (int)ViewBag.TotalPage;
+            int currentPage = ((int)ViewBag.Page);
+
+            // Create numeric links
+            var startPageIndex = Math.Max(1, currentPage - pageDisplay / 2);
+            var endPageIndex = Math.Min(totalPage, currentPage + pageDisplay / 2);
+
+            var link = "/Manager/NhanVien/Index";
+            <nav>
+                <ul class="pagination">
+                    @if (currentPage > ViewBag.First)
+                    {
+                        <li><a href="@link?page=@ViewBag.First" title="Trang đầu" class="first"><i class="fa fa-angle-double-left"></i></a></li>
+                        <li>
+                            <a href="@link?page=@ViewBag.Prev" title="Trang trước" class="prev"><i class="fa fa-angle-left"></i></a>
+                        </li>
+
+                    }
+                    @for (int i = startPageIndex; i <= endPageIndex; i++)
+                    {
+                        if (currentPage == i)
+                        {
+
+                            <li> <a href="@link?page=@i" class="active" title="Trang @i">@i</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="@link?page=@i" title="Trang @i" class="pos">@i</a></li>
+                        }
+                    }
+                    @if (currentPage < totalPage)
+                    {
+                        <li><a href="@link?page=@ViewBag.Next" class="next" title="Trang sau"><i class="fa fa-angle-right"></i></a></li>
+                        <li> <a href="@link?page=@ViewBag.Last" class="last" title="Trang cuối"><i class="fa fa-angle-double-right"></i></a></li>
+                    }
+
+                </ul>
+            </nav>
+
+        }
+        else
+        {
+            @*<span>Không có bản ghi nào</span>*@
+        }
+    </div>
+</section>
+@section Scripts{
+    <script>
+        $(function () {
+            //xóa một bản ghi
+            $("a.lnkDelete").on("click", function () {
+                var id = $(this).data('value');//lấy giá trị id của bản ghi
+                console.log(id);
+                var $tr = $(this).closest('tr');
+                var answer = confirm("Bạn có chắc chắn xóa bản ghi này . Tiếp tục?");
+                if (answer)
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("XoaNhanVien", "NhanVien"))",
+                        data: { maNV: id },
+                        success: function (data) {
+                            if (data == 0) {
+                                $tr.css("background-color", "#ec645e");
+                                location.reload();
+
+                                //hiển thị thông báo ra màn hình
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "newestOnTop": false,
+                                    "progressBar": false,
+                                    "positionClass": "toast-bottom-right",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "5000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+
+                                toastr["success"]("Xóa bản ghi thành công");
+
+                            } else {
+                                alert("Đã xảy ra lỗi!");
+                            }
+                        },
+                        error: function (error) {
+                        }
+                    });
+                return false;
+            });
+        })//Xóa một bản ghi
+        function empty() {
+            var x = $('#search-box').val();
+            if (x == " " || x == null) {
+                var url = window.location.pathname;
+                window.location(url);
+                // return false;
+            }
+        }
+    </script>
+}
+
+

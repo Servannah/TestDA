@@ -1,0 +1,148 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.TinTucData
+@{
+    ViewBag.Title = "Insert";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+<section class="content-header">
+    <h1>
+        <i class="fa fa-newspaper-o"></i>
+        Bài viết
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Bài viết</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container body-content">
+        <h2>@ViewBag.ChucNang</h2>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="body-post">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="col-md-8">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.tieuDe, "Tiêu đề *", htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.tieuDe, new { htmlAttributes = new { @class = "form-control", @id = "title-news" } })
+                        @Html.ValidationMessageFor(model => model.tieuDe, null, new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.slug, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.slug, new { htmlAttributes = new { @class = "form-control", @id = "slug-news" } })
+                        <span>Tạo đường dẫn thân thiện cho bài viết, bao gồm chữ cái thường, số, dấu gạch ngang.</span>
+                        @Html.ValidationMessageFor(model => model.slug, null, new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.noiDung, "Nội dung *", htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.noiDung, new { @class = "form-control", @id = "ckeContent" })
+                        <script type="text/javascript"> CKEDITOR.replace('ckeContent', { customConfig: '/Scripts/ckeditor/config.js', height: 400, }); </script>
+                        @Html.ValidationMessageFor(model => model.noiDung, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.ActionLink("<< Quay lại danh sách", "Index", "TinTuc")
+                        <div class=" col-sm-offset-3">
+                            <button type="reset" class="btn btn-primary"><i class="fa fa-refresh"></i>  Làm lại</button><button type="submit" class="btn btn-primary" style="margin-left:10px;"><i class="fa fa-save"></i>  Lưu thông tin</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 form-right">
+
+                    <div class="form-horizontal">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.anhDaiDien, "Ảnh đại diện *", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-sm-8">
+                                @*/upload hình ảnh*@
+                                <div class="">
+                                    <a id="chooseImage" href="#">Chọn ảnh</a>
+                                    @Html.TextBoxFor(m => m.anhDaiDien, new { @id = "UploadedFile", @class = "form-control", @readonly = true })
+                                </div>
+                                <div class="InfoContainer">
+                                    <div id="Imagecontainer">
+                                        <img src="@ViewBag.anhDaiDien" alt="@Html.DisplayFor(model =>model.slug)" id="ImageAvatar">
+                                    </div>
+                                </div>
+                                <div id="" class="info">
+                                    @*Kích thước: <span id="FileSize"></span>*@
+                                </div>
+                                @Html.ValidationMessageFor(model => model.anhDaiDien, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.nhomTin, "Danh mục *", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.nhomTin, null, "--Danh mục-- ", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.nhomTin, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.tinNoiBat, "Đặt làm tin nổi bật", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.tinNoiBat, null, "--Chọn-- ", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.tinNoiBat, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.tinhTrang, "Tình trạng *", htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(model => model.tinhTrang, new List<SelectListItem> {
+                        new SelectListItem { Text="Bản nháp", Value="draft" },
+                        new SelectListItem { Text="Xuất bản", Value="published" }
+                    }, "--Tình trạng-- ", new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.tinhTrang, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ngayTao, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-sm-8">
+                                @if (ViewBag.type == 1)
+                                {
+                                    @Html.Label(String.Format("{0:d/M/yyyy HH:mm:ss}", DateTime.Now.ToString()), htmlAttributes: new { @class = "control-label" })
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(model=>model.ngayTao)
+                                    @Html.HiddenFor(model=>model.ngayTao)
+                                }
+                                
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ngaySua, htmlAttributes: new { @class = "control-label col-md-4" })
+                            <div class="col-sm-8">
+                                @Html.Label(String.Format("{0:d/M/yyyy HH:mm:ss}", DateTime.Now.ToString()), htmlAttributes: new { @class = "control-label" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+            </div>
+        }
+    </div>
+</section>
+@section Scripts{
+    <script src="~/Scripts/admin/news.js"></script>
+
+    @*add checkeditor*@
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+
+    @*add ckfinder*@
+    <script src="~/Scripts/ckfinder/ckfinder.js"></script>
+}
+
+
+
+
+
+
+
+

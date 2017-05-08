@@ -1,0 +1,183 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.ConfigData
+
+@{
+    ViewBag.Title = "NewsIndex";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Tin tức hiển thị
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Tin tức hiển thị</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- Main content -->
+    <div class="container body-content">
+        <div class="content-news">
+            <h2>Tin tức hiển thị</h2>
+            @using (Html.BeginForm("NewsIndex", "Config", FormMethod.Post, new { @class = "news" }))
+            {
+                if (@TempData["Success"] != null)
+                {
+                    <div class="add-sucess">
+                        <script>
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("@TempData["Success"]");
+                        </script>
+                    </div>
+                }
+                <div class="">
+                    <div class="col-md-6">
+                        <h4>CHỌN TIN HIỂN THỊ CHÍNH LÊN TRANG CHỦ</h4>
+                        @Html.Action("NewsHotPartial", "Config")
+                    </div>
+                    @*/////*@
+                    <div class="col-md-6">
+                        <h4>TIN HIỂN THỊ CHÍNH</h4>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.type, new { @Value = "news" })
+                        @Html.HiddenFor(model => model.ord, new { @Value = "1" })
+                        @Html.HiddenFor(model => model.id)
+                        @Html.HiddenFor(model => model.temp1)
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.name, "Tiêu đề *")
+                            @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.name, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.image, "Hình ảnh *")
+                            @*/upload hình ảnh*@
+                            <div class="">
+                                <a id="chooseImage" href="#">Chọn ảnh</a>
+                                @Html.TextBoxFor(model => model.image, new { @id = "UploadedFile", @class = "form-control", @readonly = true })
+                            </div>
+                            <div class="InfoContainer">
+                                <div id="Imagecontainer" style="height: 20rem; width: 250px;">
+                                    <img src="@ViewBag.image" alt="@Html.DisplayFor(model =>model.name)" id="ImageSlide">
+                                </div>
+                            </div>
+                            <div id="" class="info">
+                                @*Kích thước: <span id="FileSize"></span>*@
+                            </div>
+                            @Html.ValidationMessageFor(model => model.image, null, new { @class = "text-danger" })
+                            @*//hình ảnh*@
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.content, "Mô tả ngắn *")
+                            @Html.TextAreaFor(model => model.content, new { @class = "form-control", @rows = 5 })
+                            @Html.ValidationMessageFor(model => model.content, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            <button type="reset" class="btn btn-primary" style="margin-right:10px;"><i class="fa fa-refresh"></i>Làm mới</button><button type="submit" value="Lưu thông tin" class="btn btn-primary"><i class="fa fa-save"></i>Lưu thông tin</button>
+                        </div>
+                    </div>
+                    @*/////*@
+                </div>
+            }
+        </div>
+    </div>
+</section>
+@section Scripts{
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+
+@*add ckfinder*@
+<script src="~/Scripts/ckfinder/ckfinder.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".radioGroup").change(function () {
+                var maTin = $("input[name='optionsRadios']:checked").data('value');
+                console.log(maTin);
+                //add checked vào radio
+                $.ajax({
+                    type: "POST",
+                    url: "@(Url.Action("GetDataNews", "Config"))",
+                    data: { maTin: maTin },
+                    success: function (data) {
+                        //gán giá trị vào các inputtext
+                        console.log(data);
+                        $('#name').val(data['tieuDe']);
+                        $('#temp1').val(data['maTin']);
+                        $('#UploadedFile').val(data['anhDaiDien']);
+                        $("#Imagecontainer").empty();
+                        var img = new Image()
+                        img.src = data['anhDaiDien'];
+                        img.className = "thumb";
+                        $("#Imagecontainer").append(img);
+                    },
+                    error: function (error) {
+                    }
+                });
+                return false;
+            });///
+            //tạo thư mục upload ảnh sử dụng ckfinder
+            $('#chooseImage').click(function (e) {
+                e.preventDefault();
+                var finder = new CKFinder();
+                ////
+                finder.selectActionFunction = function (url, data) {
+                    //console.log(file[0]['value'].data);
+                    console.log(data);
+                    var selectedFile = data['fileUrl'];
+                    console.log(selectedFile);
+                    if (selectedFile) {
+                        var FileSize = 0;
+                        if (data['fileSize'] > 1024) {
+                            FileSize = Math.round(data['fileSize'] * 100 / 1024) / 100 + " MB";
+                        }
+                        else {
+                            FileSize = data['fileSize'] + " KB";
+                        }
+                        // here we will add the code of thumbnail preview of upload images
+                        $("#FileSize").text(FileSize);
+                    }
+                    $("#Imagecontainer").empty();
+                    var img = new Image()
+                    img.src = selectedFile;
+                    img.className = "thumb";
+                    $("#Imagecontainer").append(img);
+                    //hiển thị đường dẫn ảnh lên textbox
+                    $('#UploadedFile').val(url);
+                }
+                finder.popup();
+            });
+            //kết thúc chọn tin
+        });
+        ///
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

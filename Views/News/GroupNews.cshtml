@@ -1,0 +1,120 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.TinTucData
+
+@{
+    ViewBag.Title = "GroupNews";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="listNews">
+    <div class="container">
+        <div class="col-md-3">
+            <div class="sidebar-category">
+                @Html.Action("SidebarPartial", "News")
+            </div>
+            <div class="new-article">
+                @Html.Action("NewArticlePartial", "News")
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="group-news row">
+                @{
+                    if (Model.danhSachTin.Count > 0)
+                    {
+                        foreach (var i in Model.danhSachTin)
+                        {
+                            <div class="col-md-6 grid-content-news">
+                                <div class="detail">
+                                    <a href="~/News/ViewNews?id=@i.maTin"><img src="@i.anhDaiDien" style=" float: left; width: 100%; height: 200px;" /></a>
+                                    <h4><a href="~/News/ViewNews?id=@i.maTin">@Html.DisplayFor(m => i.tieuDe)</a></h4>
+                                    <div class="some-area">@Html.Raw(i.noiDung)</div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <span>Không có bài viết hiển thị</span>
+                    }
+                }
+                <!--Phân trang-->
+                @if (ViewBag.TotalPage > 1)
+                {
+                    var pageDisplay = (int)ViewBag.MaxPage;
+                    int totalPage = (int)ViewBag.TotalPage;
+                    int currentPage = ((int)ViewBag.Page);
+
+                    // Create numeric links
+                    var startPageIndex = Math.Max(1, currentPage - pageDisplay / 2);
+                    var endPageIndex = Math.Min(totalPage, currentPage + pageDisplay / 2);
+
+                    var link = "/News/GroupNews";
+                    <nav>
+                        <ul class="pagination">
+                            @if (currentPage > ViewBag.First)
+                            {
+                                <li><a href="@link?page=@ViewBag.First" title="Trang đầu" class="first"><i class="fa fa-angle-double-left"></i></a></li>
+                                <li>
+                                    <a href="@link?page=@ViewBag.Prev" title="Trang trước" class="prev"><i class="fa fa-angle-left"></i></a>
+                                </li>
+
+                            }
+                            @for (int i = startPageIndex; i <= endPageIndex; i++)
+                            {
+                                if (currentPage == i)
+                                {
+
+                                    <li> <a href="@link?page=@i" class="active" title="Trang @i">@i</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@link?page=@i" title="Trang @i" class="pos">@i</a></li>
+                                }
+                            }
+                            @if (currentPage < totalPage)
+                            {
+                                <li><a href="@link?page=@ViewBag.Next" class="next" title="Trang sau"><i class="fa fa-angle-right"></i></a></li>
+                                <li> <a href="@link?page=@ViewBag.Last" class="last" title="Trang cuối"><i class="fa fa-angle-double-right"></i></a></li>
+                            }
+
+                        </ul>
+                    </nav>
+
+                }
+
+                @*kết thúc phân trang*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+<style>
+    .sidebar-category{
+        margin-bottom:20px;
+    }
+    .grid-content-news {
+        margin-bottom: 15px;
+    }
+
+    .detail img {
+        margin-bottom: 10px;
+    }
+
+    .detail h4 a {
+        text-decoration: none;
+        color: #1c1c1d;
+    }
+
+    .listNews {
+        padding: 40px 0px;
+        background: #eee;
+    }
+</style>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("div.some-area").text(function (index, currentText) {
+                return currentText.substr(0, 150) + " [...]";
+            });
+        });
+    </script>
+}

@@ -1,0 +1,38 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.NhomTinData
+
+<div class="listItem">
+    @if (Model.danhSachNhomTin.Count > 0)
+    {
+        // int j = 0;
+        foreach (var i in Model.danhSachNhomTin)
+        {
+            if (@i.danhMucCha == 0)
+            {
+                @Html.HiddenFor(model => i.maNhom)
+                @Html.DisplayFor(model => i.tenNhom)
+                foreach (var child in Model.danhSachNhomTin)
+                {
+                    if (child.danhMucCha == i.maNhom)
+                    {
+                        @Html.HiddenFor(model => child.maNhom)
+                        <span class="child-item">--</span>@Html.DisplayFor(model => child.tenNhom)<br />
+                        foreach (var item in Model.danhSachNhomTin)
+                        {
+                            if (item.danhMucCha == child.maNhom)
+                            {
+                                @Html.HiddenFor(model => item.maNhom)
+                                <span class="child-item">----</span>@Html.DisplayFor(model => item.tenNhom)<br />
+                            }
+                        }
+                    }
+                }
+
+            }
+
+        }
+    }
+    else
+    {
+        <p>Không có nhóm tin tức được tạo</p>
+    }
+</div>

@@ -1,0 +1,87 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.TPMonAn
+<table class="table table-bordered table-hover" id="dstpMonAn">
+    <thead>
+        <tr style=" text-align:center; background:#ffefd5;">
+            <th rowspan="3" style="width:9%;">Thực phẩm</th>
+            <th rowspan="3">Số lượng(g)</th>
+            <th colspan="14" style="text-align:center;">Thành phần dinh dưỡng</th>
+            <th rowspan="3">Ghi chú</th>
+        </tr>
+        <tr class="thpdd" style="background: #fff5ee;">
+            <th>Protid ĐV</th>
+            <th>Protid TV</th>
+            <th>Lipid ĐV</th>
+            <th>Lipid TV</th>
+            <th>Glucid</th>
+            <th>Calo</th>
+            <th>Canxi</th>
+            <th>Photpho</th>
+            <th>Sắt</th>
+            <th>Vitamin A</th>
+            <th>Vitamin B1</th>
+            <th>Vitamin B2</th>
+            <th>Vitamin PP</th>
+            <th>Vitamin C</th>
+        </tr>
+        <tr class="dvtinh" style="background: #fff5ee;">
+            <td>g</td>
+            <td>g</td>
+            <td>KCal</td>
+            <td>g</td>
+            <td>g</td>
+            <td>g</td>
+            <td>g</td>
+            <td>g</td>
+            <td>mg</td>
+            <td>mg</td>
+            <td>mg</td>
+            <td>mg</td>
+            <td>mcg</td>
+            <td>mcg</td>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (Model.danhSachTPMonAn.Count > 0)
+            {
+                //int j = 0;
+                foreach (var i in Model.danhSachTPMonAn)
+                {
+                    // j++;
+                    <tr>
+                        @*<td>@j.ToString()</td>*@
+                        <td style="text-align:center;">
+                            @Html.DisplayFor(m => i.tenThucPham) <div>
+                                @*<a href="javacript:void(0)" class="lnkDelete" data-value="@i.maThucPham" id="group_@i.maThucPham">Xóa</a>*@
+                            </div>
+                        </td>
+                        <td> @Html.DisplayFor(m => i.soLuongGam)</td>
+                        <td> @Html.DisplayFor(m => i.protidDV)</td>
+                        <td> @Html.DisplayFor(m => i.protidTV)</td>
+                        <td> @Html.DisplayFor(m => i.lipidDV)</td>
+                        <td> @Html.DisplayFor(m => i.lipidTV)</td>
+                        <td> @Html.DisplayFor(m => i.glucid)</td>
+                        <td> @Html.DisplayFor(m => i.calo)</td>
+                        <td> @Html.DisplayFor(m => i.canxi)</td>
+                        <td> @Html.DisplayFor(m => i.photPho)</td>
+                        <td> @Html.DisplayFor(m => i.sat)</td>
+                        <td> @Html.DisplayFor(m => i.vitaminA)</td>
+                        <td> @Html.DisplayFor(m => i.vitaminB1)</td>
+                        <td> @Html.DisplayFor(m => i.vitaminB2)</td>
+                        <td> @Html.DisplayFor(m => i.vitaminPP)</td>
+                        <td> @Html.DisplayFor(m => i.vitaminC)</td>
+                        <td> @Html.DisplayFor(m => i.ghiChu)</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="20"> <p style="text-align:center;">Không có bản ghi nào</p></td>
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>@*bảng thành phần chi tiết món ăn*@
+

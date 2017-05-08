@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "UnAuthorized";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+<section class="content">
+    <div class="container body-content">
+        <div style="text-align:center;">
+            <h2>
+                Bạn không có quyền truy cập chức năng này.
+            </h2>
+            <hr />
+
+            @Html.ActionLink("Đăng nhập bằng tài khoản khác", "Login", "Account")
+        </div>
+    </div>
+</section>

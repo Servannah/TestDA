@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Website trường mầm non</title>
+    <!--Add css-->
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" media="all" />
+    <link href="~/Content/css/swipebox.css" rel="stylesheet" />
+    <link href="~/Content/css/layout.css" rel="stylesheet" />
+    <!--jquery-->
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <!--bootstrap-->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/modernizr.custom.js"></script>
+    <!-- fonts -->
+    @*<link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>*@
+    @*<link href='//fonts.googleapis.com/css?family=Alegreya:400,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>*@
+    <!-- //fonts -->
+    <!-- start-smoth-scrolling -->
+    <script src="~/Scripts/move-top.js"></script>
+    <script src="~/Scripts/easing.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            $(".scroll").click(function (event) {
+                event.preventDefault();
+                $('html,body').animate({ scrollTop: $(this.hash).offset().top }, 1000);
+            });
+        });
+    </script>
+    <!-- start-smoth-scrolling -->
+    @RenderSection("Scripts", false/*required*/)
+</head>
+<body>
+    <!-- header -->
+    @Html.Action("MenuPartial", "Menu")
+    <!--// header -->
+    <div class="body-main">        
+        <!-- banner -->
+        @Html.Action("BannerPartial", "Home")
+        <!-- //banner -->
+        @RenderBody()
+    </div>
+    <!-- footer -->
+    <div class="footer">
+        <div class="container">
+            <div class="footer-grids">
+                <div class="col-md-3 footer-grid">
+                    <a href="/Home/Index"><img src="" style="width:100%;" /></a>
+                    <p>Trường mầm non Lan Mẫu giúp trẻ có cơ sở phát triển về mọi mặt về thể chất và tinh thần.</p>
+
+                </div>
+                <div class="col-md-3 footer-grid">
+                    <h4>LINK LIÊN KẾT </h4>
+                    <ul>
+                        <li><a href="#">HỎI ĐÁP</a></li>
+                        <li><a href="#">TIN TỨC</a></li>
+                        <li><a href="#">LIÊN HỆ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-grid">
+                    <h4>HỖ TRỢ</h4>
+                    <ul>
+                        <li><a href="#">Hỗ trợ trực tuyến: </a></li>
+                        <li><a href="#">Tư vấn tuyển sinh: </a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 footer-grid">
+                    <h4>ĐĂNG KÝ NHẬN TIN</h4>
+                    <p> Đăng kí để nhận thông tin mới nhất từ nhà trường</p>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Nhập email (*)...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="button">ĐĂNG KÍ</button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <p> &copy; 2016 Information Technology. All Rights Reserved | Design by: <a href="#a"> Nguyễn Thị Trang</a></p>
+        </div>
+    </div>
+
+    <!-- smooth scrolling -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $().UItoTop({ easingType: 'easeOutQuart' });
+        });
+    </script>
+    <a href="#" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+    <!-- //smooth scrolling -->
+
+</body>
+</html>

@@ -1,0 +1,233 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.HocPhiData
+
+@{
+    ViewBag.Title = "ChucNang";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Học phí
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Học phí</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container body-content ">
+        <h3>@ViewBag.ChucNang </h3>
+        <div class="">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class=" form-horizontal col-md-6">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @if (@ViewBag.type == 2)
+                    {
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.maHocPhi, htmlAttributes: new { @class = "col-sm-3" })
+                            <div class="col-sm-8">
+                                @Html.DisplayFor(model => model.maHocPhi)
+                            </div>
+                        </div>
+                        
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.maHocPhi, htmlAttributes: new { @class = "col-sm-3" })
+                            <div class="col-sm-9">
+                                @Html.EditorFor(model => model.maHocPhi, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.maHocPhi, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    }
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.maHocSinh, htmlAttributes: new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.maHocSinh, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.maHocSinh, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.tenHDHocPhi, htmlAttributes: new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.tenHDHocPhi, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.tenHDHocPhi, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.thang, htmlAttributes: new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.DropDownListFor(model => model.thang, null, "--Chọn tháng-- ", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.thang, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.namHoc, htmlAttributes: new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.DropDownListFor(model => model.namHoc, null, "--Chọn năm học-- ", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.namHoc, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.loaiHP, htmlAttributes: new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.DropDownListFor(model => model.loaiHP, null, "--Chọn hình thức đóng-- ", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.loaiHP, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.tienMienGiam, htmlAttributes: new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.tienMienGiam, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.tienMienGiam, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ngayThu, htmlAttributes: new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(model => model.ngayThu, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                            @Html.ValidationMessageFor(model => model.ngayThu, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.nguoiThu, htmlAttributes: new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.DropDownListFor(model => model.nguoiThu, null, "--Người thu học phí-- ", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.nguoiThu, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.tongHocPhi, htmlAttributes: new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(model => model.tongHocPhi, new { @class = "form-control", @id = "xTongDong" })
+                            @Html.ValidationMessageFor(model => model.tongHocPhi, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.daThu, htmlAttributes: new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(model => model.daThu, new { @class = "form-control", @id = "xDaThu" })
+                            @Html.ValidationMessageFor(model => model.daThu, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.conNo, htmlAttributes: new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(model => model.conNo, new { @class = "form-control", @id = "xConNo" })
+                            @Html.ValidationMessageFor(model => model.conNo, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ghiChu, htmlAttributes: new { @class = "col-sm-3" })
+                        <div class="col-sm-9">
+                            @Html.TextAreaFor(model => model.ghiChu, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ghiChu, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.ActionLink("<< Quay lại danh sách", "Index", "HocPhi")
+                        <div class="col-sm-offset-4 col-sm-8">
+                            <button type="reset" class="btn btn-primary" style="margin-right:10px;"><i class="fa fa-refresh"></i>Làm mới</button><button type="submit" value="Lưu thông tin" class="btn btn-primary"><i class="fa fa-save"></i>Lưu thông tin</button>
+                        </div>
+                    </div>
+                </div>
+            }
+            @*//hiển thị danh sách khoản phí*@
+            <div class="col-md-6">
+                <h4>KIỂM TRA THÔNG TIN</h4>
+                <div class="kiemtra">
+                    @using (Html.BeginForm("KhoanPhiPartial", "HocPhi", FormMethod.Get, new { id = "kiemTra" }))
+                    {
+                        <fieldset class="the-fieldset">
+                            <legend class="the-legend">Tiền đóng học phí:</legend>
+                            <div class="">
+                                <div class="form-group">
+                                    @Html.EditorFor(model => model.maHocSinh, new { htmlAttributes = new { @class = "form-control", @id = "xHocSinh", @placeholder = "Nhập vào mã học sinh" } })
+                                    @Html.ValidationMessageFor(model => model.maHocSinh, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group ">
+                                    @Html.DropDownListFor(model => model.namHoc, null, "--Chọn năm học-- ", new { @class = "form-control", @id = "xNamHoc" })
+                                    @Html.ValidationMessageFor(model => model.namHoc, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group ">
+                                    @Html.DropDownListFor(model => model.loaiHP, null, "--Hình thức-- ", new { @class = "form-control", @id = "xLoaiHP" })
+                                    @Html.ValidationMessageFor(model => model.loaiHP, null, new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <a href="javarscript:void()" class="btn btn-primary lnkView">Xem thông tin</a>
+                                </div>
+                                <div class="clearfix">  </div>
+                            </div>
+                        </fieldset>
+                    }
+                    <div class="ketQua">
+
+                    </div>
+                </div>
+                @* @Html.Action("KhoanPhiPartial", "HocPhi")*@
+
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    fieldset.the-fieldset {
+        border: 1px dotted #252424 !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+    }
+
+    legend.the-legend {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: inherit;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+</style>
+@section Scripts{
+    <script>
+        $(function () {
+            var $form = $('#kiemTra');
+            $.validator.unobtrusive.parse($form);
+            $form.validate();
+            //xem danh sách khoản phí trong năm học
+            $("a.lnkView").on("click", function () {
+                var namHoc = $('#xNamHoc').val();
+                var maHS = $('#xHocSinh').val();
+                var loaiHP = $('#xLoaiHP').val();
+                console.log(maHS);
+                if ($form.valid()) {
+                    maHS = maHS.trim();
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("KhoanPhiPartial", "HocPhi"))",
+                        data: { maHocSinh: maHS, namHoc: namHoc, loaiHP: loaiHP },
+                        success: function (data) {
+                            console.log(data);
+                            $('.ketQua').html(data);
+                        }
+                    });
+                }
+                return false;
+            });
+            //enable nếu chỉnh sửa thông tin
+            $('#xDaThu').on('keyup', function () {
+                var tongDong = $('#xTongDong').val();
+                var daThu = $('#xDaThu').val();
+                var conNo = tongDong - daThu;
+                $('#xConNo').val(conNo);
+                return false;
+            });
+        });
+    </script>
+}

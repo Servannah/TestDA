@@ -1,0 +1,105 @@
+﻿/*news*/
+.news-related li{
+    list-style:none;
+}
+.news-related li span{
+    margin-right:5px;
+    color:#2FD828;
+}
+.news-related li a{
+    color:#000;
+}
+.news-related li a:hover{
+    color:#2FD828;
+}
+/*index**/
+.top-header{
+    background: #393939;
+}
+.top-header .social-contact{
+    float: left;
+    width: auto;
+    position: relative;
+    padding: 0px 10px;
+    border-left: 1px solid #484848;
+    border-right: 1px solid #484848;
+}
+.top-header .social-contact .social-icon{
+    float: left;
+    width: 100%;
+}
+.top-header .social-contact .social-icon li{
+    position: relative;
+    display: inline-block;
+}
+.top-header .social-contact .social-icon li a{
+    display: block;
+    color: #fff;
+    padding: 12px 10px;
+}
+.top-header .social-contact .social-icon li a:hover{
+    color:#d0021b;
+}
+.top-header .info-contact{
+    float: right;
+    width: auto;
+}
+.top-header .info-contact ul{
+    float: left;
+    width: 100%;
+}
+.top-header .info-contact ul li{
+    display: inline-block;
+    position: relative;
+    border-right: 1px solid #484848;
+    color: #fff;
+    padding: 12px 20px;
+}
+.top-header .info-contact ul li i{
+    margin-right:10px;
+}
+.top-header .info-contact ul li i:hover{
+    color:#d0021b;
+}
+.top-header .info-contact ul li a{
+    display: inline-block;
+    color: #fff
+}
+.top-header .search-index{
+    float: right;
+    padding: 10px 10px 11px;
+    position: relative;
+    width: 240px;
+    border-left: 1px solid #484848;
+    border-right: 1px solid #484848;
+}
+.top-header .search-index form{
+    width: 100%;
+    float: left;
+}
+.top-header .search-index form input[type="search"]{
+    background-color: transparent;
+    border: 0px;
+    width: 100%;
+    color: #fff;
+    outline: none;
+}
+.top-header .search-index form button{
+    display: inline-block;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 30px;
+    height: 44px;
+    line-height: 42px;
+    color: #fff;
+    text-align: center;
+    background-color: transparent;
+    border: none;
+}
+.top-header .search-index form i:hover{
+    color:#d0021b;
+}
+.menu-index{
+    background:#fff;
+}

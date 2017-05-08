@@ -1,0 +1,170 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.ConfigData
+
+@{
+    ViewBag.Title = "BannserIndex";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Nhân viên
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Nhân viên</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- Main content -->
+    <div class="container body-content">
+        <div class="content-slide">
+            <h2>Nhân viên hiển thị</h2>
+            @using (Html.BeginForm("StaffIndex", "Config", FormMethod.Post, new { @class = "staff" }))
+            {
+                if (@TempData["Success"] != null)
+                {
+                    <div class="add-sucess">
+                        <script>
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("@TempData["Success"]");
+                        </script>
+                    </div>
+                }
+                /////thêm mới slide
+                <div class="form-inline" style=" margin: 10px 0;">
+                    <a href="/Manager/Config/EditStaff?t=Insert" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Thêm mới thông tin</a>
+                    @*Xem slide*@
+                </div>
+                <table class="table table-bordered table-hover" id="Image-Slide">
+                    <thead>
+                        <tr class="th-style">
+                            <th>Hiển thị</th>
+                            <th>Tên nhân viên</th>
+                            <th>Hình ảnh</th>
+                            <th>Mô tả ngắn</th>
+                            <th style="width:10%;">Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                if (Model.listData.Count > 0)
+                {
+                    // int j = 0;
+                    foreach (var i in Model.listData)
+                    {
+                        // j++;
+                        <tr>
+                            <td style="text-align:center;">
+                                @*@j.ToString()*@
+                                @if (i.ord == 1)
+                                {
+                                    <div class="input-slide">
+                                        <input type="checkbox" id="slide" checked disabled />
+                                        <label for="slide"></label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="input-slide">
+                                        <input type="checkbox" id="slide" disabled />
+                                        <label for="slide"></label>
+                                    </div>
+                                }
+                            </td>
+                            <td> @Html.DisplayFor(m => i.name)</td>
+                            <td>
+                                <img src="@i.image" alt="@i.name" class="image-staff" />
+                            </td>
+                            <td>@Html.DisplayFor(m => i.content)</td>
+                            <td>
+                                <a href="/Manager/Config/EditStaff?t=Edit&id=@i.id" class="lnkEdit" data-value="@i.id" id="slide_@i.id">Sửa | </a>
+
+                                <a href="javarscript:void(0)" class="lnkDelete" data-value="@i.id" id="slidegr_@i.id">Xóa</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5"> <p style="text-align:center;">Không có bản ghi nào</p></td>
+                    </tr>
+                }
+
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</section>
+<style>
+    .image-staff {
+        border-radius: 50%;
+        border: 1px dotted #d0021b;
+        width: 100px;
+        height: 100px;
+    }
+</style>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            //xóa một bản ghi
+            $("a.lnkDelete").on("click", function () {
+                var id = $(this).data('value');//lấy giá trị id của bản ghi
+                console.log(id);
+                var $tr = $(this).closest('tr');
+                var answer = confirm("Bạn có chắc chắn xóa bản ghi này. Tiếp tục?");
+                if (answer)
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("DeleteData", "Config"))",
+                        data: { id: id },
+                        success: function (data) {
+                            if (data == 0) {
+                                $tr.css("background-color", "#ec645e");
+                                location.reload();
+                            } else {
+                                alert("Đã xảy ra lỗi!");
+                            }
+                        },
+                        error: function (error) {
+                        }
+                    });
+                return false;
+            });///
+            $("a.lnkView").on("click", function () {
+
+            });
+            ///
+        });
+        ///
+    </script>
+}
+
+
+
+
+
+
+
+
+

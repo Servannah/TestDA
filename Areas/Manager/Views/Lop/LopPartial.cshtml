@@ -1,0 +1,200 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.LopData
+
+<!-- Main content -->
+<div class="container body-content">
+    <div class="content-task">
+        <h4>Danh sách lớp học</h4>
+        @*//form tìm kiếm*@
+        <div class="form-search">
+            @using (Html.BeginForm("Index", "Lop", FormMethod.Get, new { @class = "form-inline", role = "search", id = "search-form", onsubmit = "return empty();" }))
+            {
+                @*@Html.AntiForgeryToken()*@
+                if (@TempData["Success"] != null)
+                {
+                    <div class="add-sucess">
+                        <script>
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("@TempData["Success"]");
+                        </script>
+                    </div>
+                }
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="choice-type btn btn-default disabled">Tìm kiếm thông tin <i class="fa fa-angle-double-right" aria-hidden="true"></i></label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Nhập thông tin cần tìm...." name="tukhoa" value="@ViewBag.TuKhoaTK" id="search-box" style="width:200px;">
+                    </div>
+                    <div class="form-group">
+                        @Html.DropDownList("nhomLop",null, "--Chọn nhóm lớp-- ", new { @class = "form-control", @id = "name-group" })
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>Tìm kiếm</button>
+                    </div>
+                    <div class="clearfix">  </div>                    
+                </div>
+            }
+        </div>
+        @*thêm mới bản ghi*@
+        <div class="form-chucnang" style=" margin: 10px 0;">
+                <a href="/Manager/Lop/ChucNang?type=Insert" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Thêm mới lớp học</a>
+                 @Html.Raw("<span class='pull-right'> Tổng số bản ghi là: " + Model.danhSachLop.Count().ToString() + "</span>")   
+        </div>
+    </div>
+    @*kết thúc form tìm kiếm*@
+    <table class="table table-bordered table-hover" id="dsLop">
+        <thead>
+            <tr class="th-style">
+                <th>Tên lớp</th>
+                <th>Nhóm lớp <a href="javarscript:void()" id="lnkSort"><i class="fa fa-"></i></a></th>
+                <th>Mô tả</th>
+                <th>Chức  năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (Model.danhSachLop.Count > 0)
+                {
+                    //int j = 0;
+                    foreach (var i in Model.danhSachLop)
+                    {
+                        // j++;
+                        <tr>
+                            <td>@Html.DisplayFor(m => i.tenLop)</td>
+                            <td>@Html.DisplayFor(m => i.tenNhomLop)</td>
+                            <td> @Html.DisplayFor(m => i.moTa)</td>
+                            <td>
+                                <a href="/Manager/Lop/ChucNang?type=Edit&maLop=@i.maLop" class="lnkEdit" data-value="@i.maLop" id="nhomlop_@i.maLop">Sửa | </a>
+                                <a href="javascript:void(0)" class="lnkDelete" data-value="@i.maLop" id="grouplop_@i.maLop">Xóa</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3"> <p style="text-align:center;">Không có bản ghi nào</p></td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+    @*xóa một bản ghi*@
+    <div id="dialog-confirm" class="modal" style="display: none">
+        <p>
+            <i class="fa fa-warning" style="float: left; margin: 0 7px 20px 0; color:#ffd800;"></i>
+            <span>Bạn chắc chắn xóa bản ghi này. Tiếp tục?</span>
+        </p>
+    </div>
+    @*kết thúc xóa một bản ghi*@
+</div>
+@*xóa bỏ một lớp học*@
+<script type="text/javascript">
+    function message_success(notice) {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        toastr["success"](notice);
+    };
+    $(function () {
+        //xóa một bản ghi
+        $("a.lnkDelete").on("click", function (e) {
+            var id = $(this).data('value');//lấy giá trị id của bản ghi
+            var $tr = $(this).closest('tr');//lấy hàng
+            $("#dialog-confirm").dialog({
+                autoOpen: false,
+                resizable: false,
+                width: 350,
+                show: { effect: 'drop', direction: "up" },
+                modal: true,
+                draggable: true,
+                open: function (event, ui) {
+                    $(".ui-dialog-titlebar-close").hide();
+                },
+                buttons: [
+                    {
+                        "text": "Đồng ý",
+                        "class": 'btn btn-default',
+                        click: function () {
+                            $(this).dialog("close");
+                            $.ajax({
+                                type: "POST",
+                                url: "@(Url.Action("XoaLop", "Lop"))",
+                                data: { maLop: id },
+                                success: function (data) {
+                                    if (data == 0) {
+                                        $tr.css("background-color", "#ec645e");
+                                        $tr.fadeOut(1600, "linear", function () { $tr.remove(); });
+                                        $("#listLopHoc").load("@(Url.Action("LopPartial", "Lop"))");
+                                        //hiển thị thông báo ra màn hình
+                                        message_success("Xóa bản ghi thành công");
+                                    } else {
+                                        alert("Bản ghi này có chứa trong bảng khác. Hãy xóa những dữ liệu đó trước!");
+                                    }
+                                },
+                                error: function (error) {
+
+                                }
+
+                            });
+                            $(this).dialog("destroy");
+                        }
+
+                    },
+
+                {
+                    "text": "Hủy bỏ",
+                    "class": 'btn btn-default',
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+                ]
+            });
+            $("#dialog-confirm").dialog("open");
+            return false;
+        });
+    });
+</script>
+<script>
+    function empty() {
+        var x = $('#search-box').val();
+        if (x == " " || x == null) {
+            var url = window.location.pathname;
+            window.location(url);
+            // return false;
+        }
+    }
+</script>
+

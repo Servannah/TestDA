@@ -1,0 +1,73 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.NhomLopData
+
+<h4>DANH SÁCH LỚP</h4>
+<div class="dsNhomLop">
+    <div class="title-class">LỚP HỌC</div>
+    <aside class="">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar custom-sidebar">
+            <ul class="sidebar-menu custom-lop">
+                @{
+                    if (Model.danhSachNhomLop.Count > 0)
+                    {
+
+                        foreach (var i in Model.danhSachNhomLop)
+                        {
+                            <li class="treeview">
+                                <a href="#">
+                                    <span>@Html.DisplayFor(m => i.tenNhomLop)</span>
+                                    <span class="pull-right-container" style="font-size: 10px;">
+                                        <i class="fa fa-plus pull-right"></i>
+                                    </span>
+                                </a>
+
+                                @Html.Action("LopThemNhomLopPartial", "Lop", new { maNhomLop = i.maNhomLop })
+                            </li>
+
+                        }
+                    }
+                }
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+</div>
+<style>
+    .skin-blue .custom-lop > li:hover > a, .skin-blue .custom-lop > li.active > a {
+        background: #3c8dbc;
+        font-weight: bold;
+        border-left-color: #3c8dbc;
+        color: #000;
+    }
+
+    .skin-blue .custom-lop > li > .treeview-menu {
+        background: #ecf0f5;
+    }
+
+    .skin-blue .custom-child-menu > li > a {
+        color: #000;
+    }
+
+        .skin-blue .custom-child-menu > li.active > a, .skin-blue .custom-child-menu > li > a:hover {
+            color: #989483;
+        }
+
+    .skin-blue .custom-sidebar a {
+        color: #000;
+    }
+
+    .dsNhomLop {
+        border: 1px dotted #ccc;
+        padding: 10px;
+        background: #fff;
+    }
+
+    .title-class {
+        border: 1px dotted #ccc;
+        padding: 10px;
+        background: #3c8dbc;
+        color: #fff;
+        font-weight: bold;
+        text-align: center;
+    }
+</style>

@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Admin";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Admin
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Admin</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- Main content -->
+    <div class="container body-content">
+        <h2>Hi, <b>@Context.User.Identity.Name</b>Chào mừng bạn đến với trang quản trị.</h2>
+        @Html.ActionLink("Signout", "SignOut", "Account")
+    </div>
+</section>

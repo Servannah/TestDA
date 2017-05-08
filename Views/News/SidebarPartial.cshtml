@@ -1,0 +1,71 @@
+﻿@model List<TestDA.Areas.Manager.Models.ViewModel.NhomTinData>
+
+@{
+    ViewBag.Title = "Simple";
+}
+<style>
+    /*/*Here We will add some css for style our treeview*/
+    .headMenu ul {
+        background: #CDE2CD;
+        width: 256px;
+        padding: 0;
+        list-style-type: none;
+        text-align: left;
+    }
+
+    .headMenu li {
+        width: auto;
+        height: 40px;
+        line-height: 40px;
+        border-bottom: 1px solid #e8e8e8;
+        padding: 0 1em;
+    }
+
+        .headMenu li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            display: block;
+        }
+
+        .headMenu li:hover {
+            background: #CDE2CD;
+        }
+
+        .headMenu li a:hover {
+            color: #828080;
+        }
+
+    .headMenu ul li {
+        position: relative;
+    }
+
+    .headMenu .sub-menu {
+        position: absolute;
+        left: 256px;
+        display: none;
+        top: 0;
+        z-index: 99999;
+    }
+
+    .headMenu li:hover .sub-menu {
+        display: block;
+    }
+
+    .menu h3 {
+        background: #393939;
+        color: #fff;
+        padding: 10px 5px;
+    }
+</style>
+<div class="menu">
+    <h3>DANH MỤC</h3>
+    <div class="headMenu">
+        @if (Model != null && Model.Count() > 0)
+        {
+            <ul>
+                @Treeview.GetTreeView(Model, Model.FirstOrDefault().danhMucCha.Value)
+            </ul>
+        }
+    </div>
+</div>

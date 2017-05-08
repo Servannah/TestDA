@@ -1,0 +1,27 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.LopData
+
+    <ul class="treeview-menu custom-child-menu">
+        @{
+            if (Model.danhSachLop.Count > 0)
+            {
+
+
+                foreach (var i in Model.danhSachLop)
+                {
+
+                    <li>
+                       <a href="javarscript:void()" data-value="@i.maLop" class="lnkDanhSach">@Html.DisplayFor(m => i.tenLop)</a>
+                    </li>
+                }
+
+            }
+        }
+    </ul>
+@*<style>
+    .dsLopNL li {
+        padding: 7px 15px;
+    }
+</style>*@
+<script>
+
+</script>

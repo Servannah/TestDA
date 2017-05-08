@@ -1,0 +1,418 @@
+﻿body {
+}
+
+.body-content .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th {
+    border-bottom: 1px solid #e6dcdc;
+}
+
+.body-content table {
+    background: #fff;
+}
+
+.body-content .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+    border: none;
+}
+
+.body-content .list-group-news table {
+    width: 100%;
+}
+
+.body-content .table-bordered {
+    border: 1px solid #e6dcdc;
+}
+
+.add-button input {
+    color: #fff;
+}
+
+.count-record {
+    margin-top: 15px;
+}
+/*style cho thẻ tiêu đề của bảng table*/
+.body-content table .th-style {
+    background: #ffefd5;
+}
+
+
+/*login*/
+.main-default {
+    width: 350px;
+    border: 1px solid #ddd;
+    margin: 100px auto;
+    height: 450px;
+    box-shadow: 0 0 5px #ababab;
+}
+
+    .main-default h3 {
+        text-align: center;
+        line-height: 8.2rem;
+    }
+
+    .main-default .form-group {
+        margin: 2rem 0;
+    }
+
+    .main-default .submit-login {
+        width: 100%;
+    }
+
+        .main-default .submit-login input[type=submit] {
+            border-radius: 0;
+            padding: 1rem;
+            margin: 1.6rem 0;
+            background: linear-gradient(#174b7a,#6390b9);
+            width: 100%;
+            color: #fff;
+        }
+
+            .main-default .submit-login input[type=submit]:hover {
+                opacity: 0.8;
+            }
+/*sign up**/
+.form-signup {
+    width: 900px;
+    border: 1px solid #b7b6b6;
+    box-shadow: 1px;
+    box-shadow: 0 0 5px #ababab;
+    margin: 100px auto;
+}
+
+    .form-signup h3 {
+        background: linear-gradient(#174b7a,#6390b9);
+        color: #fff;
+        padding: 10px 20px;
+        margin-top: 0;
+        margin-bottom: 4rem;
+    }
+
+    .form-signup .form-horizontal {
+        width: 60%;
+        margin: 0 auto;
+    }
+
+/*Admin/Post*/
+.search-select {
+    width: 15%;
+}
+
+.content-post .fieldset {
+    border: 1px solid #bfb9b9;
+    border-top: none;
+    padding: 0.5em;
+    margin: 1em 2px;
+}
+
+    .content-post .fieldset > h4 {
+        font: 1em normal;
+        margin: -1em -0.5em 0;
+    }
+
+        .content-post .fieldset > h4 > span {
+            float: left;
+        }
+
+        .content-post .fieldset > h4:before {
+            border: 1px solid #bfb9b9;
+            content: ' ';
+            float: left;
+            margin: 0.5em 2px 0 -1px;
+            width: 0.75em;
+        }
+
+        .content-post .fieldset > h4:after {
+            border-top: 1px solid #bfb9b9;
+            content: ' ';
+            display: block;
+            height: 1.5em;
+            left: 2px;
+            margin: 0 1px 0 0;
+            overflow: hidden;
+            position: relative;
+            top: 0.5em;
+        }
+/*add post**/
+.add-post a {
+    color: #fff;
+}
+
+.content-post .custom-post {
+    margin: 1.5em 2px;
+}
+
+.fileinput-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.body-post .form-right {
+    padding: 10px;
+}
+
+    .body-post .form-right label {
+        text-align: left;
+        font-weight: normal;
+    }
+
+.fileinput-button input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    transform: translate(-300px, 0) scale(4);
+    font-size: 23px;
+    direction: ltr;
+    cursor: pointer;
+}
+
+.InfoContainer {
+    margin-top: 10px;
+}
+
+    .InfoContainer #Imagecontainer {
+        width: 100%;
+        border: 2px dashed #a7a2a2;
+        height: 13rem;
+        position: relative;
+    }
+
+        /*.InfoContainer #Imagecontainer:after {
+    content: "";
+    position: absolute;
+    border-top: 1px dotted #a7a2a2;
+    width: 142%;
+    transform: rotate(45deg);
+    transform-origin: 0% 0%;
+}*/
+
+        .InfoContainer #Imagecontainer img {
+            width: 100%;
+            height: 100%;
+        }
+
+.body-thucpham .chonvaokho i {
+    opacity: 0.5;
+}
+/**phiếu nhập kho/ chức năng*/
+/*.body-content .body-style .textImage {
+    background-image: url('../images/Events_Calendar.png');
+    background-repeat: no-repeat;
+    cursor: pointer;
+    background-position: right center;
+}*/
+/**Thực phẩm*/
+.insert-thucpham .fieldset {
+    border: 1px solid #bfb9b9;
+    border-top: none;
+    padding: 0.5em;
+    margin: 1em 2px;
+}
+
+.insert-food .fieldset > h4 {
+    font: 1em normal;
+    margin: -1em -0.5em 0;
+}
+
+    .insert-food .fieldset > h4 > span {
+        float: left;
+    }
+
+    .insert-food .fieldset > h4:before {
+        border: 1px solid #bfb9b9;
+        content: ' ';
+        float: left;
+        margin: 0.5em 2px 0 -1px;
+        width: 0.75em;
+    }
+
+    .insert-food .fieldset > h4:after {
+        border-top: 1px solid #bfb9b9;
+        content: ' ';
+        display: block;
+        height: 1.5em;
+        left: 2px;
+        margin: 0 1px 0 0;
+        overflow: hidden;
+        position: relative;
+        top: 0.5em;
+    }
+/*index thực phẩm**/
+.body-thucpham table th {
+    text-align: center;
+    background: #ffefd5;
+}
+
+.body-thucpham table .thpdd td {
+    height: 140px;
+    white-space: nowrap;
+    background: #fff5ee;
+}
+
+    .body-thucpham table .thpdd td > div {
+        transform: translate(5px, 80px) rotate(-90deg);
+        width: 20px;
+        font-size: 13px;
+    }
+
+.body-thucpham table .thpdd > div > span {
+    border-bottom: 1px solid #ccc;
+    padding: 5px;
+}
+
+.body-thucpham table .dvtinh td {
+    background: #fff5ee;
+}
+
+.body-thucpham .table-bordered > thead > .thpdd > td {
+    border: 1px solid #e4e2e2;
+}
+/*sửa thông tin thực phẩm**/
+.sua-thucpham .sua-thphdinhduong .form-group {
+    margin-bottom: 15px !important;
+}
+
+    .sua-thucpham .sua-thphdinhduong .form-group input[type="submit"] {
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+
+/**custom table */
+/*.att-table{
+    text-align:center;
+    background:#ffefd5;
+}*/
+/*.overflow-modal{
+     overflow: auto;
+}*/
+
+/*checkbox thuc pham*/
+/* Base for label styling */
+/* Base for label styling */
+.body-thucpham .input-nguonTuDV [type="checkbox"]:not(:checked),
+.body-thucpham .input-nguonTuDV [type="checkbox"]:checked {
+    position: absolute;
+    left: -9999px;
+}
+
+    .body-thucpham .input-nguonTuDV [type="checkbox"]:not(:checked) + label,
+    .body-thucpham .input-nguonTuDV [type="checkbox"]:checked + label {
+        position: relative;
+        padding-left: 1.95em;
+        cursor: pointer;
+    }
+
+        /* checkbox aspect */
+        .body-thucpham .input-nguonTuDV [type="checkbox"]:not(:checked) + label:before,
+        .body-thucpham .input-nguonTuDV [type="checkbox"]:checked + label:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1.25em;
+            height: 1.25em;
+            border: 2px solid #ccc;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
+        }
+        /* checked mark aspect */
+        .body-thucpham .input-nguonTuDV [type="checkbox"]:not(:checked) + label:after,
+        .body-thucpham .input-nguonTuDV [type="checkbox"]:checked + label:after {
+            content: '✔';
+            position: absolute;
+            top: .1em;
+            left: .3em;
+            font-size: 1.3em;
+            line-height: 0.8;
+            color: #09ad7e;
+            transition: all .2s;
+        }
+        /* checked mark aspect changes */
+        .body-thucpham .input-nguonTuDV [type="checkbox"]:not(:checked) + label:after {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .body-thucpham .input-nguonTuDV [type="checkbox"]:checked + label:after {
+            opacity: 1;
+            transform: scale(1);
+        }
+/* disabled checkbox */
+.body-thucpham .input-nguonTuDV [type="checkbox"]:disabled:not(:checked) + label:before,
+.body-thucpham .input-nguonTuDV [type="checkbox"]:disabled:checked + label:before {
+    box-shadow: none;
+    border-color: #bbb;
+    background-color: #ddd;
+}
+
+.body-thucpham .input-nguonTuDV [type="checkbox"]:disabled:checked + label:after {
+    color: #999;
+}
+
+.body-thucpham .input-nguonTuDV [type="checkbox"]:disabled + label {
+    color: #aaa;
+}
+/* accessibility */
+.body-thucpham .input-nguonTuDV [type="checkbox"]:checked:focus + label:before,
+.body-thucpham .input-nguonTuDV [type="checkbox"]:not(:checked):focus + label:before {
+    border: 2px dotted blue;
+}
+
+/* hover style just for information */
+.body-thucpham .input-nguonTuDV label:hover:before {
+    border: 2px solid #4778d9 !important;
+}
+/**học sinh/chức năng*/
+
+.body-hocsinh .form-hoc-sinh fieldset.the-fieldset, .body-suaMonAn fieldset.the-fieldset, .listMonAn .themMonAn fieldset.the-fieldset, .body-hoadon .thongtinHD fieldset.the-fieldset, .content-TKhocPhi .dsThongKe fieldset.the-fieldset {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
+}
+
+.body-hocsinh .form-hoc-sinh legend.the-legend, .body-suaMonAn legend.the-legend, .listMonAn .themMonAn legend.the-legend, .body-hoadon .thongtinHD legend.the-legend, .content-TKhocPhi .dsThongKe legend.the-legend{
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width: inherit;
+    padding: 0 10px;
+    border-bottom: none;
+}
+
+.body-hocsinh .form-hoc-sinh label, .body-suaMonAn label, .body-nhanvien .form-nhan-vien label {
+    font-weight: normal;
+}
+/**học sinh/chi tieets hocj sinh*/
+.chitietHocSinh .ctHS , .chitietNhanVien .ctNV{
+    margin-bottom: 15px;
+}
+
+input[type=checkbox] {
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(1.5); /* IE */
+    -moz-transform: scale(1.5); /* FF */
+    -webkit-transform: scale(1.5); /* Safari and Chrome */
+    -o-transform: scale(1.5); /* Opera */
+}
+
+fieldset.the-fieldset {
+    border: 1px dotted #252424 !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
+}
+
+legend.the-legend {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width: inherit;
+    padding: 0 10px;
+    border-bottom: none;
+}
+
+/*nhanvien*/

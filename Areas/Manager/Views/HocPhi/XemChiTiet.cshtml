@@ -1,0 +1,175 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.HocPhiData
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-file-text-o"></i>
+        Học phí
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Học phí</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="container body-content">
+        <div class="body-style">
+            <div class="thongTinHocPhi">
+                <div style="text-align:center;">
+                    <h2>PHIẾU THU HỌC PHÍ</h2>
+                    <label>Số phiếu:</label> @Html.DisplayFor(model => model.maHocPhi)
+                    <hr width="200px" style="border-top: 2px dotted #000; margin-top:10px;" />
+                </div>
+                @*//hiển thị danh sách thông tin phiếu nhập kho*@
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2">Mã học sinh:</label>
+                        <div class="col-sm-2">
+                            @Html.DisplayFor(model => model.maHocSinh)
+                        </div>
+                        <label class="col-sm-2">Tên học sinh:</label>
+                        <div class="col-sm-4">
+                            @Html.DisplayFor(model => model.tenHocSinh)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">Nội dung:</label>
+                        <div class="col-sm-4">
+                            @Html.DisplayFor(model => model.tenHDHocPhi)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">Thu học phí tháng:</label>
+                        <div class="col-sm-2">
+                            @Html.DisplayFor(model => model.thang)
+                        </div>
+                        <label class="col-sm-2">Năm học:</label>
+                        <div class="col-sm-4">
+                            @Html.DisplayFor(model => model.namHoc)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">Hình thức thu:</label>
+                        <div class="col-sm-4">
+                            @if (@Model.loaiHP == "1")
+                            {
+                                <span>Thu theo tháng</span>
+                            }
+                            else
+                            {
+                                <span>Thu theo năm</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="TTKhoanPhi">
+                @Html.Action("KhoanPhiPartial", "HocPhi", new { maHocSinh = @Model.maHocSinh, namHoc = @Model.namHoc, loaiHP = @Model.loaiHP })
+            </div>
+            <div class="thongTinThanhToan">
+                @*thông tin tiền thanh toán*@
+                <div class="form-horizontal">
+                    <div class="form-group col-sm-offset-2">
+                        <label class="col-sm-2">Đã thu:</label>
+                        <div class="col-sm-6">
+                            @Html.DisplayFor(model => model.daThu) <span>(VND)</span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-offset-2">
+                        <label class="col-sm-2">Còn nợ:</label>
+                        <div class="col-sm-6">
+                            @Html.DisplayFor(model => model.conNo) <span>(VND)</span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-offset-2">
+                        <div class="col-md-6 textCenter">
+                            <label class="">Người nộp</label>
+                        </div>
+                        <div class="col-sm-6 textCenter">
+                            <p>Ngày nộp: @Html.DisplayFor(model => model.ngayThu, "{0:yyyy-MM-dd}")</p>
+                            <label class="">Người thu</label>
+                            <p>@Html.DisplayFor(model => model.tenNguoiThu)</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>@*kết thúc thông tin thanh toán*@
+            <div class="clearfix"></div>
+        </div>
+        @Html.ActionLink("<< Quay lại danh sách", "Index", "HocPhi")
+        @*in thông tin*@
+        <div class="chuc-nang" style="text-align:center;">
+            @*<button class="btn btn-default" type="submit"><i class="fa fa-file-pdf-o"></i>In ra file PDF</button>
+                <button class="btn btn-default" type="submit"><i class="fa fa-file-excel-o"></i>Xuất ra excel</button>*@
+            <a href="/Manager/HocPhi/ChucNang?type=Edit&maHocPhi=@Model.maHocPhi" class="btn btn-primary"> <i class="fa fa-edit"></i>Sửa thông tin</a>
+            <a href="javascript:void(0)" class="btn btn-primary" id="lnkXoa" data-value="@Model.maHocPhi"><i class="fa fa-trash-o"></i>Xóa thông tin</a>
+        </div>
+    </div>
+</section>
+<style>
+    .textCenter {
+        text-align: center;
+    }
+</style>
+
+@section Scripts{
+    <script>
+        $(function () {
+            //xóa một bản ghi
+            $("a#lnkXoa").on("click", function () {
+                //xóa một bản ghi
+                var id = $(this).data('value');//lấy giá trị id của bản ghi
+                var $tr = $(this).closest('tr');//lấy hàng
+                var answer = confirm("Bạn có chắc chắn xóa bản ghi này. Tiếp tục?");
+                if (answer)
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("XoaHocPhi", "HocPhi"))",
+                        data: { maHocPhi: id },
+                        success: function (data) {
+                            if (data == 0) {
+                                location.href = "@Url.Action("Index","HocPhi")";
+                                //hiển thị thông báo ra màn hình
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "newestOnTop": false,
+                                    "progressBar": false,
+                                    "positionClass": "toast-bottom-right",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "5000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+
+                                toastr["success"]("Xóa bản ghi thành công");
+                            } else {
+                                alert("Bản ghi này có chứa trong bảng khác. Hãy xóa những dữ liệu đó trước!");
+                            }
+                        },
+                        error: function (error) {
+
+                        }
+
+                    });
+
+            });
+            return false;
+        });
+    </script>
+}
+
+
+
+

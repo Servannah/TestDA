@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Action("MainPartial", "Home")
+<!-- banner-bottom -->
+@if (@TempData["Success"] != null)
+{
+    <div class="add-sucess">
+        <script>
+            confirm('Thay đổi mật khẩu thành công')
+        </script>
+    </div>
+}
+

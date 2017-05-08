@@ -1,0 +1,320 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.HocPhiData
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Học phí
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Học phí</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- Main content -->
+    <div class="container body-content">
+        <div class="content-hocPhi">
+            <h2>Danh sách học phí</h2>
+            @using (Html.BeginForm("Index", "HocPhi", FormMethod.Get, new { @class = "form-inline", role = "search", id = "searchForm", onsubmit = "return empty();" }))
+            {
+                @*@Html.AntiForgeryToken()*@
+                if (@TempData["Success"] != null)
+                {
+                    <div class="add-sucess">
+                        <script>
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("@TempData["Success"]");
+                        </script>
+                    </div>
+                }
+                //thêm mới bản ghi
+                <div class="taoPhieuThu">
+                    <fieldset class="the-fieldset">
+                        <legend class="the-legend">Thực hiện:</legend>
+                        <div class="form-inline">
+                            <div class="form-group col-md-3">
+                                @Html.TextBox("hocSinh", null, new { @class = "form-control", @placeholder = "Nhập mã học sinh....", @id = "xMaHocSinh", @Value = @ViewBag.TKTimKiem })
+                                <span class="text-danger" id="error-hocSinh" name="eMaHocSinh"></span>
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.DropDownList("namHoc", ViewBag.namHoc as SelectList, "--Chọn năm học-- ", new { @class = "form-control", @id = "xNamHoc" })
+                                <span class="text-danger" id="error-namHoc" name="eNamHoc"></span>
+                            </div>
+                            <div class="form-group col-md-2">
+                                @Html.DropDownList("loaiHP", ViewBag.loaiHP as SelectList, "--Hình thức-- ", new { @class = "form-control", @id = "xLoaiHP" })
+                                <span class="text-danger" id="error-loaiHP" name="eLoaiHP"></span>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <button type="submit" class="btn btn-primary">Tìm kiếm</button><a href="@Url.Action("ChucNang", "HocPhi", new { type="Insert"})" class="btn btn-primary lnkTaoPhieu" style="margin:0 6px;">Tạo phiếu thu</a>
+                            </div>
+                            <div class="clearfix">  </div>
+                        </div>
+                    </fieldset>
+                </div>
+            }
+        </div>
+        @*kết thúc form tìm kiếm*@
+        <div id="dsnhaCC">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr class="th-style">
+                        <th>Phiếu thu</th>
+                        <th>Mã học sinh</th>
+                        <th>Tên học sinh</th>
+                        <th>Lớp</th>
+                        <th>Năm học</th>
+                        <th>Người thu</th>
+                        <th>Ngày thu</th>
+                        <th>Tổng học phí</th>
+                        <th>Hình thức thu</th>
+                        <th>Ghi chú</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.danhSachHocPhi.Count > 0)
+                        {
+                            //int j = 0;
+                            foreach (var i in Model.danhSachHocPhi)
+                            {
+                                // j++;
+                                <tr>
+                                    @*<td>@j.ToString()</td>*@
+                                    <td>
+                                        @Html.DisplayFor(m => i.maHocPhi)
+                                        <br /><a href="/Manager/HocPhi/XemChiTiet?type=Detail&maHocPhi=@i.maHocPhi" class="lnkDetail" data-value="@i.maHocPhi" id="hocphi_@i.maHocPhi">Xem | </a>
+                                        <a href="/Manager/HocPhi/ChucNang?type=Edit&maHocPhi=@i.maHocPhi" class="lnkEdit" data-value="@i.maHocPhi" id="nhaCC_@i.maHocPhi">Sửa | </a>
+                                        <a href="javascript:void(0)" class="lnkDelete" data-value="@i.maHocPhi" id="groupNhaCC_@i.maHocPhi">Xóa</a>
+                                    </td>
+                                    <td>@Html.DisplayFor(m => i.maHocSinh)</td>
+                                    <td>@Html.DisplayFor(m => i.tenHocSinh)</td>
+                                    <td>@Html.DisplayFor(m => i.tenLop)</td>
+                                    <td>@Html.DisplayFor(m => i.namHoc)</td>
+                                    <td>@Html.DisplayFor(m => i.tenNguoiThu)</td>
+                                    <td>@Html.DisplayFor(m => i.ngayThu)</td>
+                                    <td>@Html.DisplayFor(m => i.tongHocPhi)</td>
+                                    <td>
+                                        @if (i.loaiHP == "1")
+                                        {
+                                            <span>Theo tháng</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Theo năm</span>
+                                        }
+                                    </td>
+                                    <td> @Html.DisplayFor(m => i.ghiChu)</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="10"> <p style="text-align:center;font-weight:bold;">Không có bản ghi nào</p></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<style>
+    fieldset.the-fieldset {
+        border: 1px dotted #252424 !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+    }
+
+    legend.the-legend {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: inherit;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+</style>
+@section Scripts{
+    <script>
+        $(function () {          
+            //xem danh sách khoản phí trong năm học
+            //$("a.lnkTaoPhieu").on("click", function () {
+            //    var $form = $('#searchForm');
+            //    $.validator.unobtrusive.parse($form);
+            //    $form.validate();
+
+            //    var namHoc = $('#xNamHoc').val();
+            //    var maHS = $('#xMaHocSinh').val();
+            //    var loaiHP = $('#xLoaiHP').val();
+
+                @*$.validator.addMethod("maHocSinhExit", function (value, element) {
+                    maHS = maHS.trim();
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("IsMaHocSinhExit", "HocSinh"))",
+                        data: { maHocSinh: maHS },
+                        success: function (data) {
+                            console.log(data);
+                          var  response = (data == true) ? true : false;
+                        }
+                    });
+                    return response;
+                }, 'Mã học sinh không tồn tại.');
+
+                $('#searchForm').validate.unobtrusive.adapters({ // initialize the plugin
+                    rules: {
+                        hocSinh:{ required:true ,maHocSinhExit:false},
+                        namHoc: "required",
+                        loaiHP: "required",
+                    },
+                    // Specify the validation error messages
+                    messages: {
+                        eMaHocSinh: {
+                            required: "Nhập mã học sinh",
+                            maHocSinhExit: "Mã học sinh không tồn tại",
+                        },
+                        eMaHocSinh: "Chọn năm học",
+                        eMaHocSinh: "Hình thức đóng học phí"
+                    },
+                    submitHandler: function (form) {
+                        maHS = maHS.trim();
+                        $('#error-hocSinh').html('');
+                        $('#error-namHoc').html('');
+                        $('#error-loaiHP').html('');                                                    
+                        var url = '@Url.Action("ThemHocPhi", "HocPhi")';
+                        url += '?type=Insert&' + 'maHocSinh=' + maHS + '&namHoc=' + namHoc + '&loaiHP=' + loaiHP;
+                        $(this).attr("href", url);
+                        return this;
+                       // form.submit();
+                    }
+                });//validate*@
+                @*if (maHS == "") {
+                    $('#error-hocSinh').html('Nhập mã học sinh.');
+                    return false;
+                }
+                if (maHS != "") {
+                    maHS = maHS.trim();
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("IsMaHocSinhExit", "HocSinh"))",
+                        data: { maHocSinh: maHS },
+                        success: function (data) {
+                            console.log(data);
+                            if (data == false) {
+                                $('#error-hocSinh').html('Mã học sinh không tồn tại.');
+                                $('#xMaHocSinh').focus();
+                            }
+                            else {
+                                $('#error-hocSinh').html('');
+                            }
+                        }
+                    });
+
+                    if (namHoc == "") {
+                        $('#error-namHoc').html('Chọn năm học.');
+                        return false;
+                    }
+                    if (loaiHP == "") {
+                        $('#error-loaiHP').html('Hình thức đóng học phí.');
+                        return false;
+                    }*@
+                   // if ($form.valid()) {
+                        ////
+                        @*maHS = maHS.trim();
+                        $('#error-hocSinh').html('');
+                        $('#error-namHoc').html('');
+                        $('#error-loaiHP').html('');
+
+                        var url = '@Url.Action("ThemHocPhi", "HocPhi")';
+                        url += '?type=Insert&' + 'maHocSinh=' + maHS + '&namHoc=' + namHoc + '&loaiHP=' + loaiHP;
+                        $(this).attr("href", url);
+                        return this;*@
+                  //  }
+               // }
+            //    return false;
+            //});
+
+            //xóa một bản ghi
+            $("a.lnkDelete").on("click", function () {
+                var id = $(this).data('value');//lấy giá trị id của bản ghi
+                console.log(id);
+                var $tr = $(this).closest('tr');
+                var answer = confirm("Bạn có chắc chắn xóa bản ghi là " + id + " . Tiếp tục?");
+                if (answer)
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("XoaHocPhi", "HocPhi"))",
+                        data: { maHocPhi: id },
+                        success: function (data) {
+                            if (data == 0) {
+                                $tr.css("background-color", "#ec645e");
+                                location.reload();
+                                // $("#listNhaCC").load("(Url.Action("NhaCCPartial", "NhaCungCap"))");
+                                //hiển thị thông báo ra màn hình
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "newestOnTop": false,
+                                    "progressBar": false,
+                                    "positionClass": "toast-bottom-right",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "5000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+
+                                toastr["success"]("Xóa bản ghi thành công");
+
+                            } else {
+                                alert("Có lỗi xảy ra!");
+                            }
+                        },
+                        error: function (error) {
+                        }
+                    });
+                return false;
+            });
+        })//Xóa một bản ghi
+        function empty() {
+            var x = $('#xMaHocSinh').val();
+            if (x == " " || x == null) {
+                var url = window.location.pathname;
+                window.location(url);
+                // return false;
+            }
+        }
+    </script>
+}
+
+

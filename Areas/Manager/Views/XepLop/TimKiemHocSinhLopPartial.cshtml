@@ -1,0 +1,47 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.XepLopData
+
+<table class="table table-bordered table-hover" id="dsLop">
+    <thead>
+        <tr style="background:#ffefd5;">
+            <th>STT</th>
+            <th>Mã học sinh</th>
+            <th>Tên học sinh</th>
+            <th>Lớp</th>
+            <th>Năm học</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (Model.danhSachHSLop.Count > 0)
+            {
+                int j = 0;
+                foreach (var i in Model.danhSachHSLop)
+                {
+                    j++;
+                    <tr>
+                        <td>
+                            @j.ToString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => i.maHocSinh)
+                        </td>
+                        <td>@Html.DisplayFor(m => i.tenHocSinh)</td>
+                        <td>@Html.DisplayFor(m => i.tenLop)</td>
+                        <td>@Html.DisplayFor(m => i.namHoc)</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5"> <p style="text-align:center;">Không có bản ghi nào</p></td>
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>
+
+
+
+

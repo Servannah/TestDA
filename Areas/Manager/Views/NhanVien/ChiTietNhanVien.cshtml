@@ -1,0 +1,175 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.NhanVienData
+
+@{
+    ViewBag.Title = "ChiTietNhanVien";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Nhân Viên
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Nhân Viên</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container body-content">
+        <div class="body-style">
+            <div class="chitietNhanVien">
+                <div style="text-align:center;">
+                    <h2>THÔNG TIN NHÂN VIÊN</h2>
+                    <hr width="200px" style="border-top: 2px dotted #000; margin-top:10px;" />
+                </div>
+                @*//hiển thị chi tiết nhân viên*@
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="ctNV">
+                            <span> Mã nhân viên:</span>
+                            @Html.DisplayFor(model => model.maNV)
+                        </div>
+                        <div class="row ctNV">
+                            <div class="col-md-7">
+                                <span>Tên nhân viên:</span>
+                                @Html.DisplayFor(model => model.hoTen)
+                            </div>
+                            <div class="col-md-5">
+                                <span>Giới tính:</span>
+                                @if (Model.gioiTinh == "F")
+                                {
+                                    <span class="gioiTinh">Nữ</span>
+                                }
+                                else
+                                {
+                                    <span class="gioiTinh">Nam</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="row ctNV">
+                            <div class="col-md-4">
+                                <span>Ngày sinh:</span>
+                                @Html.DisplayFor(model => model.ngaySinh)
+                            </div>
+                            <div class="col-md-4">
+                                <span>Dân tộc:</span>
+                                @Html.DisplayFor(model => model.danToc)
+                            </div>
+                            <div class="col-md-4">
+                                <span>Tôn giáo:</span>
+                                @Html.DisplayFor(model => model.tonGiao)
+                            </div>
+                        </div>
+                        <div class="ctNV">
+                            <span>Địa chỉ:</span>
+                            @Html.DisplayFor(model => model.diaChi)
+                        </div>
+                        <div class="row ctNV">
+                            <div class="col-md-4">
+                                <span>Điện thoại:</span>
+                                @Html.DisplayFor(model => model.dienThoai)
+                            </div>
+                            <div class="col-md-4">
+                                <span>Email :</span>
+                                @Html.DisplayFor(model => model.email)
+                            </div>
+                        </div>
+                        <div class="row ctNV">
+                            <div class="col-md-4">
+                                <span>Số CMND:</span>
+                                @Html.DisplayFor(model => model.soCMND)
+                            </div>
+                            <div class="col-md-4">
+                                <span>Ngày cấp:</span>
+                                @Html.DisplayFor(model => model.ngayCapCMND)
+                            </div>
+                            <div class="col-md-4">
+                                <span>Nơi cấp:</span>
+                                @Html.DisplayFor(model => model.noiCapCMND)
+                            </div>
+                        </div>
+                        <div class="row ctNV">
+                            <div class="col-md-5">
+                                <span>Ngày vào Đảng:</span>
+                                @Html.DisplayFor(model => model.ngayVaoDang)
+                            </div>
+                            <div class="col-md-7">
+                                <span>Số thẻ Đảng:</span>
+                                @Html.DisplayFor(model => model.soTheDang)
+                            </div>
+                        </div>
+                        <div class="row ctNV">
+                            <div class="col-md-3">
+                                <span>Chức vụ:</span>
+                                @Html.DisplayFor(model => model.chucVu)
+                            </div>
+                            <div class="col-md-3">
+                                <span>Trình Độ:</span>
+                                @Html.DisplayFor(model => model.trinhDo)
+                            </div>
+                        </div>
+                        <div class="row ctNV">
+                            <div class="col-md-6">
+                                <span>Ngày vào làm việc:</span>
+                                @Html.DisplayFor(model => model.ngayVaoLamViec)
+                            </div>
+                            <div class="col-md-3">
+                                <span>Loại hợp đồng:</span>
+                                @Html.DisplayFor(model => model.loaiHopDong)
+                            </div>
+                        </div>
+                        <div class="row ctNV">
+                            <div class="col-md-3">
+                                <span>Tình trạng:</span>
+
+                                @if (Model.daNghiViec == "1")
+                                {
+                                    <span class="tintrang">Đang làm việc</span>
+                                }
+                                else
+                                {
+                                    <span class="tinhtrang">Đã nghỉ việc</span>
+                                }
+                            </div>
+                            <div class="col-md-6">
+                                <span>Ngày nghỉ việc:</span>
+                                @Html.DisplayFor(model => model.ngayNghiViec)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="InfoContainer">
+                            <div id="Imagecontainer" style="height: 300px;width:100%;">
+                                <img src="@ViewBag.hinhAnh" alt="@Model.hoTen" class="news-avatar" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @Html.ActionLink("<< Quay lại danh sách", "Index", "NhanVien")
+                @*in thông tin*@
+                <div class="chuc-nang col-sm-offset-2 col-sm-10">
+                    <a href="/Manager/NhanVien/ChucNang?type=Edit&maNV=@Model.maNV" class="btn btn-primary"> <i class="fa fa-edit"></i>Sửa thông tin</a>
+                    @*<button type="reset" class="btn btn-primary" data-value="@Model.maNV"><i class="fa fa-refresh"></i>Làm mới</button>*@
+
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</section>
+
+@section Scripts{
+    <script>
+    </script>
+}
+
+
+
+
+
+
+
+

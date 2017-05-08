@@ -1,0 +1,157 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.QuyenNDData
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Quyền người dùng
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Quyền người dùng</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- Main content -->
+    <div class="container body-content">
+        <div class="content-quyenND">
+            <h2>Danh sách quyền người dùng</h2>
+            @using (Html.BeginForm())
+            {
+                @*@Html.AntiForgeryToken()*@
+                if (@TempData["Success"] != null)
+                {
+                    <div class="add-sucess">
+                        <script>
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("@TempData["Success"]");
+                        </script>
+                    </div>
+                }
+            }
+            @*thêm mới bản ghi*@
+            <div class="form-inline" style=" margin: 10px 0;">
+                <div class="form-group">
+                    <a href="/Manager/QuyenND/ChucNang?type=Insert" class="btn btn-primary hidden-xs"><i class="glyphicon glyphicon-plus"></i>Thêm mới quyền người dùng</a>
+                </div>
+            </div>
+        </div>
+        <div id="dsquyenND">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr class="th-style">
+                        <th>STT</th>
+                        <th>Tên quyền</th>
+                        <th>Chức năng</th>
+                        <th>Xóa</th>
+                        <th>Sửa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.danhSachQuyen.Count > 0)
+                        {
+                            int j = 0;
+                            foreach (var i in Model.danhSachQuyen)
+                            {
+                                j++;
+                                <tr>
+                                    <td>@j.ToString()</td>
+                                    <td>
+                                        @Html.DisplayFor(m => i.tenPQ)
+                                    </td>
+                                    <td>@Html.DisplayFor(m => i.chucNang)</td>
+                                    <td><a href="javascript:void(0)" class="lnkDelete" data-value="@i.maPQ" id="groupPQ_@i.maPQ">Xóa</a></td>
+                                    <td><a href="/Manager/QuyenND/ChucNang?type=Edit&maPQ=@i.maPQ" class="lnkEdit" data-value="@i.maPQ" id="pQ_@i.maPQ">Sửa</a></td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5"> <p style="text-align:center;font-weight:bold;">Không có bản ghi nào</p></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+        $(function () {
+            //xóa một bản ghi
+            $("a.lnkDelete").on("click", function () {
+                var id = $(this).data('value');//lấy giá trị id của bản ghi
+                console.log(id);
+                var $tr = $(this).closest('tr');
+                var answer = confirm("Bạn có chắc chắn xóa bản ghi này . Tiếp tục?");
+                if (answer)
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("XoaQuyen", "QuyenND"))",
+                        data: { maPQ: id },
+                        success: function (data) {
+                            if (data == 0) {
+                                $tr.css("background-color", "#ec645e");
+                                location.reload();
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "newestOnTop": false,
+                                    "progressBar": false,
+                                    "positionClass": "toast-bottom-right",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "5000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+
+                                toastr["success"]("Xóa bản ghi thành công");
+
+                            } else {
+                                alert("Bản đã chọn có chứa trong bảng khác. Hãy xóa những thành phần của quyền này trước!");
+                            }
+                        },
+                        error: function (error) {
+                        }
+                    });
+                return false;
+            });
+        })//Xóa một bản ghi
+    </script>
+}
+
+
+
+
+
+

@@ -1,0 +1,249 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.HocSinhData
+
+@{
+    ViewBag.Title = "ChiTietHocSinh";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Quản lý học sinh
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Quản lý học sinh</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container body-content">
+        <div class="body-style">
+            <div class="chitietHocSinh">
+                <div style="text-align:center;">
+                    <h2>THÔNG TIN HỌC SINH</h2>
+                    <hr width="200px" style="border-top: 2px dotted #000; margin-top:10px;" />
+                </div>
+                @*//hiển thị danh sách thông tin học sinh*@
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="ctHS">
+                            <span>1. Mã học sinh:</span>
+                            @Html.DisplayFor(model => model.maHocSinh)
+                        </div>
+                        <div class="row ctHS">
+                            <div class="col-md-7">
+                                <span>Tên học sinh:</span>
+                                @Html.DisplayFor(model => model.hoTen)
+                            </div>
+                            <div class="col-md-5">
+                                <span>Giới tính:</span>
+                                @if (Model.gioiTinh == "1")
+                                {
+                                    <span class="gioiTinh">Nam</span>
+                                }
+                                else
+                                {
+                                    <span class="gioiTinh">Nữ</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="row ctHS">
+                            <div class="col-md-4">
+                                <span>Ngày sinh:</span>
+                                @Html.DisplayFor(model => model.ngaySinh)
+                            </div>
+                            <div class="col-md-4">
+                                <span>Dân tộc:</span>
+                                @Html.DisplayFor(model => model.danToc)
+                            </div>
+                            <div class="col-md-4">
+                                <span>Tôn giáo:</span>
+                                @Html.DisplayFor(model => model.tonGiao)
+                            </div>
+                        </div>
+                        <div class="ctHS">
+                            <span>Quê quán:</span>
+                            @Html.DisplayFor(model => model.queQuan)
+                        </div>
+                        <div class="ctHS">
+                            <span>Chỗ ở hiện tại:</span>
+                            @Html.DisplayFor(model => model.diaChiTamTru)
+                        </div>
+                        <div class="ctHS">
+                            <span>2. Tên thường gọi:</span>
+                            @Html.DisplayFor(model => model.tenThuongGoi)
+                        </div>
+                        <div class="ctHS">
+                            <span>3.Tính cách:</span>
+                            @Html.DisplayFor(model => model.tinhCach)
+                        </div>
+                        <div class="row ctHS">
+                            <div class="col-md-4">
+                                <span>4.Họ tên cha:</span>
+                                @Html.DisplayFor(model => model.hoTenCha)
+                            </div>
+                            <div class="col-md-4">
+                                <span>Ngày sinh:</span>
+                                @Html.DisplayFor(model => model.ngaySinhCha)
+                            </div>
+                            <div class="col-md-4">
+                                <span>Nghề nghiệp:</span>
+                                @Html.DisplayFor(model => model.ngheNghiepCha)
+                            </div>
+                        </div>
+                        <div class="row ctHS">
+                            <div class="col-md-4">
+                                <span>5.Họ tên mẹ:</span>
+                                @Html.DisplayFor(model => model.hoTenMe)
+                            </div>
+                            <div class="col-md-4">
+                                <span>Ngày sinh:</span>
+                                @Html.DisplayFor(model => model.ngaySinhMe)
+                            </div>
+                            <div class="col-md-4">
+                                <span>Nghề nghiệp:</span>
+                                @Html.DisplayFor(model => model.ngheNghiepMe)
+                            </div>
+                        </div>
+                        <div class="row ctHS">
+                            <div class="col-md-5">
+                                <span>6.Điện thoại liên hệ:</span>
+                                @Html.DisplayFor(model => model.dienThoaiLienHe)
+                            </div>
+                            <div class="col-md-7">
+                                <span>Email liên hệ:</span>
+                                @Html.DisplayFor(model => model.emailLienHe)
+                            </div>
+                        </div>
+                        <div class="row ctHS">
+                            <div class="col-md-3">
+                                <span>7.Ngày vào học:</span>
+                                @Html.DisplayFor(model => model.ngayVaoHoc)
+                            </div>
+                            <div class="col-md-3">
+                                <span>Tình trạng:</span>
+                                @if (Model.daNghiHoc == "0")
+                                {
+                                    <span class="nghiHoc">Đã nghỉ học</span>
+                                }
+                                else
+                                {
+                                    <span class="nghiHoc">Đang học</span>
+                                }
+                            </div>
+                            <div class="col-md-3">
+                                <span>Ngày nghỉ học:</span>
+                                @Html.DisplayFor(model => model.ngayNghiHoc)
+                            </div>
+                            <div class="col-md-3">
+                                <span>Hoàn thành mẫu giáo:</span>
+                                @if (Model.hoanThanhMauGiao == "0")
+                                {
+                                    <span class="nghiHoc">Chưa hoàn thành</span>
+                                }
+                                else
+                                {
+                                    <span class="nghiHoc">Đã hoàn thành</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="InfoContainer">
+                            <div id="Imagecontainer" style="height: 300px;width:100%;">
+                                <img src="@ViewBag.hinhAnh" alt="@Model.hoTen" class="news-avatar" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <i class="fa fa-angle-double-left"> </i>@Html.ActionLink("Quay lại danh sách", "Index", "HocSinh")
+                @*in thông tin*@
+                <div class="chuc-nang col-sm-offset-2 col-sm-10">
+                    @*<button class="btn btn-default" type="submit"><i class="fa fa-file-pdf-o"></i>In ra file PDF</button>
+            <button class="btn btn-default" type="submit"><i class="fa fa-file-excel-o"></i>Xuất ra excel</button>*@
+                    <a href="/Manager/HocSinh/ChucNang?type=Edit&maHocSinh=@Model.maHocSinh" class="btn btn-default"> <i class="fa fa-edit"></i>Sửa thông tin</a>
+                    <a href="javascript:void(0)" class="btn btn-default" id="lnkDelete" data-value="@Model.maHocSinh"><i class="fa fa-trash-o"></i>Xóa thông tin</a>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        @*xóa một bản ghi*@
+        <div id="dialog-confirm" class="modal" style="display: none">
+            <p>
+                @*<i class="fa fa-warning" style="float: left; margin: 0 7px 20px 0; color:#ffd800;"></i>*@
+                <span>Bạn chắc chắn xóa bản ghi này. Tiếp tục?</span>
+            </p>
+        </div>
+        @*kết thúc xóa một bản ghi*@
+    </div>
+</section>
+
+@section Scripts{
+    <script>
+        $(function () {
+            //xóa một bản ghi
+            $("a#lnkDelete").on("click", function (e) {
+                var id = $(this).data('value');//lấy giá trị id của bản ghi
+                var $tr = $(this).closest('tr');//lấy hàng
+                $("#dialog-confirm").dialog({
+                    autoOpen: false,
+                    resizable: false,
+                    width: 350,
+                    show: { effect: 'drop', direction: "up" },
+                    modal: true,
+                    draggable: true,
+                    open: function (event, ui) {
+                        $(".ui-dialog-titlebar-close").hide();
+                    },
+                    buttons: [
+                        {
+                            "text": "Đồng ý",
+                            "class": 'btn btn-default',
+                            click: function () {
+                                $(this).dialog("close");
+                                $.ajax({
+                                    type: "POST",
+                                    url: "@(Url.Action("XoaHocSinh", "HocSinh"))",
+                                    data: { maHocSinh: id },
+                                    success: function (data) {
+                                        if (data == 0) {
+                                            $tr.css("background-color", "#ec645e");
+                                            $tr.fadeOut(1600, "linear", function () { $tr.remove(); });
+                                            $("#listHocSinh").load("@(Url.Action("HocSinhPartial", "HocSinh"))");
+                                            //hiển thị thông báo ra màn hình
+                                            message_success("Xóa bản ghi thành công");
+                                        } else {
+                                            alert("Bản ghi này có chứa trong bảng khác. Hãy xóa những dữ liệu đó trước!");
+                                        }
+                                    },
+                                    error: function (error) {
+
+                                    }
+
+                                });
+                                $(this).dialog("destroy");
+                            }
+
+                        },
+
+               {
+                   "text": "Hủy bỏ",
+                   "class": 'btn btn-default',
+                   click: function () {
+                       $(this).dialog("close");
+                   }
+               }
+                    ]
+                });
+                $("#dialog-confirm").dialog("open");
+                return false;
+            });
+        });
+    </script>
+}
+
+
+
+

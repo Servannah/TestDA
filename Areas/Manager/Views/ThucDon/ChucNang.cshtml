@@ -1,0 +1,84 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.ThucDonData
+
+@{
+    ViewBag.Title = "ChucNang";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Thực đơn
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Thực đơn</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container body-content ">
+        <h3>@ViewBag.ChucNang </h3>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="body-nhaCC form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.tenThucDon, htmlAttributes: new { @class = "col-sm-2" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(model => model.tenThucDon, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.tenThucDon, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.noiDung, htmlAttributes: new { @class = "col-sm-2" })
+                    <div class="col-sm-7">
+                        @Html.TextAreaFor(model => model.noiDung, new { @class = "form-control", @id = "ckeContent" })
+                        <script type="text/javascript"> CKEDITOR.replace('ckeContent', { customConfig: '/Scripts/ckeditor/config.js', height: 300, }); </script>
+                        @Html.ValidationMessageFor(model => model.noiDung, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ngayLap, htmlAttributes: new { @class = "col-sm-2" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.ngayLap, "{0:yyyy-MM-dd}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                        @Html.ValidationMessageFor(model => model.ngayLap, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.nguoiLap, htmlAttributes: new { @class = "col-sm-2" })
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(model => model.nguoiLap, null, "--Người lập-- ", new { @class = "form-control", @id = "name-group" })
+                        @Html.ValidationMessageFor(model => model.nguoiLap, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ghiChu, htmlAttributes: new { @class = "col-sm-2" })
+                    <div class="col-sm-7">
+                        @Html.TextAreaFor(model => model.ghiChu, new { @class = "form-control", @rows = 5 })
+                        @Html.ValidationMessageFor(model => model.ghiChu, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.ActionLink("<< Quay lại danh sách", "Index", "ThucDon")
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="reset" class="btn btn-primary" style="margin-right:10px;"><i class="fa fa-refresh"></i>Làm mới</button><button type="submit" value="Lưu thông tin" class="btn btn-primary"><i class="fa fa-save"></i>Lưu thông tin</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts{
+    <script src="~/Scripts/admin/news.js"></script>
+
+    @*add checkeditor*@
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+
+    @*add ckfinder*@
+    <script src="~/Scripts/ckfinder/ckfinder.js"></script>
+}

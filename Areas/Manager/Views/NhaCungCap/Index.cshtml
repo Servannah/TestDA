@@ -1,0 +1,193 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.NhaCungCapData
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Nhà cung cấp
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Nhà cung cấp</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- Main content -->
+    <div class="container body-content">
+        <div class="content-nhaCC">
+            <h2>Danh sách nhà cung cấp</h2>
+            @using (Html.BeginForm("Index", "NhaCungCap", FormMethod.Get, new { @class = "form-inline", role = "search", id = "search-form", onsubmit = "return empty();" }))
+            {
+                @*@Html.AntiForgeryToken()*@
+                if (@TempData["Success"] != null)
+                {
+                    <div class="add-sucess">
+                        <script>
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("@TempData["Success"]");
+                        </script>
+                    </div>
+                }
+                <div class="form-inline">
+                    <div class="">
+                        @*tìm kiếm*@
+                        <div class="form-group">
+                            <label class="choice-type btn btn-default disabled">Tìm kiếm thông tin <i class="fa fa-angle-double-right" aria-hidden="true"></i></label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm...." name="tukhoa" value="@ViewBag.TKTimKiem" id="search-box" style="width:200px;">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary hidden-xs"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="clearfix">  </div>
+                    @Html.Raw("<span class='pull-right'> Tổng số bản ghi là: " + Model.danhSachNhaCungCap.Count().ToString() + "</span>")
+
+                </div>
+            }
+            @*thêm mới bản ghi*@
+            <div class="form-inline" style=" margin: 10px 0;">
+                <div class="form-group">
+                    <a href="/Manager/NhaCungCap/ChucNang?type=Insert" class="btn btn-primary hidden-xs"><i class="glyphicon glyphicon-plus"></i>Thêm mới nhà cung cấp</a>
+                </div>
+                <div class="form-group">
+                    @*thêm biểu tượng in nhà cung cấp*@
+                </div>
+            </div>
+        </div>
+        @*kết thúc form tìm kiếm*@
+        <div id="dsnhaCC">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr class="th-style">
+                        <th>Tên nhà cung cấp</th>
+                        <th>Địa chỉ</th>
+                        <th>Điện thoại</th>
+                        <th>Fax</th>
+                        <th>Mã số thuế</th>
+                        <th>Tài khoản</th>
+                        <th>Email</th>
+                        <th>Ghi chú</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.danhSachNhaCungCap.Count > 0)
+                        {
+                            //int j = 0;
+                            foreach (var i in Model.danhSachNhaCungCap)
+                            {
+                                // j++;
+                                <tr>
+                                    @*<td>@j.ToString()</td>*@
+                                    <td>
+                                        @Html.DisplayFor(m => i.tenNhaCC)
+                                        <br /><a href="/Manager/NhaCungCap/ChucNang?type=Edit&manhacc=@i.maNhaCC" class="lnkEdit" data-value="@i.maNhaCC" id="nhaCC_@i.maNhaCC">Sửa | </a>
+                                        <a href="javascript:void(0)" class="lnkDelete" data-value="@i.maNhaCC" id="groupNhaCC_@i.maNhaCC">Xóa</a>
+                                    </td>
+                                    <td>@Html.DisplayFor(m => i.diaChi)</td>
+                                    <td>@Html.DisplayFor(m => i.dienThoai)</td>
+                                    <td>@Html.DisplayFor(m => i.fax)</td>
+                                    <td>@Html.DisplayFor(m => i.maSoThue)</td>
+                                    <td>@Html.DisplayFor(m => i.taiKhoan)</td>
+                                    <td>@Html.DisplayFor(m => i.email)</td>
+                                    <td> @Html.DisplayFor(m => i.ghiChu)</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8"> <p style="text-align:center;font-weight:bold;">Không có bản ghi nào</p></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+        $(function () {
+            //xóa một bản ghi
+            $("a.lnkDelete").on("click", function () {
+                var id = $(this).data('value');//lấy giá trị id của bản ghi
+                console.log(id);
+                var $tr = $(this).closest('tr');
+                var answer = confirm("Bạn có chắc chắn xóa bản ghi là " + id + " . Tiếp tục?");
+                if (answer)
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("XoaNhaCC", "NhaCungCap"))",
+                        data: { maNhaCC: id },
+                        success: function (data) {
+                            if (data == 0) {
+                                $tr.css("background-color", "#ec645e");
+                                location.reload();
+                                // $("#listNhaCC").load("(Url.Action("NhaCCPartial", "NhaCungCap"))");
+                                //hiển thị thông báo ra màn hình
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "newestOnTop": false,
+                                    "progressBar": false,
+                                    "positionClass": "toast-bottom-right",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "5000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+
+                                toastr["success"]("Xóa bản ghi thành công");
+
+                            } else {
+                                alert("Nhà cung cấp đã chọn có chứa trong bảng khác. Hãy xóa những thành phần của nhà cung cấp này trước!");
+                            }
+                        },
+                        error: function (error) {
+                        }
+                    });
+                return false;
+            });
+        })//Xóa một bản ghi
+        function empty() {
+            var x = $('#search-box').val();
+            if (x == " " || x == null) {
+                var url = window.location.pathname;
+                window.location(url);
+                // return false;
+            }
+        }
+    </script>
+}
+
+

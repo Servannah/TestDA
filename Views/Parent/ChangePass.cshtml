@@ -1,0 +1,58 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.UserData
+
+<div class="changePass">
+    <div class="container">
+        @using (Html.BeginForm("ChangePass", "Parent", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="change-pass col-md-7">
+                <p>Bạn đang đăng nhập với tên <strong>@Context.User.Identity.Name</strong>.</p>
+                <h4>Thay đổi mật khẩu</h4>
+                <hr style="border:1px solid #afacac" />
+                @*@Html.ValidationSummary()*@
+
+                @Html.HiddenFor(m => m.UserName, new { @Value = @Context.User.Identity.Name })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.OldPassword, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8">
+                        @Html.PasswordFor(m => m.OldPassword, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.OldPassword, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.NewPassword, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8">
+                        @Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.NewPassword, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-4 control-label" })
+                    <div class="col-md-8">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ConfirmPassword, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-4 col-md-8">
+                        <input type="submit" value="Thay đổi" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>           
+        }
+    </div>
+</div>
+<style>
+    .changePass {
+        background: #eee;
+    }
+
+        .changePass .change-pass {
+            padding: 40px;
+        }
+
+            .changePass .change-pass p {
+                margin: 10px 0;
+            }
+</style>

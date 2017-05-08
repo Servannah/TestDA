@@ -1,0 +1,148 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.HoaDonData
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-file-text-o"></i>
+        Hóa đơn
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Hóa đơn</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="container body-content">
+        <div class="body-style">
+            <div class="thongTinHoaDon">
+                <div style="text-align:center;">
+                    <h2>HÓA ĐƠN</h2>
+                    <label>Số phiếu:</label> @Html.DisplayFor(model => model.soPhieuHD)
+                    <hr width="200px" style="border-top: 2px dotted #000; margin-top:10px;" />
+                </div>
+                @*//hiển thị danh sách thông tin phiếu nhập kho*@
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2">Người lập hóa đơn:</label>
+                        <div class="col-sm-6">
+                            @Html.DisplayFor(model => model.tenNguoiLap)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2">Ngày tạo:</label>
+                        <div class="col-sm-4">
+                            @Html.DisplayFor(model => model.ngayLap)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="TPTheoHoaDon">
+                @Html.Action("ThucPhamHDPartial", "PhieuHoaDon", new { maHoaDon  = @Model.maPhieuHD})
+            </div>
+            <div class="thongTinThanhToan">
+                @*thông tin tiền thanh toán*@
+                <div class="form-horizontal">
+                    <div class="form-group col-sm-offset-2">
+                        <label class="col-sm-2">Tổng tiền hóa đơn:</label>
+                        <div class="col-sm-6">
+                            @Html.DisplayFor(model => model.tongTien) <span><b>VND</b></span>
+                        </div>
+                    </div>
+                </div>
+            </div>@*kết thúc thông tin thanh toán*@
+            <div class="clearfix"></div>
+        </div>
+        @Html.ActionLink("<< Quay lại danh sách", "Index", "PhieuHoaDon")
+        @*in thông tin*@
+        <div class="chuc-nang" style="text-align:center;">
+            @*<button class="btn btn-default" type="submit"><i class="fa fa-file-pdf-o"></i>In ra file PDF</button>
+            <button class="btn btn-default" type="submit"><i class="fa fa-file-excel-o"></i>Xuất ra excel</button>*@
+            <a href="/Manager/PhieuHoaDon/ChucNang?type=Edit&maPhieuHD=@Model.maPhieuHD" class="btn btn-primary"> <i class="fa fa-edit"></i>Sửa thông tin</a>
+            <a href="javascript:void(0)" class="btn btn-primary" id="lnkXoa" data-value="@Model.maPhieuHD"><i class="fa fa-trash-o"></i>Xóa thông tin</a>
+        </div>
+        @*xóa một bản ghi*@
+        <div id="dialog-confirm" class="modal" style="display: none">
+            <p>
+                <i class="fa fa-warning" style="float: left; margin: 0 7px 20px 0; color:#ffd800;"></i>
+                <span>Bạn chắc chắn xóa bản ghi này. Tiếp tục?</span>
+            </p>
+        </div>
+        @*kết thúc xóa một bản ghi*@
+    </div>
+</section>
+
+@section Scripts{
+    <script>
+        $(function () {
+            //xóa một bản ghi
+            $("a#lnkXoa").on("click", function () {
+                //xóa một bản ghi
+                $("a.lnkDelete").on("click", function (e) {
+                    var id = $(this).data('value');//lấy giá trị id của bản ghi
+                    var $tr = $(this).closest('tr');//lấy hàng
+                    $("#dialog-confirm").dialog({
+                        autoOpen: false,
+                        resizable: false,
+                        width: 350,
+                        show: { effect: 'drop', direction: "up" },
+                        modal: true,
+                        draggable: true,
+                        open: function (event, ui) {
+                            $(".ui-dialog-titlebar-close").hide();
+                        },
+                        buttons: [
+                            {
+                                "text": "Đồng ý",
+                                "class": 'btn btn-default',
+                                click: function () {
+                                    $(this).dialog("close");
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "@(Url.Action("XoaPhieuHD", "PhieuHoaDon"))",
+                                        data: { maHoaDon: id },
+                                        success: function (data) {
+                                            if (data == 0) {
+                                                $tr.css("background-color", "#ec645e");
+                                                $tr.fadeOut(1600, "linear", function () { $tr.remove(); });
+                                                location.href = "@Url.Action("Index","PhieuHoaDon")";
+                                                //hiển thị thông báo ra màn hình
+                                                message_success("Xóa bản ghi thành công");
+                                            } else {
+                                                alert("Bản ghi này có chứa trong bảng khác. Hãy xóa những dữ liệu đó trước!");
+                                            }
+                                        },
+                                        error: function (error) {
+
+                                        }
+
+                                    });
+                                    $(this).dialog("destroy");
+                                }
+
+                            },
+                {
+                    "text": "Hủy bỏ",
+                    "class": 'btn btn-default',
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+                        ]
+                    });
+
+                });
+                $("#dialog-confirm").dialog("open");
+                return false;
+            });
+        });
+    </script>
+}
+
+
+
+

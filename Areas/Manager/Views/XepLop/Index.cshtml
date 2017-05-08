@@ -1,0 +1,386 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.XepLopData
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o" aria-hidden="true"></i>
+        Thực hiện xếp lớp
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Xếp lớp</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- Main content -->
+    <div class="container body-content">
+        <h2>Xếp lớp cho học sinh</h2>
+        <div class="">
+            @*/hiển thị danh sách lớp theo nhóm lớp*@
+            <div class="ViewNhomLop col-md-4">
+                @Html.Action("DSNhomLopPartial", "NhomLop")
+                <div id="viewClass" style="display:none;">
+                    <fieldset class="the-fieldset">
+                        <legend class="the-legend">Thực hiện:</legend>
+                        <div class="">
+                            @Html.DropDownList("vNamHoc", ViewBag.namHoc as SelectList, "--Năm học-- ", new { @class = "form-control", @id = "vNamHoc" })
+                            <span class="text-danger error-vNamHoc"></span>
+                        </div>
+                        <div class="clearfix">  </div>
+                        @*xem danh sách học sinh*@
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="timKiemHSLop">
+                <h4>TÌM KIẾM HỌC SINH</h4>
+                <div class="form-dslophs">
+                    <fieldset class="the-fieldset">
+                        <legend class="the-legend">Tìm kiếm:</legend>
+                        <div class="form-inline">
+                            <div class="form-group col-md-4">
+                                @Html.DropDownList("namhocid", ViewBag.namHoc as SelectList, "--Chọn năm học-- ", new { @class = "form-control", @id = "sNamHoc" })
+                                <span class="error-namhoc"></span>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <input type="text" class="form-control" placeholder="Nhập mã học sinh...." name="hocsinh" id="hocsinh">
+                                <span class="error-name" style="color:#b94a48;"></span>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <a ref="javascript:void()" class="lnkTimKiem btn btn-primary">Xem lớp</a>@*<a ref="javascript:void()" class="lnkTimNam btn btn-primary">Tìm kiếm</a>*@
+                            </div>
+                            <div class="clearfix">  </div>
+                        </div>
+                        <div id="ketQuaDS">
+                            @*//hiển thị danh sách học sinh tìm kiếm*@
+                        </div>
+                    </fieldset>
+                </div> @*kết thúc form tìm kiếm*@
+
+            </div>
+            <div class="ttHSChuaLop">
+                <h4>DANH SÁCH HỌC SINH CHƯA XẾP LỚP</h4>
+
+                @*xếp lớp*@
+                @using (Html.BeginForm("Index", "XepLop", FormMethod.Post, new { @id = "xepLopHS" }))
+                {
+                    <div class="insetClass">
+                        <fieldset class="the-fieldset">
+                            <legend class="the-legend">Thực hiện:</legend>
+                            <div class="form-inline">
+                                <div class="form-group col-md-4">
+                                    @Html.DropDownListFor(model => model.namHoc, ViewBag.namHoc as SelectList, "--Năm học-- ", new { @class = "form-control", @id = "NamHoc" })
+                                    @Html.ValidationMessageFor(model => model.namHoc, null, new { @class = "text-danger", @id = "error-namHoc" })
+                                </div>
+                                <div class="form-group col-md-4">
+                                    @Html.DropDownListFor(model => model.maLop, null, "--Chọn lớp-- ", new { @class = "form-control", @id = "MaLop" })
+                                    @Html.ValidationMessageFor(model => model.maLop, null, new { @class = "text-danger", @id = "error-maLop" })
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <a ref="javascript:void()" class="lnkXepLop btn btn-primary"> Xếp lớp</a>
+                                </div>
+                                <div class="clearfix">  </div>
+                            </div>
+
+                            @*xem danh sách học sinh*@
+                        </fieldset>
+                    </div>
+                }
+                @*kết thúc form xếp lớp*@
+                <div class="listStudent" style="margin-top:15px;">
+                    <table class="table table-bordered table-hover" id="dsHSLop">
+                        <thead>
+                            <tr class="th-style">
+                                <th style="text-align:center;"><input type="checkbox" id="checkAll"></th>
+                                <th>Mã học sinh</th>
+                                <th>Tên học sinh</th>
+                                <th>Ngày sinh</th>
+                                <th>Ngày vào học</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model.danhSachHSChuaLop.Count > 0)
+                                {
+                                    //int j = 0;
+                                    foreach (var i in Model.danhSachHSChuaLop)
+                                    {
+                                        // j++;
+                                        <tr>
+                                            <td style="text-align:center;"><input type="checkbox" class="checkBox" value="@i.maHocSinh" /></td>
+                                            <td>
+                                                @Html.DisplayFor(m => i.maHocSinh)
+                                            </td>
+                                            <td>@Html.DisplayFor(m => i.hoTen)</td>
+                                            <td>@Html.DisplayFor(m => i.ngaySinh)</td>
+                                            <td>@Html.DisplayFor(m => i.ngayVaoHoc)</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4"> <p style="text-align:center;">Không có bản ghi nào</p></td>
+                                    </tr>
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+                    <!--Phân trang-->
+                    @if (ViewBag.TotalPage > 1)
+                    {
+                        var pageDisplay = (int)ViewBag.MaxPage;
+                        int totalPage = (int)ViewBag.TotalPage;
+                        int currentPage = ((int)ViewBag.Page);
+
+                        // Create numeric links
+                        var startPageIndex = Math.Max(1, currentPage - pageDisplay / 2);
+                        var endPageIndex = Math.Min(totalPage, currentPage + pageDisplay / 2);
+
+                        var link = "/Manager/XepLop/Index";
+                        <nav>
+                            <ul class="pagination">
+                                @if (currentPage > ViewBag.First)
+                                {
+                                    <li><a href="@link?page=@ViewBag.First" title="Trang đầu" class="first"><i class="fa fa-angle-double-left"></i></a></li>
+                                    <li>
+                                        <a href="@link?page=@ViewBag.Prev" title="Trang trước" class="prev"><i class="fa fa-angle-left"></i></a>
+                                    </li>
+
+                                }
+                                @for (int i = startPageIndex; i <= endPageIndex; i++)
+                                {
+                                    if (currentPage == i)
+                                    {
+
+                                        <li> <a href="@link?page=@i" class="active" title="Trang @i">@i</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="@link?page=@i" title="Trang @i" class="pos">@i</a></li>
+                                    }
+                                }
+                                @if (currentPage < totalPage)
+                                {
+                                    <li><a href="@link?page=@ViewBag.Next" class="next" title="Trang sau"><i class="fa fa-angle-right"></i></a></li>
+                                    <li> <a href="@link?page=@ViewBag.Last" class="last" title="Trang cuối"><i class="fa fa-angle-double-right"></i></a></li>
+                                }
+
+                            </ul>
+                        </nav>
+
+                    }
+                    else
+                    {
+                        @*<span>Không có bản ghi nào</span>*@
+                    }
+                    @*kết thúc phân trang*@
+                </div>
+            </div>@*danh sách học sinh chưa xếp lớp*@
+        </div>@*kết thúc col-md-8*@
+    </div>
+</section>
+<style>
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(1.5); /* IE */
+        -moz-transform: scale(1.5); /* FF */
+        -webkit-transform: scale(1.5); /* Safari and Chrome */
+        -o-transform: scale(1.5); /* Opera */
+    }
+
+    .insetClass {
+        margin-top: 10px;
+    }
+
+    fieldset.the-fieldset {
+        border: 1px dotted #252424 !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+    }
+
+    legend.the-legend {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: inherit;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+</style>
+@section Scripts{
+    <script>
+        $(function () {
+            //The pop() method removes the last element of an array, and returns that element.
+            $("#checkAll").click(function () {
+                $(".checkBox").prop('checked', $(this).prop('checked'));
+            });
+
+            $("a.lnkXepLop").click(function () {
+
+                var $form = $('#xepLopHS');
+                $.validator.unobtrusive.parse($form);
+                $form.validate();
+
+                var selectedIDs = new Array();
+                $('input:checkbox.checkBox').each(function () {
+                    if ($(this).prop('checked')) {
+                        selectedIDs.push($(this).val());
+                    }
+                });
+                var maLop = $('#MaLop').val();
+                var namHoc = $('#NamHoc').val();
+                console.log(namHoc);
+                //console.log(selectedIDs.length);
+                //nếu không chọn cái nào mà nhấn click thì đưa ra thông báo
+                if (selectedIDs.length == 0) {
+                    alert("Không có bản ghi nào được chọn.");
+                    return false;
+                }
+                else {
+                    if ($form.valid()) {
+                        //var answer = confirm("Bạn có chắc chắn xóa bản ghi đã chọn ?");
+                        // if (answer) {
+                        $.ajax({
+                            type: "POST",
+                            url: '@(Url.Action("ThemHocSinhLop", "XepLop"))',
+                            data: { hsIDs: selectedIDs, maLop: maLop, namHoc: namHoc },
+                            dataType: "json",
+                            success: function (data) {
+                                alert(data);
+                                location.reload();
+                            },
+                            error: function (error) {
+
+                            }
+                        });
+                        return false;
+                    }
+                    // }
+                }
+                return false;
+            });///
+            //hiển thị học sinh thuộc lớp nào
+            $("a.lnkTimKiem").click(function () {
+                var maHocSinh = $('#hocsinh').val();
+                var namHoc = $('#sNamHoc').val();
+                //nếu không chọn cái nào mà nhấn click thì đưa ra thông báo
+                if (maHocSinh == "") {
+                    $('.error-name').html('Nhập vào mã học sinh.');
+                    return false;
+                }
+                else {
+                    maHocSinh = maHocSinh.trim();
+                    ////
+                    console.log(maHocSinh + "gssdgs");
+
+                    $('.error-name').html('');
+
+                    $("#ketQuaDS").dialog({
+                        title: "Kết quả tìm kiếm",
+                        autoOpen: false,
+                        resizable: false,
+                        width: 600,
+                        show: { effect: 'drop', direction: "up" },
+                        modal: true,
+                        draggable: true,
+                        open: function (event, ui) {
+                            $(".ui-dialog-titlebar-close").hide();
+
+                            var url = '@Url.Action("TimKiemHocSinhLopPartial", "XepLop")';
+                            url += '/?maHocSinh=' + maHocSinh + '&namHoc=' + namHoc;
+                            console.log(url);
+                            //$(this).load(url);
+                        },
+                        buttons: { "Đóng": function () { $(this).dialog("close"); } }
+
+                    });
+                    $("#ketQuaDS").dialog("open");
+                    return false;
+                }
+                return false;
+            });///
+            //xóa một bản ghi
+            $("a.lnkDanhSach").on("click", function () {
+                var maLop = $(this).data('value');//lấy giá trị id của bản ghi
+                console.log(maLop);
+                //if (namHoc == "") {
+                //    $('.error-vNamHoc').html('Chọn năm học');
+                //    return false;
+                //} else {
+                //    $('.error-name').html('');
+
+                $("#viewClass").dialog({
+                    title: "Xem danh sách học sinh",
+                    autoOpen: false,
+                    resizable: false,
+                    width: 300,
+                    show: { effect: 'drop', direction: "up" },
+                    modal: true,
+                    draggable: true,
+                    open: function (event, ui) {
+                        $(".ui-dialog-titlebar-close").hide();
+                    },
+                    buttons:
+                    [
+                    {
+                        "text": "Xem danh sách",
+                        "class": 'btn btn-primary',
+                        click: function () {
+                            var namHoc = $('#vNamHoc').val();
+                            console.log(namHoc);
+
+                            if (namHoc == "") {
+                                $('.error-vNamHoc').html('Chọn năm học');
+                                return false;
+                            } else {
+                                $('.error-name').html('');
+                                $(this).dialog("close");
+                                $.ajax({
+                                    type: "POST",
+                                    url: "@(Url.Action("HocSinhLop", "XepLop"))",
+                                    data: { maLop: maLop, namHoc: namHoc },
+                                    success: function (data) {
+                                        var url = '@Url.Action("HocSinhLop", "XepLop")';
+                                        url += '/?maLop=' + maLop + '&namHoc=' + namHoc;
+                                        window.location = url;
+                                    },
+                                    error: function (error) {
+
+                                    }
+
+                                });
+                                $(this).dialog("destroy");
+                            }
+                        }
+
+                    },
+
+                {
+                    "text": "Đóng",
+                    "class": 'btn btn-primary',
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+                    ]
+
+                });///
+                $("#viewClass").dialog("open");
+                //}
+                return false;
+            });//Xóa một bản ghi
+        })
+    </script>
+}
+
+

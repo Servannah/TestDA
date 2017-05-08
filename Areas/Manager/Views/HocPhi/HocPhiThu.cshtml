@@ -1,0 +1,112 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.HocPhiData
+
+@{
+    ViewBag.Title = "HocPhiThu";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Thống kê
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Thống kê</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- Main content -->
+    <div class="container body-content">
+        <div class="content-TKhocPhi">
+            <h2>Thống kê học phí thu</h2>
+            @*//thống kê danh sách học sinh nợ học phí*@
+            @using (Html.BeginForm("HocPhiThuPartial", "HocPhi", FormMethod.Get, new { id = "thongKeHPThu" }))
+            {
+                <div class="dsThongKe">
+                    <fieldset class="the-fieldset">
+                        <legend class="the-legend">Thực hiện:</legend>
+                        <div class="">
+                            <div class="form-group col-md-3">
+                                @Html.DropDownList("namHoc", ViewBag.namHoc as SelectList, "--Chọn năm học-- ", new { @class = "form-control", @id = "tNamHoc" })
+                                <span class="error-year text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-2">
+                                @Html.DropDownList("thang", ViewBag.thang as SelectList, "--Tháng-- ", new { @class = "form-control", @id = "tThang" })
+                            </div>
+                        </div>
+                        <div class="clearfix">  </div>
+                        <div class="">
+                            <div class="form-group col-md-10">
+                                <a href="javarscript:void()" class="lnkTotal btn btn-primary" style="margin:0 10px;">Thống kê tiền thu học phí</a>
+                                <a href="javarscript:void()" class="lnkPrint btn btn-primary"><i class=""></i>Xuất ra excel</a>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </div>
+            }
+            @*//hiển thị danh sách tìm kiếm*@
+            <div id="showList">
+            </div>
+            @*//danh sách học phí*@
+
+        </div>
+    </div>
+</section>
+<style>
+    fieldset.the-fieldset {
+        border: 1px dotted #252424 !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+    }
+
+    legend.the-legend {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: inherit;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+</style>
+@section Scripts{
+    <script>
+        $(function () {
+            //hiển thị tổng tiền thu học phí theo từng tháng, năm
+            $("a.lnkTotal").click(function () {
+                var loaiHP = $('#tLoaiHP').val();
+                var namHoc = $('#tNamHoc').val();
+                var thang = $('#tThang').val();
+
+                if (namHoc == "") {
+                    $('.error-year').html("Lựa chọn năm cần xem");
+                    return false;
+                }
+                else {
+                    $('.error-year').html('');
+                    $.ajax({
+                        type: "POST",
+                        url: '@(Url.Action("HocPhiThuPartial", "HocPhi"))',
+                        data: { namHoc: namHoc, thang: thang },
+                        success: function (data) {
+                            $('#showList').html(data);
+                        },
+                        error: function (error) {
+
+                        }
+                    });
+                    return false;
+                }
+
+            });////
+        });
+    </script>
+}
+
+
+
+
+

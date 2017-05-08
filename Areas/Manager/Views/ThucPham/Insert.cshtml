@@ -1,0 +1,213 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.ThucPhamData
+@{
+    ViewBag.Title = "Insert";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+<section class="content-header">
+    <h1>
+        <i class="fa fa-cutlery"></i>
+        Thực phẩm
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Thực phẩm</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container body-content sua-thucpham">
+        <h3>Thêm mới thông tin thực phẩm</h3>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="body-thucpham">
+                <div class="col-md-4">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.tenThucPham, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.tenThucPham, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.tenThucPham, null, new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.maNhomTP, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.maNhomTP, null, "Chọn nhóm thực phẩm", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.maNhomTP, null, new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group input-nguonTuDV">
+                        @Html.LabelFor(model => model.nguonTuDV, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.nguonTuDV, new { htmlAttributes = new { @class = "form-control" } }) 
+                        @Html.ValidationMessageFor(model => model.nguonTuDV, null, new { @class = "text-danger" })                 
+                        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ghiChu, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.ghiChu, new { @class = "form-control" })
+                    </div>
+                    <img src="~/Content/images/thuc-pham-dinh-duong.png" />
+                </div>
+                @** Thành phần dinh dưỡng*@
+                <div class="col-md-8">
+                    <div class="form-inline fieldset">
+                        <h4><span>Thành phần dinh dưỡng:</span></h4>
+
+                        <div class="col-md-4 sua-thphdinhduong">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tyLeHapThu, "Tỷ lệ hấp thụ (%)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.tyLeHapThu, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.tyLeHapThu, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tyLeThai, "Tỷ lệ thải(%)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.tyLeThai, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.tyLeThai, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.nangLuongCalo, "Năng lượng Calo(KCal)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.nangLuongCalo, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.nangLuongCalo, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tphhNuoc, "Nước (g)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.tphhNuoc, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.tphhNuoc, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tphhProtid, "Protid (%)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.tphhProtid, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.tphhProtid, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tphhLipid, "Lipid (%)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.tphhLipid, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.tphhLipid, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit"  class="btn btn-default"><i class="fa fa-save"></i> Lưu thông tin</button>
+                                
+                            </div>
+                            <br />@Html.ActionLink("<< Quay lại danh sách thực phẩm", "Index", "ThucPham")
+                        </div>
+                        <div class="col-md-4 sua-thphdinhduong">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tphhGlucid, "Glucid (%)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.tphhGlucid, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.tphhGlucid, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tphhCellulose, "Cellulose (%)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.tphhCellulose, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.tphhCellulose, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tphhCholesterol, "Cholesterol (mg)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.tphhCholesterol, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.tphhCholesterol, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.mkCalci, "Calci(mg)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-sm-6">
+                                    @Html.EditorFor(model => model.mkCalci, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.mkCalci, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.mkPhotpho, "Phopho (mg)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.mkPhotpho, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.mkPhotpho, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.mkSat, "Sắt (mg)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.mkSat, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.mkSat, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 sua-thphdinhduong">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.vitaminCaroten, "Vitamin Caroten (mcg)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.vitaminCaroten, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.vitaminCaroten, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.vitaminA, "Vitamin A (mcg)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-sm-6">
+                                    @Html.EditorFor(model => model.vitaminA, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.vitaminA, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.vitaminB1, "VitaminB1 (mg)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.vitaminB1, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.vitaminB1, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.vitaminB2, "Vitamin B2 (mg)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.vitaminB2, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.vitaminB2, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.vitaminC, "Vitamin C (mg)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-md-6">
+                                    @Html.EditorFor(model => model.vitaminC, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.vitaminC, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.vitaminPP, "Vitamin PP (mg)", htmlAttributes: new { @class = "control-label col-md-6" })
+                                <div class="col-sm-6">
+                                    @Html.EditorFor(model => model.vitaminPP, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.vitaminPP, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Thành phần dinh dưỡng nhập vào cần là một số.</p>
+
+                </div>
+                @*/kết thúc dinh dưỡng/*@
+            </div>
+        }
+    </div>
+</section>
+@section Scripts
+{
+    @*<script type="text/javascript">
+                $(document).ready(function () {
+                    $('#datetimepicker').datepicker();
+                });
+            </script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#dateEndUse').datepicker();
+            });
+        </script>*@
+
+}

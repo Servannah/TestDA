@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o" aria-hidden="true"></i>
+        Loại đối tượng ưu tiên
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Loại đối tượng ưu tiên</li>
+    </ol>
+</section>
+<section class="content">
+    <div id="listDTUT">
+        @Html.Action("DoiTuongUuTienPartial", "DoiTuongUuTien")
+    </div>
+    <div class="info">
+        <p>
+            Đối với những học sinh thuộc diện đối tượng ưu tiên sẽ được miễn giảm học phí theo quy định của Nhà nước.
+        </p>
+        </div>
+</section>

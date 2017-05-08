@@ -1,0 +1,20 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.OptionData
+
+<div class="listPage">
+    @if (Model.danhSachDuLieu.Count > 0)
+    {
+        // int j = 0;
+        foreach (var i in Model.danhSachDuLieu)
+        {
+            
+            @Html.HiddenFor(model => i.id)
+            <div class="checkbox">
+                <label><input type="checkbox" value="page_@i.id">@Html.DisplayFor(model => i.name)</label>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Không có trang được tạo</p>
+    }
+</div>

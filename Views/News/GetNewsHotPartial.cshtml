@@ -1,0 +1,15 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.TinTucData
+
+<ul class="news-related">
+    @{
+        if (Model.danhSachTin.Count > 0)
+        {
+            foreach (var i in Model.danhSachTin)
+            {
+
+                <li><span class="glyphicon glyphicon-plus-sign"></span><a href="~/News/ViewNews?id=@i.maTin">@Html.DisplayFor(m => i.tieuDe)</a></li>
+            }
+        }
+    }
+</ul>
+

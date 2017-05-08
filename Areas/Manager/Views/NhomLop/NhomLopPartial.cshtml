@@ -1,0 +1,341 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.NhomLopData
+
+<!-- Main content -->
+<div class="container body-content">
+    <div class="col-md-6">
+        @using (Html.BeginForm("Index", "NhomLop", FormMethod.Post, new { @id = "themNhomLop" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="">
+                <h4>Thêm mới nhóm lớp</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.tenNhomLop)
+                    @Html.EditorFor(model => model.tenNhomLop, new { htmlAttributes = new { @class = "form-control", @id = "name-group" } })
+                    <span>Đặt tên loại nhóm lớp sử dụng.</span><br />
+                    @Html.ValidationMessageFor(model => model.tenNhomLop, null, new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ghiChu)
+                    @Html.TextAreaFor(model => model.ghiChu, new { @class = "form-control", @id = "ckeContent", @rows = 8 })
+                    @Html.ValidationMessageFor(model => model.ghiChu, null, new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <div class="add-button">
+                        <button type="submit" class="btn btn-primary" id="btnThemNhomLop"><i class="fa fa-plus"></i> Thêm mới nhóm lớp</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-md-6  list-group-news">
+        <h4>Danh sách nhóm lớp</h4>
+        @*//form tìm kiếm*@
+        <div class="form-search">
+            @using (Html.BeginForm("Index", "NhomLop", FormMethod.Get, new { @class = "form-inline", role = "search", id = "search-form", onsubmit = "return empty();" }))
+            {
+                <div class="pull-right">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Nhập thông tin cần tìm...." name="tukhoa" value="@ViewBag.TuKhoaTK" id="search-box" style="width:200px;">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    </div>
+                    @*<br /><span>(Tìm kiếm thông tin theo tên danh mục.)</span>*@
+                </div>
+                <div class="clearfix">  </div>
+                @Html.Raw("<span class='pull-right'> Tổng số bản ghi là: " + Model.danhSachNhomLop.Count().ToString() + "</span>")
+            }
+        </div>
+        @*kết thúc form tìm kiếm*@
+        <table class="table table-bordered table-hover" id="dsNhomTP">
+            <thead>
+                <tr class="th-style">
+                    <th>Nhóm lớp</th>
+                    <th>Học phí cần đóng</th>
+                    <th>Mô tả</th>
+                    <th>Chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (Model.danhSachNhomLop.Count > 0)
+                    {
+                        //int j = 0;
+                        foreach (var i in Model.danhSachNhomLop)
+                        {
+                            // j++;
+                            <tr>
+                                @*<td>@j.ToString()</td>*@
+                                <td>@Html.DisplayFor(m => i.tenNhomLop)</td>
+                                <td>
+                                    <a href="/Manager/DMHocPhi/HPTheoNhomLop?type=Detail&maNhomLop=@i.maNhomLop" class="lnkHP">Chi tiết</a>
+                                </td>
+                                <td> @Html.DisplayFor(m => i.ghiChu)</td>
+                                <td class="chuc-nang">
+                                    <a href="javascript:void(0)" class="lnkEdit" data-value="@i.maNhomLop" id="nhomlop_@i.maNhomLop">Sửa | </a>
+                                    <a href="javascript:void(0)" class="lnkDelete" data-value="@i.maNhomLop" id="groupnhomlop_@i.maNhomLop">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4"> <p style="text-align:center;">Không có bản ghi nào</p></td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+        @*chỉnh sửa nhóm thực phẩm*@
+        <div id="openModal" style="display:none">
+            <input type="hidden" id="mMaNhomLop" />
+            <div class="form-group">
+                @Html.LabelFor(model => model.tenNhomLop)
+                @Html.EditorFor(model => model.tenNhomLop, new { htmlAttributes = new { @class = "form-control", @id = "mTenNhomLop" } })
+                <span>Đặt tên nhóm lớp sử dụng.<br /></span>
+                <p class="text-danger" id="sumValidate"></p>
+                @Html.ValidationMessageFor(model => model.tenNhomLop, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ghiChu)
+                @Html.TextAreaFor(model => model.ghiChu, new { @class = "form-control", @id = "mGhiChu", @rows = 5 })
+                <p class="text-danger" id="sumValidateGhiChu"></p>
+                @Html.ValidationMessageFor(model => model.ghiChu, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        @*kết thúc chỉnh sửa nhóm lớp*@
+        @*xóa một bản ghi*@
+        <div id="dialog-confirm" class="modal" style="display: none">
+            <p>
+                @*<i class="fa fa-warning" style="float: left; margin: 0 7px 20px 0; color:#ffd800;"></i>*@
+                <span>Bạn chắc chắn xóa bản ghi này. Tiếp tục?</span>
+            </p>
+        </div>
+        @*kết thúc xóa một bản ghi*@
+    </div>
+</div>
+@*xóa bỏ một nhóm lớp*@
+<script type="text/javascript">
+    function message_success(notice) {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        toastr["success"](notice);
+    };
+    $(function () {
+        //thêm mới một nhóm lớp
+        $("#btnThemNhomLop").on("click", function () {
+            var $form = $('#themNhomLop');
+            $.validator.unobtrusive.parse($form);
+            $form.validate();
+            if ($form.valid()) {
+                $.ajax({
+                    url: "@(Url.Action("ThemNhomLop", "NhomLop"))",
+                    type: 'POST',
+                    data: $form.serialize(),
+                    success: function (data) {
+                        //hiển thị thông báo ra màn hình
+                        if (data == 1) {
+                            $("#listNhomLop").load("@(Url.Action("NhomLopPartial", "NhomLop"))");
+                            message_success("Thêm mới bản ghi thành công.")
+                        }
+                        else {
+                            //console.log(data);
+                            $.each(data, function (key, value) {
+                                console.log(key);
+                                var name = key;
+                                $.each(value, function (key, value) {
+                                    $errorSpan = $("span[data-valmsg-for='" + name + "']");
+                                    $errorSpan.html("<span style='color:#b94a48'>" + value + "</span>");
+                                    $errorSpan.show();
+                                });
+                            });
+                        }
+                    },
+                    error: function (result) {
+                        ////error
+                    }
+                });
+            }
+
+            return false;
+        });
+        //kết thúc thêm  mới bản ghi
+        $("a.lnkDelete").on("click", function () {
+            var id = $(this).data('value');//lấy giá trị id của bản ghi
+            console.log(id + "delete");
+            var $tr = $(this).closest('tr');//lấy hàng
+            $("#dialog-confirm").dialog({
+                autoOpen: false,
+                resizable: false,
+                width: 350,
+                show: { effect: 'drop', direction: "up" },
+                modal: true,
+                draggable: true,
+                open: function (event, ui) {
+                    $(".ui-dialog-titlebar-close").hide();
+                },
+                buttons:
+                    [
+                    {
+                        "text": "Đồng ý",
+                        "class": 'btn btn-default',
+                        click: function () {
+                            $(this).dialog("close");
+                            $.ajax({
+                                type: "POST",
+                                url: "@(Url.Action("XoaNhomLop", "NhomLop"))",
+                                data: { maNhomLop: id },
+                                success: function (data) {
+                                    if (data == 0) {
+                                        $tr.css("background-color", "#ec645e");
+                                        $tr.fadeOut(1600, "linear", function () { $tr.remove(); });
+                                        $("#listNhomLop").load("@(Url.Action("NhomLopPartial", "NhomLop"))");
+                                        //hiển thị thông báo ra màn hình
+                                        message_success("Xóa bản ghi thành công");
+                                    } else {
+                                        alert("Bản ghi này có chứa trong bảng khác. Hãy xóa những dữ liệu đó trước!");
+                                    }
+                                },
+                                error: function (error) {
+
+                                }
+
+                            });
+                            $(this).dialog("destroy");
+                        }
+
+                    },
+
+                {
+                    "text": "Hủy bỏ",
+                    "class": 'btn btn-default',
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+                    ]
+            });
+            $("#dialog-confirm").dialog("open");
+            return false;
+        });//kết thúc xóa bản ghi
+        //chỉnh sửa danh mục nhóm tin
+        $("a.lnkEdit").click(function () {
+            var myModal = $('#openModal');
+            //clear validate
+            $(".text-danger").hide();
+            // get the values
+            var a = $("#mTenNhomLop").val($(this).closest('tr').children()[0].textContent);
+            var b = $("#mGhiChu").val($(this).closest('tr').children()[2].textContent);
+            console.log(a.val());
+            //lấy id của danh mục nhóm tin
+            var id = $(this).data('value');
+            console.log(id);
+            $('#mMaNhomLop', myModal).val(id);
+            $('#mTenNhomLop', myModal).val(a.val());
+            $('#mGhiChu', myModal).val(b.val());
+            //lấy hàng trong bảng dữ liệu
+            var $tr = $(this).closest('tr');
+            //call modal
+            $("#openModal").dialog({
+                autoOpen: false,
+                title: 'Chỉnh sửa thông tin nhóm lớp',
+                modal: true,
+                resizable: false,
+                show: { effect: 'drop', direction: "up" },
+                width: 500,
+                dialogClass: 'mod-no-close',
+                open: function (event, ui) {
+                    $(".ui-dialog-titlebar-close").hide();
+                },
+                buttons:
+                    [
+                    {
+                        "text": "Lưu thông tin",
+                        "class": 'btn btn-default',
+                        click: function () {
+                            var maNhomLop = $("#mMaNhomLop").val().trim();
+                            var tenNhomLop = $("#mTenNhomLop").val().trim();
+                            //lấy chiều dài tên
+                            var lengthTen = $("#mTenNhomLop").val().length;
+                            console.log(lengthTen);
+                            var ghiChu = $("#mGhiChu").val().trim();
+                            if (tenNhomLop == null || tenNhomLop == "") {
+                                $('#sumValidate').html("Tên không được bỏ trống.");
+                                $('#sumValidate').css("display", "block");
+                                return false;
+                            }
+                            else if (lengthTen > 50) {
+                                $('#sumValidate').html("Tên loại món ăn nhỏ hơn 50 kí tự");
+                                $('#sumValidate').css("display", "block");
+                                return false;
+                            }
+                            else {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "@(Url.Action("SuaNhomLop", "NhomLop"))",
+                                    data: { maNhomLop: maNhomLop, tenNhomLop: tenNhomLop, ghiChu: ghiChu },
+                                    success: function (data) {
+                                        // $tr.css("border", "1px solid #ec645e");
+                                        $tr.css({
+                                            "border-color": "#ec645e",
+                                            "border-width": "1px",
+                                            "border-style": "solid"
+                                        });
+                                        $tr.fadeOut(1600, "linear");
+                                        $("#listNhomLop").load("@(Url.Action("NhomLopPartial", "NhomLop"))");
+                                        //hiển thị thông báo ra màn hình
+                                        message_success("Sửa bản ghi thành công");
+                                    },
+                                    error: function (error) {
+                                    }
+                                });
+                            }
+                            $(this).dialog("destroy");
+                        }
+                    },
+            {
+                text: "Đóng",
+                "class": 'btn btn-default',
+                click: function () {
+                    $(this).dialog("destroy");
+                }
+            },
+                    ]//
+            });
+            $("#openModal").dialog("open");
+            return false;
+            // myModal.modal({ width: 500, show: true });
+        });/////edn modal
+
+    });
+</script>
+<script>
+    function empty() {
+        var x = $('#search-box').val();
+        if (x == " " || x == null) {
+            var url = window.location.pathname;
+            window.location(url);
+            // return false;
+        }
+    }
+</script>

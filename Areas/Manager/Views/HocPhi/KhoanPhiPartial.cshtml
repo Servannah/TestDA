@@ -1,0 +1,70 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.DMHocPhiData
+
+<h4>KHOẢN PHÍ CẦN ĐÓNG</h4>
+<table class="table table-bordered table-hover" id="dsKhoanPhiTheoNhomLop">
+    <thead>
+        <tr class="th-style">
+            <th>STT</th>
+            <th>Tên khoản phí</th>
+            <th>Số tiền</th>
+            <th>Ngày áp dụng</th>
+            <th>Năm học</th>
+            <th>Ghi chú</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (Model.danhSachDMHocPhi.Count > 0)
+            {
+                int j = 0;
+                foreach (var i in Model.danhSachDMHocPhi)
+                {
+                    j++;
+                    <tr>
+                        <td>@j.ToString()</td>
+                        <td> @Html.DisplayFor(m => i.tenLoaiChiPhi)</td>
+                        <td>
+                            @Html.DisplayFor(m => i.soTien) <div>
+                            </div>
+                        </td>
+                        <td> @Html.DisplayFor(m => i.ngayApDung)</td>
+                        <td> @Html.DisplayFor(m => i.namHoc)</td>
+                        <td> @Html.DisplayFor(m => i.ghiChu)</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6"> <p style="text-align:center;">Không có bản ghi nào</p></td>
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>
+
+<div class="thongTin">
+    <div class="">
+        <label>Tổng học phí:</label>
+        <span class="tongPhi">@string.Format("{0:N0}", @ViewBag.tongPhi) (VND)</span>
+    </div>
+    <div class="">
+        <label>Bằng chữ:</label>
+        <span class="docPhi" style="font-style:italic;">@ViewBag.docTien</span>
+    </div>
+    <div class="">
+        <label>Đối tượng ưu tiên:</label>
+        <span class="uTien">@ViewBag.doituong</span>
+        <p><label>Số tiền miễn giảm:</label> @string.Format("{0:N0}",@ViewBag.tienGiam) (VND)</p>
+    </div>
+    <div class="">
+        <label>Tổng đóng:</label>
+        <span class="tongDong" style="font-style:italic;">@string.Format("{0:N0}", @ViewBag.tongTien) (VND) <b>Số tiền bằng chữ:</b> @ViewBag.tongDong</span>
+    </div>
+</div>
+
+@*@Html.Display("tongPhi", new { Value = @ViewBag.tongPhi, @id = "tongPhi" })<span>(VND)</span>*@
+
+
+

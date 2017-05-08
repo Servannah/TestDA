@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Theme
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Theme</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- Main content -->
+    <div class="container body-content">
+        <h2>Chỉnh sửa nội dung trang chủ</h2>
+        <ul class="nav nav-tabs">
+            <li><a href="/Manager/Config/ThemeIndex?type=slide">Slide hiển thị</a></li>
+            <li><a href="/Manager/Config/ThemeIndex?type=info">Thông tin nhà trường</a></li>
+            <li><a href="/Manager/Config/StaffIndex">Thông tin giáo viên</a></li>
+            <li><a href="/Manager/Config/ThemeIndex?type=class">Hiển thị lớp học</a></li>
+            <li><a href="/Manager/Config/NewsIndex">Hiển thị tin tức</a></li>
+            <li><a href="#">Cài đặt footer</a></li>
+        </ul>
+    </div>
+</section>
+

@@ -1,0 +1,158 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.OptionData
+
+@{
+    ViewBag.Title = "PageIndex";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Trang
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Trang</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- Main content -->
+    <div class="container body-content">
+        <div class="content-page">
+            <h2>Danh sách các trang</h2>
+            @using (Html.BeginForm("Index", "Option", FormMethod.Get))
+            {
+                @*@Html.AntiForgeryToken()*@
+                if (@TempData["Success"] != null)
+                {
+                    <div class="add-sucess">
+                        <script>
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": false,
+                                "positionClass": "toast-bottom-right",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr["success"]("@TempData["Success"]");
+                        </script>
+                    </div>
+                }
+            }
+            @*thêm mới bản ghi*@
+            <div class="form-inline" style=" margin: 10px 0;">
+                <div class="form-group">
+                    <a href="/Manager/Option/EditPage?t=Insert" class="btn btn-primary hidden-xs"><i class="glyphicon glyphicon-plus"></i>Thêm mới một trang</a>
+                </div>
+            </div>
+        </div>
+        @*kết thúc form tìm kiếm*@
+        <div id="listPage">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr class="th-style">
+                        <th>STT</th>
+                        <th>Tiêu đề</th>
+                        <th>Nội dung</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.danhSachDuLieu.Count > 0)
+                        {
+                            int j = 0;
+                            foreach (var i in Model.danhSachDuLieu)
+                            {
+                                 j++;
+                                <tr>
+                                   <td>@j.ToString()</td>
+                                    <td>
+                                        @Html.DisplayFor(m => i.name)                                        
+                                    </td>
+                                    <td>@Html.Raw(i.content)</td>
+                                    <td>
+                                        <a href="/Manager/Option/EditPage?t=Edit&id=@i.id" class="lnkEdit" data-value="@i.id" id="page_@i.id">Sửa | </a>
+                                        <a href="javascript:void(0)" class="lnkDelete" data-value="@i.id" id="groupPage_@i.id">Xóa</a>
+                                        @*<a href="/Manager/Option/DetailPage?t=View&pageId=@i.id" class="lnkView">Xem trước</a>*@
+                                    </td>                    
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4"> <p style="text-align:center;font-weight:bold;">Không có bản ghi nào</p></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+        $(function () {
+            //xóa một bản ghi
+            $("a.lnkDelete").on("click", function () {
+                var id = $(this).data('value');//lấy giá trị id của bản ghi
+                console.log(id);
+                var $tr = $(this).closest('tr');
+                var answer = confirm("Bạn có chắc chắn xóa bản ghi này. Tiếp tục?");
+                if (answer)
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("DeleteData", "Option"))",
+                        data: { id: id },
+                        success: function (data) {
+                            if (data == 0) {
+                                $tr.css("background-color", "#ec645e");
+                                location.reload();
+                                // $("#listNhaCC").load("(Url.Action("NhaCCPartial", "NhaCungCap"))");
+                                //hiển thị thông báo ra màn hình
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "newestOnTop": false,
+                                    "progressBar": false,
+                                    "positionClass": "toast-bottom-right",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "5000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+
+                                toastr["success"]("Xóa bản ghi thành công");
+
+                            } else {
+                                alert("Đã xảy ra lỗi");
+                            }
+                        },
+                        error: function (error) {
+                        }
+                    });
+                return false;
+            });
+        })//Xóa một bản ghi
+    </script>
+}
+
+

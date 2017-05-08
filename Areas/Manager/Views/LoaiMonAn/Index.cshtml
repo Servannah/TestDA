@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-list"></i>
+        Danh mục loại món ăn
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Danh mục</li>
+    </ol>
+</section>
+<section class="content">
+    <div id="listLoaiMonAn">
+      @Html.Action("LoaiMonAnPartial", "LoaiMonAn")
+    </div>
+</section>

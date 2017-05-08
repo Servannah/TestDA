@@ -1,0 +1,45 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.DMHocPhiData
+
+<table class="table table-bordered table-hover" id="dsKhoanPhiTheoNhomLop">
+    <thead>
+        <tr class="th-style">
+            <th>STT</th>
+            <th>Tên khoản phí</th>
+            <th>Số tiền</th>
+            <th>Ngày áp dụng</th>
+            <th>Năm học</th>
+            <th>Ghi chú</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (Model.danhSachDMHocPhi.Count > 0)
+            {
+                int j = 0;
+                foreach (var i in Model.danhSachDMHocPhi)
+                {
+                    j++;
+                    <tr>
+                        <td>@j.ToString()</td>
+                        <td> @Html.DisplayFor(m => i.tenLoaiChiPhi)</td>
+                        <td>
+                            @Html.DisplayFor(m => i.soTien) <div>
+                            </div>
+                        </td>
+                        <td> @Html.DisplayFor(m => i.ngayApDung)</td>
+                        <td> @Html.DisplayFor(m => i.namHoc)</td>
+                        <td> @Html.DisplayFor(m => i.ghiChu)</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6"> <p style="text-align:center;">Không có bản ghi nào</p></td>
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>
+

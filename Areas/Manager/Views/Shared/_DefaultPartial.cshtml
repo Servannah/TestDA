@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Trang đăng nhập</title>
+    <!--Add css-->
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    @RenderSection("Styles", false)
+    <!--jquery-->
+    <script src="~/Scripts/jquery-1.11.1.min.js"></script>
+    <!--bootstrap-->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+    @RenderBody()
+    @*add js ở đây*@
+    @RenderSection("Scripts", false)
+</body>
+</html>

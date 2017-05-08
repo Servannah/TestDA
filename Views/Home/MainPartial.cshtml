@@ -1,0 +1,132 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.ConfigData
+
+<!-- banner-bottom -->
+<div class="banner-bottom">
+    <div class="container">
+        <h2 class="tittle">Ưu điểm nhà trường</h2>
+        <div class="bottom-grids">
+            @if (Model.listData.Count > 0)
+            {
+                // int j = 0;
+                foreach (var i in Model.listData)
+                {
+                    if (@i.type == "info" && @i.ord == 1)
+                    {
+                        <div class="col-md-6">
+                            <div class="default-grids">
+                                <i class="fa fa-book bg-i-1"></i>
+                                <div class="text-bottom">
+                                    <h4>@Html.DisplayFor(m => i.name)</h4>
+                                    <span class="hr-1"></span>
+                                    <p>
+                                        @Html.DisplayFor(m => i.content)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>
+<!-- //banner-bottom -->
+<!--Teachers-->
+<div class="teachers">
+    <div class="container">
+        <div class="teach-head">
+            <h3>NHÂN VIÊN ƯU TÚ</h3>
+            <p></p>
+        </div>
+        <div class="team-grids">
+            @if (Model.listData.Count > 0)
+            {
+                // int j = 0;
+                foreach (var i in Model.listData)
+                {
+                    if (@i.type == "staff" && @i.ord == 1)
+                    {
+                        <div class="col-md-3 team-grid text-center">
+                            <div class="team-img">
+                                <img src="@i.image" />
+                                <h3>@Html.DisplayFor(m => i.name)</h3>
+                                <h4>Thông tin</h4>
+                                <p> @Html.DisplayFor(m => i.content) </p>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<!--//Teachers-->
+<!--Facilities-->
+<!-- our facilities -->
+<div class="facilities">
+    <div class="container">
+        <h3 class="tittle">CÁC LỚP HỌC</h3>
+        @if (Model.listData.Count > 0)
+        {
+            // int j = 0;
+            foreach (var i in Model.listData)
+            {
+                if (@i.type == "class" && @i.ord == 1)
+                {
+                    <div class="view view-seventh">
+                        <a href="@i.image" class="b-link-stripe b-animate-go  swipebox" title="@i.name">
+                            <img src="@i.image" />
+                            <div class="mask">
+                                <h4 style="text-transform:uppercase;">@Html.DisplayFor(m => i.name)</h4>
+                                <p>@Html.DisplayFor(m => i.content)</p>
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+        }
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!-- //our facilities -->
+<!--//Facilities-->
+<!--News-->
+<!-- features -->
+<div class="features">
+    <div class="container">
+        <h3 class="tittle">TIN TỨC MỚI NHẤT</h3>
+        @if (Model.listData.Count > 0)
+        {
+            // int j = 0;
+            foreach (var i in Model.listData)
+            {
+                if (@i.type == "news")
+                {
+                    <div class="col-md-4 features-left">
+                        <img src="@i.image" />
+                    </div>
+                    <div class="col-md-4 features-right">
+                        <a href="~/News/ViewNews?id=@i.temp1"><h4>@Html.DisplayFor(m => i.name)</h4></a>
+                        <p>@Html.DisplayFor(m => i.content) </p>
+                    </div>
+                }
+            }
+        }
+        @*//lấy danh sách những tin nổi bật*@
+        <div class="col-md-4 features-left">
+            @Html.Action("GetNewsHotPartial", "News")
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!-- //features -->
+<!--//News-->
+<style>
+    
+</style>
+<script>
+    $(function () {
+
+    });
+</script>

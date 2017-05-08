@@ -1,0 +1,29 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.TinTucData
+
+<div class="dsTin">
+    @if (Model.danhSachTin.Count > 0)
+    {
+        // int j = 0;
+        foreach (var i in Model.danhSachTin)
+        {
+            @Html.HiddenFor(model => i.maTin)
+
+            <div class="radioGroup">
+                <label>
+                    <input type="radio" name="optionsRadios" id="news_@i.maTin" data-value="@i.maTin" class="lnkChoose"> @Html.DisplayFor(model => i.tieuDe)
+                    </label>
+                </div>
+
+        }
+    }else{ 
+        <p>Không có tin tức nối bật được cài đặt</p>
+    }
+</div>
+<style>
+    .radio input[type="radio"] {
+        -ms-transform: scale(1.5);
+        -moz-transform: scale(1.5);
+        -webkit-transform: scale(1.5);
+        -o-transform: scale(1.5);
+    }
+</style>

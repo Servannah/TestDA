@@ -1,0 +1,292 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.NhomTinData
+@using TestDA.Common
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+<section class="content-header">
+    <h1>
+        <i class="fa fa-list"></i>
+        Danh mục nhóm tin
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Danh mục</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container body-content">
+        <div class="col-md-4">
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="">
+                    <h4>Thêm mới một danh mục</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.tenNhom)
+                        @Html.EditorFor(model => model.tenNhom, new { htmlAttributes = new { @class = "form-control", @id = "name-group" } })
+                        @Html.ValidationMessageFor(model => model.tenNhom, null, new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.slug, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.slug, new { htmlAttributes = new { @class = "form-control", @id = "slug-group" } })
+                        @Html.ValidationMessageFor(model => model.slug)
+                        <p>Slug giúp tạo đường dẫn thân thiện cho website.</p>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.danhMucCha, new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.danhMucCha, null, "--None--", new { id = "ddlParent", @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.danhMucCha, null, new { @class = "text-danger" })
+                        <p>Lựa chọn danh mục làm danh mục cha cho danh mục đang tạo, nếu không thì đó là danh mục cấp cao nhất.</p>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.tinhTrang, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.tinhTrang, new List<SelectListItem> {
+                        new SelectListItem { Text="Xuất bản ", Value="1" },
+                        new SelectListItem { Text="Chưa xuất bản", Value="0" }
+                    }, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.tinhTrang)
+                        <p>Lựa chọn xem nhóm tin này có hiển thị lên trình duyệt hay không.</p>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.moTa, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.moTa, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.moTa)
+                        <p>Thêm mô tả để hiểu về vai trò của danh mục này.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="add-button">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>Thêm mới</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-md-8  list-group-news">
+            <h4>Danh sách danh mục</h4>
+            <div class="form-search">
+                @using (Html.BeginForm("Index", "NhomTin", FormMethod.Get, new { @class = "form-inline", role = "search", id = "search-form", onsubmit = "return empty();" }))
+                {
+
+                    <div class="pull-right">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Nhập thông tin cần tìm...." name="tukhoa" value="@ViewBag.TuKhoaTK" id="search-box" style="width:250px;">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary hidden-xs"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                        @*<br /><span>(Tìm kiếm thông tin theo tên danh mục.)</span>*@
+
+                    </div>
+                    <div class="clearfix">  </div>
+                    <div style="margin:5px;"><span id="delete" style="cursor:pointer; color:#3c8dbc;">[ Xóa bản ghi đã chọn ]</span> @Html.Raw("<span class='pull-right'> Tổng số bản ghi là: " + Model.danhSachNhomTin.Count().ToString() + "</span>")</div>
+                }
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="checkAll"></th>
+                        <th style="width:20%;">Tên danh mục</th>
+                        <th style="width:20%;">Mô tả</th>
+                        <th style="width:20%;">Slug</th>
+                        <th style="width:20%;">Tình trạng</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.danhSachNhomTin.Count > 0)
+                        {
+                            //int j = 0;
+                            foreach (var i in Model.danhSachNhomTin)
+                            {
+                                if (i.danhMucCha == 0)
+                                {
+                                    // j++;
+                                    <tr>
+                                        @*<td>@j.ToString()</td>*@
+                                        <td><input type="checkbox" class="checkBox" value="@i.maNhom" /></td>
+                                        <td> @Html.DisplayFor(m => i.tenNhom)</td>
+                                        <td> @Html.DisplayFor(m => i.moTa)</td>
+                                        <td> @Html.DisplayFor(m => i.slug)</td>
+
+                                        <td>
+                                            @if (i.tinhTrang == 1)
+                                            {
+                                                @Html.Raw("Xuất bản")
+                                            }
+                                            else
+                                            {
+                                                @Html.Raw("Chưa xuất bản")
+                                            }
+                                        </td>
+                                        <td class="chuc-nang">
+                                            <a href="/Manager/NhomTin/Edit?type=Edit&manhomtin=@i.maNhom" class="lnkEdit">Sửa | </a>
+                                            <a href="javacript:void(0)" class="lnkDelete" data-value="@i.maNhom" id="group_@i.maNhom">Xóa</a>
+                                        </td>
+                                    </tr>
+                                }
+                                foreach (var item in Model.danhSachNhomTin)
+                                {
+                                    if (item.danhMucCha == i.maNhom)
+                                    {
+                                        <tr>
+                                            @*<td>@j.ToString()</td>*@
+                                            <td><input type="checkbox" class="checkBox" value="@item.maNhom" /></td>
+                                            <td> <span>---</span>@Html.DisplayFor(m => item.tenNhom)</td>
+                                            <td> @Html.DisplayFor(m => item.moTa)</td>
+                                            <td> @Html.DisplayFor(m => item.slug)</td>
+
+                                            <td>
+                                                @if (item.tinhTrang == 1)
+                                                {
+                                                    @Html.Raw("Xuất bản")
+                                                }
+                                                else
+                                                {
+                                                    @Html.Raw("Chưa xuất bản")
+                                                }
+                                            </td>
+                                            <td class="chuc-nang">
+                                                <a href="/Manager/NhomTin/Edit?type=Edit&manhomtin=@item.maNhom" class="lnkEdit">Sửa | </a>
+                                                <a href="javacript:void(0)" class="lnkDelete" data-value="@item.maNhom" id="group_@item.maNhom">Xóa</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                ////////
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4"> <p style="text-align:center;">Không có bản ghi nào</p></td>
+                            </tr>
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+@section Scripts
+{
+    <script>
+        //code hiển thị checkbox delete bản ghi
+        $(document).ready(function () {
+            //The pop() method removes the last element of an array, and returns that element.
+            $("#checkAll").click(function () {
+                $(".checkBox").prop('checked', $(this).prop('checked'));
+            });
+
+            $("#delete").click(function () {
+                var selectedIDs = new Array();
+                $('input:checkbox.checkBox').each(function () {
+                    if ($(this).prop('checked')) {
+                        selectedIDs.push($(this).val());
+                    }
+                });
+                console.log(selectedIDs.length);
+                //nếu không chọn cái nào mà nhấn click
+                if (selectedIDs.length == 0) {
+                    alert("Không có bản ghi nào được chọn.");
+                }
+                else {
+                    var answer = confirm("Bạn có chắc chắn xóa bản ghi đã chọn ?");
+                    if (answer) {
+                        $.ajax({
+                            type: "POST",
+                            url: "@(Url.Action("XoaNhomTinDaChon", "NhomTin"))",
+                            data: { customerIDs: selectedIDs },
+                            dataType: "json",
+                            success: function (data) {
+                                alert(data);
+                                location.reload();
+                            },
+                            error: function (error) {
+
+                            }
+                            ///console.log(model);
+                        });
+                    }
+                }
+            });
+        });
+        //end checkbox delete
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            //hiển thị slug vào ô textbox
+            $('#name-group').change(function () {
+                var name = $('#name-group').val();
+                $.ajax({
+                    type: "POST",
+                    url: "@(Url.Action("Slug", "NhomTin"))",
+                    data: { tenNhomTin: name },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#slug-group').val(data);
+                    },
+                    error: function (error) {
+
+                    }
+                    ///console.log(model);
+                });
+            });
+        });
+        //
+    </script>
+    @*xóa bỏ một danh mục nhóm tin*@
+    <script type="text/javascript">
+        $(function () {
+            $("a.lnkDelete").on("click", function () {
+                var id = $(this).data('value');//lấy giá trị id của bản ghi
+                var $tr = $(this).closest('tr');
+                var answer = confirm("Bạn có chắc chắn xóa nhóm tin là " + id + " . Tiếp tục?");
+                if (answer)
+                    //DeleteCategory(id);
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("XoaNhomTin", "NhomTin"))",
+                        data: { maNhom: id },
+                        success: function (data) {
+                            if (data == "0") {
+                                // location.reload();
+                                $tr.css("background-color", "#ec645e");
+                                $tr.fadeOut(1600, "linear", function () { $tr.remove(); });
+                            } else {
+                                alert("Nhóm tin đã chọn có chứa bài viết hoặc danh mục con khác. Hãy xóa những danh mục con hoặc bài viết trước!");
+                            }
+                        },
+                        error: function (error) {
+                        }
+                    });
+                return false;
+            });
+        });
+    </script>
+    <script>
+        function empty() {
+            var x = $('#search-box').val();
+            if (x == " " || x == null) {
+                var url = window.location.pathname;
+                window.location(url);
+                // return false;
+            }
+        }
+    </script>
+}
