@@ -64,7 +64,7 @@
                     <tr class="th-style">
                         <th>STT</th>
                         <th>Tiêu đề</th>
-                        <th>Nội dung</th>
+                        <th style="width:60%;">Nội dung</th>
                         <th>Chức năng</th>
                     </tr>
                 </thead>
@@ -81,7 +81,7 @@
                                     <td>
                                         @Html.DisplayFor(m => i.name)                                        
                                     </td>
-                                    <td>@Html.Raw(i.content)</td>
+                                    <td><div class="some-area">@Html.Raw(i.content)</div></td>
                                     <td>
                                         <a href="/Manager/Option/EditPage?t=Edit&id=@i.id" class="lnkEdit" data-value="@i.id" id="page_@i.id">Sửa | </a>
                                         <a href="javascript:void(0)" class="lnkDelete" data-value="@i.id" id="groupPage_@i.id">Xóa</a>
@@ -150,8 +150,13 @@
                         }
                     });
                 return false;
+            });//Xóa một bản ghi
+            $(document).ready(function () {
+                $("div.some-area").text(function (index, currentText) {
+                    return currentText.substr(0, 150) + " ...";
+                });
             });
-        })//Xóa một bản ghi
+        })
     </script>
 }
 

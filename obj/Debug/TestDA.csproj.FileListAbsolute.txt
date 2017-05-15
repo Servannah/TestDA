@@ -26,3 +26,4 @@ E:\Project\ASP.NET\TestDA\TestDA\bin\PagedList.dll
 E:\Project\ASP.NET\TestDA\TestDA\bin\PagedList.Mvc.dll
 E:\Project\ASP.NET\TestDA\TestDA\bin\PagedList.xml
 E:\Project\ASP.NET\TestDA\TestDA\bin\PagedList.Mvc.xml
+E:\Project\ASP.NET\TestDA\TestDA\bin\Rotativa.dll

@@ -329,6 +329,37 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                 }
             }
         }
+        //thay đổi mật khẩu
+        public void UpdatePass(UserData obj)
+        {
+            using (DoAnTotNghiepEntities db = new DoAnTotNghiepEntities())
+            {
+                using (var dbContextTransaction = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var timkiem = db.tbl_taikhoan.Where(o => o.TenDangNhap == obj.UserName);
+                        if (timkiem.Any())
+                        {
+                            tbl_taikhoan data = timkiem.FirstOrDefault();
+
+                            data.TenDangNhap = obj.UserName;
+                            data.MatKhau = Encryptor.MD5Hash(obj.NewPassword);
+                            data.NgaySua = DateTime.Now;
+
+                            db.SaveChanges();
+                        }
+                        dbContextTransaction.Commit();
+                    }
+                    catch
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+                }
+
+            }
+        }
+        /////
         //lấy quyền của người dùng
         public bool LayQuyenND(string tenDangNhap, string tenQuyen)
         {

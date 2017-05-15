@@ -51,12 +51,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.7.1-beta\lib\net40\Rotativa.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
@@ -106,7 +113,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\admin.css" />
     <Content Include="Content\css\AdminLTE.css" />
-    <Content Include="Content\css\chosen.css" />
+    <Content Include="Content\css\chosen.min.css" />
     <Content Include="Content\css\jquery-ui.css" />
     <Content Include="Content\css\layout.css" />
     <Content Include="Content\css\skin-black.css" />
@@ -125,6 +132,7 @@
     <Content Include="Content\images\banner-01.jpg" />
     <Content Include="Content\images\banner.jpg" />
     <Content Include="Content\images\Calendar.png" />
+    <Content Include="Content\images\chosen-sprite.png" />
     <Content Include="Content\images\class\art-class.jpg" />
     <Content Include="Content\images\class\cooking-class.jpg" />
     <Content Include="Content\images\class\english-class.jpg" />
@@ -141,6 +149,7 @@
     <Content Include="Content\images\g6.jpg" />
     <Content Include="Content\images\icons.svg" />
     <Content Include="Content\images\img-sp.png" />
+    <Content Include="Content\images\kid.png" />
     <Content Include="Content\images\pic1.jpg" />
     <Content Include="Content\images\pic2.jpg" />
     <Content Include="Content\images\pic3.jpg" />
@@ -198,6 +207,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\ionicons.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
+    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="Rotativa\wkhtmltoimage.exe" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\admin\app.min.js" />
     <Content Include="Scripts\admin\news.js" />
     <Content Include="Scripts\admin\toastr.min.js" />
@@ -1197,6 +1210,11 @@
     <Content Include="Areas\Manager\Views\Config\GetItemPartial.cshtml" />
     <Content Include="Areas\Manager\Views\NhomTin\GetItemPartial.cshtml" />
     <Content Include="Areas\Manager\Views\Option\DetailPage.cshtml" />
+    <Content Include="App_code\Treeview.cshtml" />
+    <Content Include="Areas\Manager\Views\HocPhi\HocPhiThuPartial.cshtml" />
+    <Content Include="Areas\Manager\Views\HocPhi\HocPhiThu.cshtml" />
+    <Content Include="App_Browsers\qt.browser" />
+    <Content Include="Areas\Manager\Views\HocPhi\InChiTiet.cshtml" />
     <EntityDeploy Include="DB\DataModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DataModel.Designer.cs</LastGenOutput>
@@ -1214,9 +1232,11 @@
       <DependentUpon>DataModel.edmx</DependentUpon>
       <LastGenOutput>DataModel.cs</LastGenOutput>
     </Content>
-    <Content Include="App_code\Treeview.cshtml" />
-    <Content Include="Areas\Manager\Views\HocPhi\HocPhiThuPartial.cshtml" />
-    <Content Include="Areas\Manager\Views\HocPhi\HocPhiThu.cshtml" />
+    <Content Include="Areas\Manager\Views\HoanTraHocPhi\Index.cshtml" />
+    <Content Include="Areas\Manager\Views\HoanTraHocPhi\ChucNang.cshtml" />
+    <Content Include="Areas\Manager\Views\Admin\HeaderPartial.cshtml" />
+    <Content Include="Areas\Manager\Views\TaiKhoan\DoiMatKhau.cshtml" />
+    <Content Include="Areas\Manager\Views\PhieuHoaDon\ChiTietTD.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1241,6 +1261,7 @@
     <Compile Include="Areas\Manager\Controllers\ConfigController.cs" />
     <Compile Include="Areas\Manager\Controllers\DMHocPhiController.cs" />
     <Compile Include="Areas\Manager\Controllers\DoiTuongUuTienController.cs" />
+    <Compile Include="Areas\Manager\Controllers\HoanTraHocPhiController.cs" />
     <Compile Include="Areas\Manager\Controllers\HocPhiController.cs" />
     <Compile Include="Areas\Manager\Controllers\HocSinhController.cs" />
     <Compile Include="Areas\Manager\Controllers\CTHoaDonController.cs" />
@@ -1270,6 +1291,7 @@
     <Compile Include="Areas\Manager\Models\EntityManager\ConfigManager.cs" />
     <Compile Include="Areas\Manager\Models\EntityManager\DMHocPhiManager.cs" />
     <Compile Include="Areas\Manager\Models\EntityManager\DoiTuongUuTienManager.cs" />
+    <Compile Include="Areas\Manager\Models\EntityManager\HoanTraHocPhiManager.cs" />
     <Compile Include="Areas\Manager\Models\EntityManager\HocPhiManager.cs" />
     <Compile Include="Areas\Manager\Models\EntityManager\HocSinhManager.cs" />
     <Compile Include="Areas\Manager\Models\EntityManager\CTHoaDonManager.cs" />
@@ -1289,6 +1311,7 @@
     <Compile Include="Areas\Manager\Models\EntityManager\TPNhapKhoManager.cs" />
     <Compile Include="Areas\Manager\Models\EntityManager\TPXuatKhoManager.cs" />
     <Compile Include="Areas\Manager\Models\ViewModel\ConfigModel.cs" />
+    <Compile Include="Areas\Manager\Models\ViewModel\HoanTraHocPhiModel.cs" />
     <Compile Include="Areas\Manager\Models\ViewModel\HocPhiModel.cs" />
     <Compile Include="Areas\Manager\Models\ViewModel\OptionManager.cs" />
     <Compile Include="Areas\Manager\Models\ViewModel\OptionModel.cs" />
@@ -1342,6 +1365,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DB\sysdiagram.cs">
+      <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DB\tbl_config.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
@@ -1492,6 +1518,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

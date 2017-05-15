@@ -1,0 +1,189 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.NhanVienData
+
+<!-- Main Header -->
+<header class="main-header">
+    <!-- Logo -->
+    <a href="@Url.Action("Index","Admin")" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini">QLBH</span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><i class="fa fa-home"></i> Trang quản trị</span>
+    </a>
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+        <!-- Navbar Right Menu -->
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li>
+                    @Html.ActionLink("Giao diện", "Index", "../Home")
+                </li>
+                <!-- User Account Menu -->
+                <li class="dropdown user user-menu">
+                    <!-- Menu Toggle Button -->
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <!-- The user image in the navbar-->
+                        @*<img src="~/Content/images/_admin/avatar3.png" class="user-image" alt="User Image" />*@
+                        <img src="@ViewBag.hinhAnh" class="user-image" alt="@Html.DisplayFor(model =>model.ten)" />
+                        <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                        <span class="hidden-xs" style="display:inline!important;">Hi,@Context.User.Identity.Name</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- The user image in the menu -->
+                        <li class="user-header">
+                            <img src="@ViewBag.hinhAnh" class="img-circle" alt="@Html.DisplayFor(model =>model.ten)" />
+                            <p>
+                                Quản trị hệ thống
+                                <small>Thành viên từ @Html.DisplayFor(model => model.ngayVaoLamViec)</small>
+                            </p>
+                        </li>
+                        <!-- Menu Body -->
+                        <li class="user-body">
+                        </li>
+                        <!-- Menu Footer-->
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="/Manager/NhanVien/ChiTietNhanVien?type=Detail&maNV=@Context.User.Identity.Name" class="lnkView btn btn-default btn-flat">Hồ sơ</a>
+                                <a href="/Manager/TaiKhoan/DoiMatKhau?id=@Context.User.Identity.Name" class="lnkView btn btn-default btn-flat">Đổi mật khẩu</a>
+                            </div>
+                            <div class="pull-right">
+                                @* <a href="#" class="btn btn-default btn-flat">Sign out</a>*@
+                                @Html.ActionLink("Thoát", "DangXuat", "TaiKhoan", null, new { @class = "btn btn-default btn-flat" })
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Control Sidebar Toggle Button -->
+                <li>
+                    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<!-- Left side column. contains the logo and sidebar -->
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel">
+            <div class="pull-left image">
+                <img src="@ViewBag.hinhAnh" class="img-circle" alt="@Html.DisplayFor(model =>model.ten)" />
+            </div>
+            <div class="pull-left info">
+                <p>@Context.User.Identity.Name</p>
+                <!-- Status -->
+                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+            </div>
+        </div>
+        <!-- search form (Optional) -->
+        <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </form>
+        <!-- /.search form -->
+        <!-- Sidebar Menu -->
+        <ul class="sidebar-menu">
+            <li class="header">DANH MỤC</li>
+            <!-- Optionally, you can add icons to the links -->
+            @*<li class="active"><a href="about.html"><i class="fa fa-link"></i> <span>Thông tin </span></a></li>*@
+            <li class=""><a href="/Manager/NhanVien/Index"><i class="fa fa-link"></i> <span>Thông tin nhân viên</span></a></li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-eyedropper"></i> <span>Bài viết</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/Manager/TinTuc/Index">Tất cả bài viết</a></li>
+                    <li><a href="/Manager/Option/PageIndex">Danh sách trang</a></li>
+                    <li><a href="/Manager/NhomTin/Index">Danh mục</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-link"></i> <span>Quản lý thực đơn</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    @*<li><a href="/Manager/NhuCauDinhDuong/Index">Nhu cầu dinh dưỡng</a></li>
+                        <li><a href="/Manager/NhuCauNangLuong/Index">Nhu cầu năng lượng</a></li>*@
+                    @*<li><a href="/Manager/LoaiMonAn/Index">Danh sách loại món ăn</a></li>*@
+                    @*<li><a href="/Manager/MonAn/Index">Tham khảo món ăn</a></li>*@
+                    <li><a href="/Manager/ThucPham/Index">Danh sách thực phẩm</a></li>
+                    <li><a href="/Manager/NhomThucPham/Index">Danh sách nhóm thực phẩm</a></li>
+                    <li><a href="/Manager/TPNhapKho/Index">Kho thực phẩm</a></li>
+                    <li><a href="/Manager/TPXuatKho/Index">Thực phẩm xuất kho</a></li>
+                    <li><a href="/Manager/ThucDon/Index">Thực đơn hàng ngày</a></li>
+                    <li><a href="/Manager/PHieuHoaDon/Index">Hóa đơn thực phẩm hàng ngày</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-link"></i> <span>Quản lý lớp học</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/Manager/NhomLop/Index">Nhóm lớp học</a></li>
+                    <li><a href="/Manager/Lop/Index">Danh sách lớp học</a></li>
+                    <li><a href="/Manager/HocSinh/Index">Danh sách học sinh</a></li>
+                    <li><a href="/Manager/XepLop/Index">Xếp lớp học</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-link"></i> <span>Quản lý học phí</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/Manager/LoaiChiPhi/Index">Danh sách loại phí</a></li>
+                    <li><a href="/Manager/DMHocPhi/Index">Định mức loại phí</a></li>
+                    <li><a href="/Manager/HocPhi/Index">Thu học phí</a></li>
+                </ul>
+            </li>
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-link"></i> <span>Thống kê - Báo cáo</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/Manager/HocPhi/TKHocPhi">Học sinh nợ học phí</a></li>
+                    <li><a href="/Manager/HocPhi/HocPhiThu">Tiền thu học phí</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-cog"></i><span>Cấu hình Website</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="/Manager/Option/InfoIndex">Thông tin nhà trường</a></li>
+                    <li><a href="/Manager/Config/Index">Chỉnh sửa giao diện</a></li>
+                </ul>
+            </li>
+        </ul>
+        <!-- /.sidebar-menu -->
+    </section>
+    <!-- /.sidebar -->
+</aside>

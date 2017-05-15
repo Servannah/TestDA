@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TestDA.Areas.Manager.Controllers
 {
-    public class ThucPhamController : Controller
+    public class ThucPhamController : BaseController
     {
         // GET: Manager/ThucPham
         public ActionResult Index(string tukhoa, int page = 1, int pageSize = 20)

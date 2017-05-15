@@ -36,6 +36,36 @@ namespace TestDA.Areas.Manager.Controllers
             }
             return View();
         }
+        //đổi mật khẩu
+        //thay đổi mật khẩu
+        public ActionResult DoiMatKhau(string id)
+        {
+            ViewBag.UserName = id;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult DoiMatKhau(UserData obj)
+        {
+            if (ModelState.IsValid)//trả về false
+            {
+                //kiểm tra  mật khẩu người dùng nhập vào so sánh với mật khẩu đúng
+                NhanVienManager PM = new NhanVienManager();
+                var pass = PM.LayMatKhau(obj.UserName);
+                if (Encryptor.MD5Hash(obj.OldPassword).Equals(pass))
+                {
+                    PM.UpdatePass(obj);
+                    TempData["ChangePassSuccess"] = "Đổi mật khẩu thành công";
+
+                    return RedirectToAction("DoiMatKhau", "TaiKhoan");
+                }
+                else
+                {
+                    ModelState.AddModelError("OldPassword", "Mật khẩu cũ cung cấp là không đúng !");
+                }
+
+            }
+            return View(obj);
+        }
         //đăng nhập
         public ActionResult DangNhap()
         {
@@ -59,7 +89,10 @@ namespace TestDA.Areas.Manager.Controllers
                     if (Encryptor.MD5Hash(DN.matKhau).Equals(matkhau))
                     {
                         //lưu sesstion đăng nhập
-                        Session.Add(CommonConstants.USER_SESSION, DN);
+                        var userSession = new DangNhap();
+                        userSession.tenDangNhap = DN.tenDangNhap;
+                        userSession.matKhau = DN.matKhau;
+                        Session.Add(CommonConstants.USER_SESSION, userSession);
                         //không giữ FA cookie, bởi nó được lưu ở máy client và có thể bị đánh cắp
                         FormsAuthentication.SetAuthCookie(DN.tenDangNhap, false);
                         return RedirectToAction("Index", "Admin");

@@ -110,12 +110,12 @@
         </div>
         @*kết thúc chỉnh sửa nhóm lớp*@
         @*xóa một bản ghi*@
-        <div id="dialog-confirm" class="modal" style="display: none">
-            <p>
-                @*<i class="fa fa-warning" style="float: left; margin: 0 7px 20px 0; color:#ffd800;"></i>*@
-                <span>Bạn chắc chắn xóa bản ghi này. Tiếp tục?</span>
-            </p>
-        </div>
+        @*<div id="dialog-confirm" class="modal" style="display: none">
+                <p>
+                    @*<i class="fa fa-warning" style="float: left; margin: 0 7px 20px 0; color:#ffd800;"></i>
+                    <span>Bạn chắc chắn xóa bản ghi này. Tiếp tục?</span>
+                </p>
+            </div>*@
         @*kết thúc xóa một bản ghi*@
     </div>
 </div>
@@ -184,7 +184,29 @@
             var id = $(this).data('value');//lấy giá trị id của bản ghi
             console.log(id + "delete");
             var $tr = $(this).closest('tr');//lấy hàng
-            $("#dialog-confirm").dialog({
+            var answer = confirm("Bạn có chắc chắn xóa bản ghi này . Tiếp tục?");
+            if (answer)
+                $.ajax({
+                    type: "POST",
+                    url: "@(Url.Action("XoaNhomLop", "NhomLop"))",
+                    data: { maNhomLop: id },
+                    success: function (data) {
+                        if (data == 0) {
+                            $tr.css("background-color", "#ec645e");
+                            $tr.fadeOut(1600, "linear", function () { $tr.remove(); });
+                            $("#listNhomLop").load("@(Url.Action("NhomLopPartial", "NhomLop"))");
+                            //hiển thị thông báo ra màn hình
+                            message_success("Xóa bản ghi thành công");
+                        } else {
+                            alert("Bản ghi này có chứa trong bảng khác. Hãy xóa những dữ liệu đó trước!");
+                        }
+                    },
+                    error: function (error) {
+
+                    }
+
+                });
+            @*$("#dialog-confirm").dialog({
                 autoOpen: false,
                 resizable: false,
                 width: 350,
@@ -235,7 +257,7 @@
                 }
                     ]
             });
-            $("#dialog-confirm").dialog("open");
+            $("#dialog-confirm").dialog("open");*@
             return false;
         });//kết thúc xóa bản ghi
         //chỉnh sửa danh mục nhóm tin

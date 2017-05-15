@@ -11,7 +11,7 @@ using System.Data;
 
 namespace TestDA.Areas.Manager.Controllers
 {
-    public class OptionController : Controller
+    public class OptionController : BaseController
     {
         // GET: Manager/Option
         public ActionResult Index()

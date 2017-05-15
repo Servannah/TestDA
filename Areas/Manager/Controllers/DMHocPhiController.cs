@@ -9,12 +9,14 @@ using TestDA.Areas.Manager.Models.ViewModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Web.UI.WebControls;
+using TestDA.Security;
 
 namespace TestDA.Areas.Manager.Controllers
 {
-    public class DMHocPhiController : Controller
+    public class DMHocPhiController : BaseController
     {
         // GET: Manager/DMHocPhi
+        [AuthorizeRoles("Admin", "HieuTruong","VanThu")]
         public ActionResult Index(string namHoc, string loaiApDung)
         {
             //lấy toàn bộ định mức học phí trong cơ sở dữ liệu

@@ -193,46 +193,6 @@ namespace TestDA.Areas.Manager.Models.EntityManager
             }
             return list;
         }
-        //lấy ra danh sách phí theo năm học và theo tháng
-        //public List<tbl_hocphi> dsHocPhiDK(string namHoc, int? thang)
-        //{
-        //    List<tbl_hocphi> list = new List<tbl_hocphi>();
-
-        //    using (DoAnTotNghiepEntities db = new DoAnTotNghiepEntities())
-        //    {
-        //        //Lấy danh sách học phí nhóm theo từng tháng, năm và loại học phí
-
-        //        var hp = from h in db.tbl_hocphi select h;
-
-        //        if (!String.IsNullOrEmpty(namHoc))
-        //        {
-        //            hp = from t in hp where t.NamHoc == namHoc select t;
-        //        }
-        //        if (thang.HasValue)
-        //        {
-        //            hp = from t in hp where t.Thang == thang select t;
-        //        }
-        //        //////thống kê học phí theo từng năm học
-        //        var query = (from t in hp
-        //                      group t by t.NamHoc 
-        //                      into gNam
-        //                      select new 
-        //                     {
-        //                         namHoc = gNam.Key,
-        //                         thang = (from m in gNam
-        //                                 group m by m.LoaiHP
-        //                                 into mThang
-        //                                 select new 
-        //                                 {
-        //                                     loaiHP = mThang.Key,
-        //                                     tongHocPhi = mThang.Sum(t => t.TongHocPhi),
-        //                                     conNo = mThang.Sum(t => t.ConNo)
-        //                                 })
-        //                     }).ToList();
-
-        //    }
-        //    return list;
-        //}
         //lấy nhóm lớp của học sinh
         public int NhomLopHS(string maHS, string namHoc)
         {

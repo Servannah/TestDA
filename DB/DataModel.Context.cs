@@ -25,6 +25,7 @@ namespace TestDA.DB
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<tbl_config> tbl_config { get; set; }
         public virtual DbSet<tbl_dmhocphi> tbl_dmhocphi { get; set; }
         public virtual DbSet<tbl_doituonguutien> tbl_doituonguutien { get; set; }

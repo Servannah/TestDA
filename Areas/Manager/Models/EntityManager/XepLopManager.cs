@@ -14,7 +14,7 @@ namespace TestDA.Areas.Manager.Models.EntityManager
     public class XepLopManager
     {
         //lấy danh sách học sinh chưa xếp lớp
-        public List<HocSinhData> danhSachHSChuaLop(string namHoc, ref int totalRecord, int pageIndex = 1, int pageSize = 20)
+        public List<HocSinhData> danhSachHSChuaLop(ref int totalRecord, int pageIndex = 1, int pageSize = 20)
         {
             List<HocSinhData> list = new List<HocSinhData>();
             using (DoAnTotNghiepEntities db = new DoAnTotNghiepEntities())
@@ -31,28 +31,27 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                             ngaySinh = m.NgaySinh,
                             ngayVaoHoc = m.NgayVaoHoc
                         }).OrderByDescending(m => m.maHocSinh).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
-                //lấy danh sách học sinh chưa xếp lớp năm học namHoc
-                if (!String.IsNullOrEmpty(namHoc))
-                {
-                    list = (from m in db.tbl_hocsinh
-                            join n in db.tbl_hocsinhlop on m.MaHS equals n.MaHocSinh into hsLop
-                            from hs in hsLop.DefaultIfEmpty()
-                            where hs.MaHocSinh == null && hs.NamHoc == namHoc
-                            select new HocSinhData
-                            {
-                                maHocSinh = m.MaHS,
-                                hoTen = m.HoTen,
-                                ngaySinh = m.NgaySinh,
-                                ngayVaoHoc = m.NgayVaoHoc
-
-                            }).OrderByDescending(m => m.maHocSinh).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
-                }
                 //lấy tổng số bản ghi
                 totalRecord = list.Count();
 
             }
             return list;
         }//
+        //lấy chi tiết học sinh trong năm học thuộc lớp nào
+        public bool HocSinhLop(string maHocSinh, string namHoc)
+        {
+            using (DoAnTotNghiepEntities db = new DoAnTotNghiepEntities())
+            {
+                var data = (from n in db.tbl_hocsinhlop
+                            where n.MaHocSinh == maHocSinh && n.NamHoc == namHoc
+                            select n);
+                if (data.Any())
+                {
+                    return true;
+                }
+                else { return false; }
+            }
+        }
         //tìm kiếm học sinh trong năm học thuộc lớp nào
         public List<XepLopData> HocSinhThuocLop(string maHocSinh, string namHoc)
         {

@@ -8,13 +8,15 @@ using TestDA.Areas.Manager.Models.EntityManager;
 using TestDA.Areas.Manager.Models.ViewModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using TestDA.Security;
 
 namespace TestDA.Areas.Manager.Controllers
 {
-    public class XepLopController : Controller
+    public class XepLopController : BaseController
     {
         // GET: Manager/XepLop
-        public ActionResult Index(string namHoc, int page = 1, int pageSize = 20)
+         [AuthorizeRoles("Admin", "HieuTruong", "VanThu")]
+        public ActionResult Index(int page = 1, int pageSize = 20)
         {
             //lấy danh sách học sinh chưa xếp lớp
             XepLopManager xepLop = new XepLopManager();
@@ -23,7 +25,7 @@ namespace TestDA.Areas.Manager.Controllers
             //custom phân trang
             int totalRecord = 0;
 
-            hs.danhSachHSChuaLop = xepLop.danhSachHSChuaLop(namHoc, ref totalRecord, page, pageSize);
+            hs.danhSachHSChuaLop = xepLop.danhSachHSChuaLop(ref totalRecord, page, pageSize);
             setLop();
             setNamHoc();
             setNhomLop();
@@ -72,7 +74,7 @@ namespace TestDA.Areas.Manager.Controllers
         {
             List<SelectListItem> Years = new List<SelectListItem>();
             int now = DateTime.Now.Year;
-            for (int i =now; i >2010; i--)
+            for (int i = now; i > 2010; i--)
             {
                 Years.Add(new SelectListItem()
                 {
@@ -108,25 +110,55 @@ namespace TestDA.Areas.Manager.Controllers
             }
         }/////
         // sửa thông tin học sinh trong lơp
-        //public ActionResult SuaHocSinhLop(int[] mhSL, int maLop, string namHoc)
-        //{
-        //    using (DoAnTotNghiepEntities db = new DoAnTotNghiepEntities())
-        //    {
-        //        foreach (int maHS in mhSL)
-        //        {
-        //            tbl_hocsinhlop obj = new tbl_hocsinhlop();
+        public ActionResult SuaHocSinhLop(string[] mhSL, int maLop, string namHoc)
+        {
+            using (DoAnTotNghiepEntities db = new DoAnTotNghiepEntities())
+            {
+                foreach (string maHS in mhSL)
+                {
+                    //kiểm tra xem đã tồn tại mã học sinh thuộc lớp trong năm học đó
+                    XepLopManager XLM = new XepLopManager();
 
-        //            obj.MaLop = maLop;
-        //            obj.NamHoc = namHoc;
-        //            obj.MaHocSinh = maHS;
+                    if (XLM.HocSinhLop(maHS, namHoc) == true)
+                    {
+                        //nếu tồn tại thực hiện update thông tin
+                        using (var dbContextTransaction = db.Database.BeginTransaction())
+                        {
+                            try
+                            {
+                                tbl_hocsinhlop kq = db.tbl_hocsinhlop.Single(o => o.MaHocSinh == maHS && o.NamHoc == namHoc);
+                                //kq.MaHSLop = kq.MaHSLop;
+                                kq.MaLop = maLop;
 
-        //            db.tbl_hocsinhlop.Add(obj);
+                                db.SaveChanges();
 
-        //            db.SaveChanges();
-        //        }
-        //        return Json("Chuyển lớp thành công");
-        //    }
-        //}
+                                dbContextTransaction.Commit();
+                            }
+                            catch
+                            {
+                                dbContextTransaction.Rollback();
+                            }
+                        }///
+                    }
+                    else
+                    {
+                        //nếu chưa có lớp thực hiện thêm vào lớp
+
+                        tbl_hocsinhlop obj = new tbl_hocsinhlop();
+
+                        obj.MaLop = maLop;
+                        obj.NamHoc = namHoc;
+                        obj.MaHocSinh = maHS;
+
+                        db.tbl_hocsinhlop.Add(obj);
+
+                        db.SaveChanges();
+                    }
+
+                }
+            }
+            return Json("Chuyển lớp thành công");
+        }
         //xóa danh sách học sinh lớp đã chọn
         public ActionResult XoaHocSinhLop(int[] mhSL)
         {

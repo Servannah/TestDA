@@ -1,5 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="DoAnTotNghiepModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
   <EntityType Name="tbl_config">
     <Key>
       <PropertyRef Name="ID" />
@@ -74,6 +84,7 @@
     <Property Name="NamHoc" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="TienHoanTra" Type="Int32" />
     <Property Name="LyDoTra" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="NgayLap" Type="DateTime" Precision="3" />
     <Property Name="GhiChu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="tbl_hocsinh" Relationship="Self.FK_tbl_hoantrahocphi_tbl_hocsinh" FromRole="tbl_hoantrahocphi" ToRole="tbl_hocsinh" />
   </EntityType>
@@ -662,6 +673,7 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="DoAnTotNghiepEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <EntitySet Name="tbl_config" EntityType="Self.tbl_config" />
     <EntitySet Name="tbl_dmhocphi" EntityType="Self.tbl_dmhocphi" />
     <EntitySet Name="tbl_doituonguutien" EntityType="Self.tbl_doituonguutien" />

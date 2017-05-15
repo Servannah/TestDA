@@ -8,12 +8,14 @@ using TestDA.Areas.Manager.Models.EntityManager;
 using TestDA.Areas.Manager.Models.ViewModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using TestDA.Security;
 
 namespace TestDA.Areas.Manager.Controllers
 {
-    public class TPNhapKhoController : Controller
+    public class TPNhapKhoController : BaseController
     {
         // GET: Manager/TPNhapKho
+         [AuthorizeRoles("Admin", "HieuTruong", "NhaBep")]
         public ActionResult Index(DateTime? ngayNK, string tukhoa, int page = 1, int pageSize = 20)
         {
             TPNhapKhoManager LM = new TPNhapKhoManager();

@@ -26,14 +26,14 @@
             <div class="body-nhaCC form-horizontal">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
-                    @Html.LabelFor(model => model.tenLop, htmlAttributes: new { @class = "control-label col-sm-2" })
-                    <div class="col-sm-6">
+                    @Html.LabelFor(model => model.tenLop,"Tên lớp *", htmlAttributes: new { @class = "control-label col-sm-2" })
+                    <div class="col-sm-5">
                         @Html.EditorFor(model => model.tenLop, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.tenLop, null, new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(model => model.nhomLop, htmlAttributes: new { @class = "control-label col-sm-2" })
+                    @Html.LabelFor(model => model.nhomLop,"Nhóm lớp *", htmlAttributes: new { @class = "control-label col-sm-2" })
                     <div class="col-sm-4">
                         @Html.DropDownListFor(model => model.nhomLop, null, "--Chọn nhóm lớp-- ", new { @class = "form-control", @id = "name-group", @style = "width: 300px;" })
                         @Html.ValidationMessageFor(model => model.nhomLop, null, new { @class = "text-danger" })
@@ -49,7 +49,7 @@
                 <div class="form-group">
                     @Html.ActionLink("<< Quay lại danh sách", "Index", "Lop")
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="reset" class="btn btn-default" style="margin-right:10px;"><i class="fa fa-refresh"></i>Làm mới</button><button type="submit" value="Lưu thông tin" class="btn btn-default"><i class="fa fa-save"></i>Lưu thông tin</button>
+                        <button type="reset" class="btn btn-primary" style="margin-right:10px;"><i class="fa fa-refresh"></i>Làm mới</button><button type="submit" value="Lưu thông tin" class="btn btn-primary"><i class="fa fa-save"></i>Lưu thông tin</button>
                     </div>
                 </div>
             </div>

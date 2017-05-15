@@ -43,7 +43,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ngayLap, htmlAttributes: new { @class = "col-sm-2" })
                     <div class="col-sm-4">
-                        @Html.TextBoxFor(model => model.ngayLap, "{0:yyyy-MM-dd}", new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                        @Html.TextBoxFor(model => model.ngayLap, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" } )
                         @Html.ValidationMessageFor(model => model.ngayLap, null, new { @class = "text-danger" })
                     </div>
                 </div>

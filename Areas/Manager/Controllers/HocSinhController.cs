@@ -8,12 +8,14 @@ using TestDA.Areas.Manager.Models.EntityManager;
 using TestDA.Areas.Manager.Models.ViewModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using TestDA.Security;
 
 namespace TestDA.Areas.Manager.Controllers
 {
-    public class HocSinhController : Controller
+    public class HocSinhController : BaseController
     {
         // GET: Manager/HocSinh
+        [AuthorizeRoles("Admin", "HieuTruong", "VanThu","GiaoVien")]
         public ActionResult Index()
         {
             return View();

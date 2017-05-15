@@ -112,7 +112,7 @@
                                     <td>@Html.DisplayFor(m => i.ngayLap)</td>
                                     <td>@Html.DisplayFor(m => i.tenNguoiLap)</td>
                                     <td>
-                                        <a href="/Manager/CTHoaDon/ChucNang?type=Edit&maPhieuHD=@i.maPhieuHD">Chi tiết</a>                                                                              
+                                        <a href="/Manager/CTHoaDon/ChucNang?type=Edit&maPhieuHD=@i.maPhieuHD">Chi tiết</a>
                                     </td>
                                     <td>@Html.DisplayFor(m => i.tongTien)</td>
                                     <td> @Html.DisplayFor(m => i.ghiChu)</td>
@@ -197,12 +197,32 @@
     <script>
         $(function () {
             //xóa một bản ghi
-            $("a.lnkDelete").on("click", function () {
-                //xóa một bản ghi
-                $("a.lnkDelete").on("click", function (e) {
-                    var id = $(this).data('value');//lấy giá trị id của bản ghi
-                    var $tr = $(this).closest('tr');//lấy hàng
-                    $("#dialog-confirm").dialog({
+            $("a.lnkDelete").on("click", function (e) {
+                var id = $(this).data('value');//lấy giá trị id của bản ghi
+                var $tr = $(this).closest('tr');//lấy hàng
+                var answer = confirm("Bạn có chắc chắn xóa bài viết là " + id + " . Tiếp tục?");
+                if (answer)
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("XoaPhieuHD", "PhieuHoaDon"))",
+                        data: { maPhieuHD: id },
+                        success: function (data) {
+                            if (data == 0) {
+                                $tr.css("background-color", "#ec645e");
+                                $tr.fadeOut(1600, "linear", function () { $tr.remove(); });
+                                location.href = "@Url.Action("Index","PhieuHoaDon")";
+                                //hiển thị thông báo ra màn hình
+                                message_success("Xóa bản ghi thành công");
+                            } else {
+                                alert("Bản ghi này có chứa trong bảng khác. Hãy xóa những dữ liệu đó trước!");
+                            }
+                        },
+                        error: function (error) {
+
+                        }
+
+                    });
+                @*$("#dialog-confirm").dialog({
                         autoOpen: false,
                         resizable: false,
                         width: 350,
@@ -252,9 +272,8 @@
                 }
                             ]
                     });
-                    $("#dialog-confirm").dialog("open");
-                    return false;
-                });
+                    $("#dialog-confirm").dialog("open");*@
+                return false;
             });
             //Xóa một bản ghi
             function empty() {

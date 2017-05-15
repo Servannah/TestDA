@@ -32,13 +32,13 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.maThucDon, htmlAttributes: new { @class = "col-sm-4" })
                                 <div class="col-sm-6">
-                                    @Html.DropDownListFor(model => model.maThucDon, null, "--Chọn thực đơn-- ", new { @class = "form-control" })
+                                    @Html.DropDownListFor(model => model.maThucDon, null, "--Chọn thực đơn-- ", new { @class = "form-control", @id = "xThucDon" })
                                     @Html.ValidationMessageFor(model => model.maThucDon, null, new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.soPhieuHD, htmlAttributes: new { @class = "col-sm-4" })
-                                <div class="col-sm-7">
+                                <div class="col-sm-6">
                                     @Html.EditorFor(model => model.soPhieuHD, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.soPhieuHD, null, new { @class = "text-danger" })
                                 </div>
@@ -46,8 +46,15 @@
                             <div class="form-group">
                                 @Html.LabelFor(model => model.ngayLap, htmlAttributes: new { @class = "col-sm-4" })
                                 <div class="col-sm-6">
-                                    @Html.EditorFor(model => model.ngayLap, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                                    @Html.TextBoxFor(model => model.ngayLap, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
                                     @Html.ValidationMessageFor(model => model.ngayLap, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongTien, htmlAttributes: new { @class = "col-sm-4" })
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(model => model.tongTien, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.tongTien, null, new { @class = "text-danger" })
                                 </div>
                             </div>
                         </div>
@@ -69,13 +76,87 @@
                         </div>
                     </fieldset>
                 </div>
+                <div class="showThucDon">
+                    @*//hiển thị thông tin thực đơn được chọn*@
+                </div>
                 <div class="row them-thucPham">
                     @*Bảng thêm thực phẩm vào hóa đơn*@
-                   @* @Html.Action("ThemTPPartial", "PhieuHoaDon")*@
+                    <div class="row">
+                        <div style="margin-left: 15px">  <h4>THÔNG TIN THỰC PHẨM</h4>  </div>
+                        <div class="col-md-8">
+                            @*hiển thị danh sách thực phẩm của hóa đơn*@
+                            @if (@ViewBag.Type == 1)
+                            {
+                                <a href="javarscript:void()" id="addNew" class=""><i class="fa fa-plus"></i>Thêm mới</a>
+                            }
+
+                            <table id="dataTable" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr class="th-style">
+                                        <th>Thực phẩm</th>
+                                        <th>Số lượng (kg)</th>
+                                        <th>Ghi chú</th>
+                                        @if (@ViewBag.Type == 1)
+                                        {
+                                            <th>Chức năng</th>
+                                        }
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.thucPham != null && Model.thucPham.Count > 0)
+                                    {
+                                        int j = 0;
+                                        for (int i = 0; i < Model.thucPham.Count; i++)
+                                        {
+                                            @Html.HiddenFor(m => m.thucPham[j].maHDCT)
+                                            @Html.HiddenFor(m => m.thucPham[j].maHoaDon)
+                                            <tr>
+                                                <td class="custom-chosen">
+                                                    @{
+                                            var list = (ViewBag.maThucPham as SelectList).ToList();
+                                            list.ForEach(s => s.Selected = false);
+                                            if (Model.thucPham[j].maThucPham != null)
+                                            {
+                                                list.First(s => s.Value == Model.thucPham[j].maThucPham.ToString()).Selected = true;
+                                            }
+                                                    }
+                                                    @Html.DropDownListFor(m => m.thucPham[j].maThucPham, list, "--Chọn thực phẩm--", new { @class = "form-control xThucPham" })
+                                                    @Html.ValidationMessageFor(m => m.thucPham[j].maThucPham, null, new { @class = "text-danger" })
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.thucPham[j].soLuong, new { htmlAttributes = new { @class = "form-control soluong" } })
+                                                    @Html.ValidationMessageFor(m => m.thucPham[j].soLuong, null, new { @class = "text-danger" })
+                                                </td>
+                                                <td>
+                                                    @Html.EditorFor(m => m.thucPham[j].ghiChu, new { htmlAttributes = new { @class = "form-control ghichu" } })
+                                                    @Html.ValidationMessageFor(m => m.thucPham[j].ghiChu, null, new { @class = "text-danger" })
+                                                </td>
+                                                @if (@ViewBag.Type == 1)
+                                                {
+                                                    <td>
+                                                        @if (j > 0)
+                                                        {
+                                                            <a href="javarscript:void(0)" class="lnkRemove">Xóa</a>
+                                                        }
+
+                                                    </td>
+                                                }
+                                            </tr>
+                                                j++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                    @* end*@
                 </div>
                 <div>
                     <div class="form-group">
-                        <i class="fa fa-angle-double-left"> </i>@Html.ActionLink("Quay lại danh sách", "Index", "PhieuHoaDon")
+                        @Html.ActionLink("<< Quay lại danh sách", "Index", "PhieuHoaDon")
                         <div class="col-sm-offset-2 col-sm-10">
                             <button type="reset" class="btn btn-primary" style="margin-right:10px;"><i class="fa fa-refresh"></i>Làm mới</button><button type="submit" value="Lưu thông tin" class="btn btn-primary"><i class="fa fa-save"></i>Lưu thông tin</button>
                         </div>
@@ -85,21 +166,99 @@
         }
     </div>
 </section>
+<style>
+    .custom-chosen .chosen-container-single .chosen-single {
+        display: block;
+        width: 100%;
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.428571429;
+        color: #555;
+        vertical-align: middle;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+        -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+</style>
+<link href="~/Content/css/chosen.min.css" rel="stylesheet" />
 @section Scripts{
+    <script src="~/Scripts/chosen.jquery.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            //$('#ngayGiaoNhan').datepicker();
-            //$('#ngayThanhToan').datepicker();
-            //tính tiền còn nợ
-            $('#daThanhToan').change(function () {
-                var tongTien = $('#tongTien').val();
-                var daThanhToan = $('#daThanhToan').val();
-                if (tongTien != null && daThanhToan != null) {
-                    var conNo = tongTien - daThanhToan;
-                    $('#conNo').val(conNo);
-                }
-            });//tính tiền còn nợs
-        });
+
+        $(function () {
+            $(".chosen-select").chosen();
+
+            $('#xThucDon').on("change", function () {
+
+                // to get the value and id of selected option
+                var str = $('#xThucDon option:selected').text();
+                var value = $('#xThucDon option:selected').val();
+                //hiển thị chi tiết thực đơn được chọn
+                $.ajax({
+                    type: "POST",
+                    url: "@(Url.Action("ChiTietTD", "PhieuHoaDon"))",
+                    data: { maThucDon: value },
+                    success: function (data) {
+                        $('.showThucDon').html(data);
+                    },
+                    error: function (error) {
+
+                    }
+
+                });
+            });
+            ////
+            // Add new row
+            $("#addNew").click(function (e) {
+                e.preventDefault();
+                var $tableBody = $("#dataTable");
+                var $trLast = $tableBody.find("tr:last");
+                var $trNew = $trLast.clone();
+
+                var suffix = $trNew.find(':input:first').attr('name').match(/\d+/);
+                $trNew.find("td:last").html('<a href="javarscript:void(0)" class="lnkRemove">Xóa</a>');
+                console.log($trNew.find(':input'));
+                $.each($trNew.find(':input'), function (i, val) {
+                    // Replaced Name
+                    var oldN = $(this).attr('name');
+                    console.log(oldN);
+                    var newN = oldN.replace('[' + suffix + ']', '[' + (parseInt(suffix) + 1) + ']');
+                    console.log(newN);
+                    $(this).attr('name', newN);
+                    //Replaced value
+                    var type = $(this).attr('type');
+                    //
+                    if (type == "text") {
+                        console.log(this);
+                        //$(this).find('.soluong').attr('value', '0');
+                        //$(this).find('.ghichu').attr('value', '');
+                        $(this).attr('value', "");
+                    }
+                    // If you have another Type then replace with default value
+                    $(this).removeClass("input-validation-error");
+
+                });
+                $trLast.after($trNew);
+            });
+            // 2. Remove
+            $('#dataTable').on("click", 'a.lnkRemove', function (e) {
+                e.preventDefault();
+                $(this).parent().parent().remove();
+            });
+            ////
+            $(".xThucPham").on("change", function () {
+                var $row = $(this).closest("tr");   // Finds the closest row <tr>      
+                var maThucPham = $row.find(".xThucPham option:selected").val();
+                console.log(maThucPham);
+            });
+            /////
+        })
     </script>
+
 }
 

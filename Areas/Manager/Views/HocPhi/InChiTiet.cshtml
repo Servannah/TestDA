@@ -1,0 +1,101 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.HocPhiData
+
+@{
+    ViewBag.Title = "InChiTiet";
+    Layout = null;
+}
+
+<section class="content">
+    <div class="container body-content">
+        <div class="body-style">
+            <div class="thongTinHocPhi">
+                <div style="text-align:center;">
+                    <h2>PHIẾU THU HỌC PHÍ</h2>
+                    <label>Số phiếu:</label> @Html.DisplayFor(model => model.maHocPhi)
+                    <hr width="200px" style="border-top: 2px dotted #000; margin-top:10px;" />
+                </div>
+                @*//hiển thị danh sách thông tin phiếu nhập kho*@
+                <table class="table">
+                    <tr>
+                        <th>Mã học sinh:</th>
+                        <td>@Html.DisplayFor(model => model.maHocSinh)</td>
+                        <th>Tên học sinh:</th>
+                        <td>@Html.DisplayFor(model => model.tenHocSinh)</td>
+                    </tr>
+                    <tr>
+                        <th>Nội dung:</th>
+                        <td>@Html.DisplayFor(model => model.tenHDHocPhi)</td>
+                        <th>Thu học phí tháng: </th>
+                        <td>@Html.DisplayFor(model => model.thang)</td>
+                        <th>Năm học: </th>
+                        <td>@Html.DisplayFor(model => model.namHoc)</td>
+                    </tr>
+                    <tr>
+                        <th>Hình thức thu: </th>
+                        <td>
+                            @if (@Model.loaiHP == "1")
+                            {
+                                <span>Thu theo tháng</span>
+                            }
+                            else
+                            {
+                                <span>Thu theo năm</span>
+                            }
+                        </td>
+                    </tr>
+                </table>
+                <div id="TTKhoanPhi">
+                    @Html.Action("KhoanPhiPartial", "HocPhi", new { maHocSinh = @Model.maHocSinh, namHoc = @Model.namHoc, loaiHP = @Model.loaiHP })
+                </div>
+                <div class="thongTinThanhToan">
+                    @*thông tin tiền thanh toán*@
+
+                    <p>Đã thu: @Html.DisplayFor(model => model.daThu) <span>(VND)</span></p>
+
+                    <p>Còn nợ: @Html.DisplayFor(model => model.conNo) <span>(VND)</span></p>
+                    <table style="width:100%;">
+                        <tr>
+                            <th>
+                                Người nộp
+                            </th>
+                            <th>
+                                <p>Ngày nộp: @Html.DisplayFor(model => model.ngayThu, "{0:yyyy-MM-dd}")</p>
+                                Người thu
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+
+                            </th>
+                            <th>
+                                @Html.DisplayFor(model => model.tenNguoiThu)
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .textCenter {
+        text-align: center;
+    }
+    #TTKhoanPhi{
+        margin-bottom:20px;
+    }
+</style>
+
+@section Scripts{
+    <script>
+
+    </script>
+}
+
+
+
+
+
+
+
+

@@ -114,6 +114,7 @@ namespace TestDA.Areas.Manager.Controllers
             }
             //lấy danh sách thực phẩm trong cơ sở dữ liệu
             setThucPham(obj.maThucPham);
+            ViewBag.maHoaDon = obj.maHoaDon;
 
             return View(obj);
         }
@@ -174,7 +175,6 @@ namespace TestDA.Areas.Manager.Controllers
         {
             CTHoaDonManager khoTP = new CTHoaDonManager();
             int kq = (int)khoTP.XoaCTTP(maHDCT);
-            TempData["Success"] = "Xóa bản ghi thành công";
             return Json(kq);
         }//kết thúc xóa bỏ phiếu nhập kho
     }

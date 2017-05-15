@@ -8,12 +8,14 @@ using TestDA.Areas.Manager.Models.EntityManager;
 using TestDA.Areas.Manager.Models.ViewModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using TestDA.Security;
 
 namespace TestDA.Areas.Manager.Controllers
 {
-    public class NhomThucPhamController : Controller
+    public class NhomThucPhamController : BaseController
     {
         // GET: nhóm thực phẩm
+        [AuthorizeRoles("Admin", "HieuTruong", "NhaBep")]
         public ActionResult Index(string tukhoa)//từ khóa tìm kiếm
         {
             NhomThucPhamManager nhomtin = new NhomThucPhamManager();

@@ -8,12 +8,14 @@ using TestDA.Areas.Manager.Models.EntityManager;
 using TestDA.Areas.Manager.Models.ViewModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using TestDA.Security;
 
 namespace TestDA.Areas.Manager.Controllers
 {
-    public class PhieuHoaDonController : Controller
+    public class PhieuHoaDonController : BaseController
     {
         // GET: Manager/PhieuNhapKho
+        [AuthorizeRoles("Admin", "HieuTruong", "VanThu")]
         public ActionResult Index(string tukhoa, int page = 1, int pageSize = 20)
         {
             PhieuHoaDonManager phieuHD = new PhieuHoaDonManager();
@@ -54,6 +56,13 @@ namespace TestDA.Areas.Manager.Controllers
             data.danhSachCTHD = KTP.DSThucPhamTheoPhieuHD(maHoaDon);
             return PartialView(data);
         }
+        //lấy chi tiết thực đơn 
+        public ActionResult ChiTietTD(int maThucDon)
+        {
+            PhieuHoaDonManager PHM = new PhieuHoaDonManager();
+            ThucDonData data = PHM.ChiTietThucDon(maThucDon);
+            return PartialView(data);
+        }
         ///tạo partialView thêm mới thực phẩm vào chi tiết hóa đơn
         public ActionResult ThemTPPartial()
         {
@@ -72,7 +81,6 @@ namespace TestDA.Areas.Manager.Controllers
                     ghiChu =""
                 }
             };
-            //lấy danh sách thực phẩm nhập kho
             string type = Request.QueryString["type"].ToString();//lấy thuộc tính type trong đường dẫn
             if (type == "Insert")
             {
@@ -129,17 +137,39 @@ namespace TestDA.Areas.Manager.Controllers
             data.danhSachCTHD = KTP.DSThucPhamTheoPhieuHD(id);
             return PartialView(data);
         }
+        public void setThucPham(int? selectedID = null)
+        {
+            //lấy danh sách thực phẩm trong cơ sở dữ liệu
+            ThucPhamManager thucPham = new ThucPhamManager();
+            ViewBag.maThucPham = new SelectList(thucPham.ListThucPham(), "maThucPham", "tenThucPham", selectedID);
+        }
         //thực hiện chức năng thêm, sửa bản ghi
         public ActionResult ChucNang()
         {
             string type = Request.QueryString["type"].ToString();//lấy thuộc tính type trong đường dẫn
+            List<CTHoaDonData> ktp = new List<CTHoaDonData>{
+                new CTHoaDonData { 
+                    maHDCT = 0, 
+                    maHoaDon = 0,
+                    maThucPham = null,
+                    ngayTao = DateTime.UtcNow.Date,
+                    soLuong =0,
+                    donViTinh ="",
+                    thanhTien =0,
+                    ghiChu =""
+                }
+            };
             if (type == "Insert")
             {
                 ViewBag.ChucNang = "Thêm mới hóa đơn";
                 setThucDon();
                 setNhanVien();
+                setThucPham();
+                ViewBag.Type = 1;
+                HoaDonData PNK = new HoaDonData();
+                PNK.thucPham = ktp;
 
-                return View();
+                return View(PNK);
             }
             else
             {
@@ -147,10 +177,21 @@ namespace TestDA.Areas.Manager.Controllers
                 PhieuHoaDonManager PHD = new PhieuHoaDonManager();
                 string maHoaDon = Request.QueryString["maPhieuHD"].ToString();
                 int id = int.Parse(maHoaDon);
-                HoaDonData PNK = PHD.LayChiTietPhieuHD(id);
+                HoaDonData PNK = new HoaDonData();
+
+                PNK = PHD.LayChiTietPhieuHD(id);
                 //lấy danh sách nhân viên 
                 setNhanVien(PNK.nguoiLap);
                 setThucDon(PNK.maThucDon);
+                setThucPham();
+                ViewBag.Type = 2;
+                //lấy danh sách thực phẩm               
+                CTHoaDonManager KTP = new CTHoaDonManager();
+                PNK.thucPham = KTP.DSThucPhamTheoPhieuHD(id);
+                if (PNK.thucPham.Count == 0)
+                {
+                    PNK.thucPham = ktp;
+                }
 
                 return View(PNK);
             }
@@ -166,7 +207,7 @@ namespace TestDA.Areas.Manager.Controllers
         {
             //lấy danh sách nhân viên trong cơ sở dữ liệu
             NhanVienManager nhanVien = new NhanVienManager();
-            ViewBag.nguoiLap = new SelectList(nhanVien.ListNhanVien(), "maNV", "maHoTen",selectedID);
+            ViewBag.nguoiLap = new SelectList(nhanVien.ListNhanVien(), "maNV", "maHoTen", selectedID);
         }
         //thực hiện chức năng thêm, sửa bản ghi
         [HttpPost]
@@ -184,6 +225,7 @@ namespace TestDA.Areas.Manager.Controllers
                 }
                 setNhanVien();
                 setThucDon();
+                setThucPham();
                 return View(obj);
             }
             else
@@ -197,6 +239,7 @@ namespace TestDA.Areas.Manager.Controllers
                 }
                 setThucDon(obj.maThucDon);
                 setNhanVien(obj.nguoiLap);
+                setThucPham();
                 return View(obj);
             }
         }
@@ -205,7 +248,6 @@ namespace TestDA.Areas.Manager.Controllers
         {
             PhieuHoaDonManager phieuND = new PhieuHoaDonManager();
             int kq = (int)phieuND.XoaPhieuHD(maPhieuHD);
-            TempData["Success"] = "Xóa bản ghi thành công";
             return Json(kq);
         }//kết thúc xóa bỏ hóa đơn
     }

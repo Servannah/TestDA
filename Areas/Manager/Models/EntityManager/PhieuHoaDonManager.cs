@@ -8,6 +8,7 @@ using System.Data.Entity.Validation;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using TestDA.Common;
+using System.Data.Entity;
 
 namespace TestDA.Areas.Manager.Models.EntityManager
 {
@@ -139,22 +140,23 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                     db.tbl_hoadon.Add(phieuHD);
                     db.SaveChanges();
                     //thêm mới danh sách thực phẩm vào bảng chi tiết hóa đơn
-                    //foreach (var i in ktp)
-                    //{
-                    //    tbl_hdchitiet ct = new tbl_hdchitiet();
+                    foreach (var i in obj.thucPham)
+                    {
+                        tbl_hdchitiet ct = new tbl_hdchitiet();
 
-                    //    ct.MaHDCT = i.maHDCT;
-                    //    ct.MaPhieuHoaDon = phieuHD.MaPhieuHD;
-                    //    ct.MaThucPham = i.maThucPham;
-                    //    ct.NgayLap = obj.ngayLap;
-                    //    ct.DonViTinh = i.donViTinh;
-                    //    ct.SoLuong = i.soLuong;
-                    //    ct.ThanhTien = i.soLuong * i.giaCa;
-                    //    ct.GhiChu = i.ghiChu;
+                        ct.MaHDCT = i.maHDCT;
+                        ct.MaPhieuHoaDon = phieuHD.MaPhieuHD;
+                        ct.MaThucPham = i.maThucPham;
+                        ct.NgayLap = DateTime.Now;
+                        ct.DonViTinh = "kg";
+                        ct.SoLuong = i.soLuong;
+                        var tp = db.tbl_thucpham.Where(o => o.MaThucPham == ct.MaThucPham).FirstOrDefault();
+                        ct.ThanhTien = i.soLuong * tp.GiaCa;
+                        ct.GhiChu = i.ghiChu;
 
-                    //    db.tbl_hdchitiet.Add(ct);
-                    //    db.SaveChanges();
-                    //}
+                        db.tbl_hdchitiet.Add(ct);
+                        db.SaveChanges();
+                    }
                 }
                 catch (DbEntityValidationException e)
                 {
@@ -183,6 +185,27 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                             kq.GhiChu = obj.ghiChu;
 
                             db.SaveChanges();
+                            //update lại thông tin trong bảng chi tiết hóa đơn
+                            foreach (var i in obj.thucPham)
+                            {
+                                var rs = db.tbl_hdchitiet.Where(o => o.MaHDCT == i.maHDCT);
+                                var maxId = db.tbl_hdchitiet.Max(o => o.MaHDCT);
+                                if (rs != null)
+                                {
+                                    tbl_hdchitiet ct = rs.FirstOrDefault();
+                                    ct.MaHDCT = i.maHDCT;
+                                    ct.MaPhieuHoaDon = kq.MaPhieuHD;
+                                    ct.MaThucPham = i.maThucPham;
+                                    ct.NgayLap = DateTime.Now;
+                                    ct.DonViTinh = "kg";
+                                    ct.SoLuong = i.soLuong;
+                                    var tp = db.tbl_thucpham.Where(o => o.MaThucPham == ct.MaThucPham).FirstOrDefault();
+                                    ct.ThanhTien = i.soLuong * tp.GiaCa;
+                                    ct.GhiChu = i.ghiChu;
+
+                                }
+                                 db.SaveChanges();
+                            }                           
                         }
                         dbContextTransaction.Commit();
                     }

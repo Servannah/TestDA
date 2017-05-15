@@ -15,8 +15,24 @@
 </section>
 <section class="content">
     <!-- Main content -->
-    <div class="container body-content">
-        <h2>Hi, <b>@Context.User.Identity.Name</b>Chào mừng bạn đến với trang quản trị.</h2>
-        @Html.ActionLink("Signout", "SignOut", "Account")
+    <div class="container body-content admin-content">
+        <h2>Hi, <b>@Context.User.Identity.Name</b><br />Chào mừng bạn đến với trang quản trị.</h2>
+        <div class="bg-admin">
+            <img src="~/Content/images/kid.png" />
+        </div>
+        @*@Html.ActionLink("Signout", "SignOut", "Account")*@
     </div>
 </section>
+<style>
+    .admin-content h2 {
+        text-align: center;
+    }
+
+    .bg-admin img {
+        width: 40%;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+</style>

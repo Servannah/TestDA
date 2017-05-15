@@ -1,0 +1,189 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.HoanTraHocPhiData
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o"></i>
+        Hoàn trả học phí
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Hoàn trả học phí</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- Main content -->
+    <div class="container body-content">
+        <div class="content-hthp">
+            <h2>Danh sách hoàn trả học phí</h2>
+            @*//form tìm kiếm*@
+            <div class="form-search">
+                @using (Html.BeginForm("Index", "HoanTraHocPhi", FormMethod.Get, new { @class = "form-inline", role = "search", id = "search-form", onsubmit = "return empty();" }))
+                {
+                    @*@Html.AntiForgeryToken()*@
+                    if (@TempData["Success"] != null)
+                    {
+                        <div class="add-sucess">
+                            <script>
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "newestOnTop": false,
+                                    "progressBar": false,
+                                    "positionClass": "toast-bottom-right",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "5000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+                                toastr["success"]("@TempData["Success"]");
+                            </script>
+                        </div>
+                    }
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label class="choice-type btn btn-default disabled">Tìm kiếm thông tin <i class="fa fa-angle-double-right" aria-hidden="true"></i></label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Nhập thông tin cần tìm...." name="maHocSinh" value="@ViewBag.TuKhoaTK" id="search-box" style="width:200px;">
+                        </div>
+                        <div class="form-group">
+                            @Html.DropDownList("namHoc", ViewBag.namHoc as SelectList, "--Chọn năm học-- ", new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>Tìm kiếm</button>
+                        </div>
+                        <div class="clearfix">  </div>
+                        @Html.Raw("<span class='pull-right'> Tổng số bản ghi là: " + Model.danhSachHoanTra.Count().ToString() + "</span>")
+                    </div>
+                }
+            </div>
+            @*thêm mới bản ghi*@
+            <div class="form-inline" style=" margin: 10px 0;">
+                <div class="form-group">
+                    <a href="/Manager/HoanTraHocPhi/ChucNang?type=Insert" class="btn btn-primary hidden-xs"><i class="glyphicon glyphicon-plus"></i>Thêm mới </a>
+                </div>
+            </div>
+        </div>
+        @*kết thúc form tìm kiếm*@
+        <div id="dsHocPhiHT">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr class="th-style">
+                        <th>STT</th>
+                        <th>Mã học sinh</th>
+                        <th>Tên học sinh</th>
+                        <th>Lớp</th>
+                        <th>Năm học</th>
+                        <th>Tiền hoàn trả</th>
+                        <th>Lý do trả</th>
+                        <th>Ngày lập</th>
+                        <th>Ghi chú</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.danhSachHoanTra.Count > 0)
+                        {
+                            int j = 0;
+                            foreach (var i in Model.danhSachHoanTra)
+                            {
+                                j++;
+                                <tr>
+                                    <td>@j.ToString()</td>
+                                    <td>@Html.DisplayFor(m => i.maHocSinh)</td>
+                                    <td>@Html.DisplayFor(m => i.tenHocSinh)</td>
+                                    <td>@Html.DisplayFor(m => i.tenLop)</td>
+                                    <td>@Html.DisplayFor(m => i.namHoc)</td>
+                                    <td>@Html.DisplayFor(m => i.tienHoanTra)</td>
+                                    <td>@Html.DisplayFor(m => i.lyDoTra)</td>
+                                    <td>@Html.DisplayFor(m => i.ngayLap)</td>
+                                    <td> @Html.DisplayFor(m => i.ghiChu)</td>
+                                    <td>
+                                        <a href="/Manager/HoanTraHocPhi/ChucNang?type=Edit&maHTHP=@i.maHTHP" class="lnkEdit" data-value="@i.maHTHP" id="hpHoanTra_@i.maHTHP">Sửa | </a>
+                                        <a href="javascript:void(0)" class="lnkDelete" data-value="@i.maHTHP" id="groupHPHT_@i.maHTHP">Xóa</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="10"> <p style="text-align:center;font-weight:bold;">Không có bản ghi nào</p></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+        $(function () {
+            //xóa một bản ghi
+            $("a.lnkDelete").on("click", function () {
+                var id = $(this).data('value');//lấy giá trị id của bản ghi
+                console.log(id);
+                var $tr = $(this).closest('tr');
+                var answer = confirm("Bạn chắc chắn xóa bản ghi này . Tiếp tục?");
+                if (answer)
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("XoaThongTin", "HoanTraHocPhi"))",
+                        data: { maHTHP: id },
+                        success: function (data) {
+                            if (data == 0) {
+                                $tr.css("background-color", "#ec645e");
+                                location.reload();
+                                // $("#listNhaCC").load("(Url.Action("NhaCCPartial", "NhaCungCap"))");
+                                //hiển thị thông báo ra màn hình
+                                toastr.options = {
+                                    "closeButton": true,
+                                    "debug": false,
+                                    "newestOnTop": false,
+                                    "progressBar": false,
+                                    "positionClass": "toast-bottom-right",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "5000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+
+                                toastr["success"]("Xóa bản ghi thành công");
+
+                            } else {
+                                alert("Có lỗi xảy ra!");
+                            }
+                        },
+                        error: function (error) {
+                        }
+                    });
+                return false;
+            });
+        })//Xóa một bản ghi
+    </script>
+}
+
+
+
+
+
+

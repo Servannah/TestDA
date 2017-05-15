@@ -68,30 +68,34 @@
                 <h4>DANH SÁCH HỌC SINH CHƯA XẾP LỚP</h4>
 
                 @*xếp lớp*@
-                @using (Html.BeginForm("Index", "XepLop", FormMethod.Post, new { @id = "xepLopHS" }))
-                {
-                    <div class="insetClass">
-                        <fieldset class="the-fieldset">
-                            <legend class="the-legend">Thực hiện:</legend>
-                            <div class="form-inline">
-                                <div class="form-group col-md-4">
-                                    @Html.DropDownListFor(model => model.namHoc, ViewBag.namHoc as SelectList, "--Năm học-- ", new { @class = "form-control", @id = "NamHoc" })
-                                    @Html.ValidationMessageFor(model => model.namHoc, null, new { @class = "text-danger", @id = "error-namHoc" })
-                                </div>
-                                <div class="form-group col-md-4">
-                                    @Html.DropDownListFor(model => model.maLop, null, "--Chọn lớp-- ", new { @class = "form-control", @id = "MaLop" })
-                                    @Html.ValidationMessageFor(model => model.maLop, null, new { @class = "text-danger", @id = "error-maLop" })
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <a ref="javascript:void()" class="lnkXepLop btn btn-primary"> Xếp lớp</a>
-                                </div>
-                                <div class="clearfix">  </div>
-                            </div>
 
-                            @*xem danh sách học sinh*@
-                        </fieldset>
-                    </div>
-                }
+                <div class="insetClass">
+                    <fieldset class="the-fieldset">
+                        <legend class="the-legend">Thực hiện:</legend>
+                        <div class="">
+                            @using (Html.BeginForm("Index", "XepLop", FormMethod.Post, new { @id = "xepLopHS" }))
+                            {
+                                <div class="xepLop">
+                                    <div class="form-group col-md-4">
+                                        @Html.DropDownListFor(model => model.namHoc, ViewBag.namHoc as SelectList, "--Năm học-- ", new { @class = "form-control", @id = "NamHoc" })
+                                        @Html.ValidationMessageFor(model => model.namHoc, null, new { @class = "text-danger", @id = "error-namHoc" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        @Html.DropDownListFor(model => model.maLop, null, "--Chọn lớp-- ", new { @class = "form-control", @id = "MaLop" })
+                                        @Html.ValidationMessageFor(model => model.maLop, null, new { @class = "text-danger", @id = "error-maLop" })
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <a ref="javascript:void()" class="lnkXepLop btn btn-primary"> Xếp lớp</a>
+                                    </div>
+                                </div>
+                            }
+                            <div class="clearfix">  </div>
+                        </div>
+
+                        @*xem danh sách học sinh*@
+                    </fieldset>
+                </div>
+
                 @*kết thúc form xếp lớp*@
                 <div class="listStudent" style="margin-top:15px;">
                     <table class="table table-bordered table-hover" id="dsHSLop">
@@ -248,8 +252,7 @@
                 }
                 else {
                     if ($form.valid()) {
-                        //var answer = confirm("Bạn có chắc chắn xóa bản ghi đã chọn ?");
-                        // if (answer) {
+
                         $.ajax({
                             type: "POST",
                             url: '@(Url.Action("ThemHocSinhLop", "XepLop"))',
@@ -297,9 +300,9 @@
                             $(".ui-dialog-titlebar-close").hide();
 
                             var url = '@Url.Action("TimKiemHocSinhLopPartial", "XepLop")';
-                            url += '/?maHocSinh=' + maHocSinh + '&namHoc=' + namHoc;
+                            url += '?maHocSinh=' + maHocSinh + '&namHoc=' + namHoc;
                             console.log(url);
-                            //$(this).load(url);
+                            $(this).load(url);
                         },
                         buttons: { "Đóng": function () { $(this).dialog("close"); } }
 

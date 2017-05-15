@@ -42,19 +42,19 @@
                         <input type="text" class="form-control" placeholder="Nhập thông tin cần tìm...." name="tukhoa" value="@ViewBag.TuKhoaTK" id="search-box" style="width:200px;">
                     </div>
                     <div class="form-group">
-                        @Html.DropDownList("nhomLop",null, "--Chọn nhóm lớp-- ", new { @class = "form-control", @id = "name-group" })
+                        @Html.DropDownList("nhomLop", null, "--Chọn nhóm lớp-- ", new { @class = "form-control", @id = "name-group" })
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>Tìm kiếm</button>
                     </div>
-                    <div class="clearfix">  </div>                    
+                    <div class="clearfix">  </div>
                 </div>
             }
         </div>
         @*thêm mới bản ghi*@
         <div class="form-chucnang" style=" margin: 10px 0;">
-                <a href="/Manager/Lop/ChucNang?type=Insert" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Thêm mới lớp học</a>
-                 @Html.Raw("<span class='pull-right'> Tổng số bản ghi là: " + Model.danhSachLop.Count().ToString() + "</span>")   
+            <a href="/Manager/Lop/ChucNang?type=Insert" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>Thêm mới lớp học</a>
+            @Html.Raw("<span class='pull-right'> Tổng số bản ghi là: " + Model.danhSachLop.Count().ToString() + "</span>")
         </div>
     </div>
     @*kết thúc form tìm kiếm*@
@@ -97,12 +97,12 @@
         </tbody>
     </table>
     @*xóa một bản ghi*@
-    <div id="dialog-confirm" class="modal" style="display: none">
-        <p>
-            <i class="fa fa-warning" style="float: left; margin: 0 7px 20px 0; color:#ffd800;"></i>
-            <span>Bạn chắc chắn xóa bản ghi này. Tiếp tục?</span>
-        </p>
-    </div>
+    @*<div id="dialog-confirm" class="modal" style="display: none">
+            <p>
+                <i class="fa fa-warning" style="float: left; margin: 0 7px 20px 0; color:#ffd800;"></i>
+                <span>Bạn chắc chắn xóa bản ghi này. Tiếp tục?</span>
+            </p>
+        </div>*@
     @*kết thúc xóa một bản ghi*@
 </div>
 @*xóa bỏ một lớp học*@
@@ -132,7 +132,29 @@
         $("a.lnkDelete").on("click", function (e) {
             var id = $(this).data('value');//lấy giá trị id của bản ghi
             var $tr = $(this).closest('tr');//lấy hàng
-            $("#dialog-confirm").dialog({
+            var answer = confirm("Bạn có chắc chắn xóa bản ghi này . Tiếp tục?");
+            if (answer)
+                $.ajax({
+                    type: "POST",
+                    url: "@(Url.Action("XoaLop", "Lop"))",
+                    data: { maLop: id },
+                    success: function (data) {
+                        if (data == 0) {
+                            $tr.css("background-color", "#ec645e");
+                            $tr.fadeOut(1600, "linear", function () { $tr.remove(); });
+                            $("#listLopHoc").load("@(Url.Action("LopPartial", "Lop"))");
+                            //hiển thị thông báo ra màn hình
+                            message_success("Xóa bản ghi thành công");
+                        } else {
+                            alert("Bản ghi này có chứa trong bảng khác. Hãy xóa những dữ liệu đó trước!");
+                        }
+                    },
+                    error: function (error) {
+
+                    }
+
+                });
+            @*$("#dialog-confirm").dialog({
                 autoOpen: false,
                 resizable: false,
                 width: 350,
@@ -182,7 +204,7 @@
                 }
                 ]
             });
-            $("#dialog-confirm").dialog("open");
+            $("#dialog-confirm").dialog("open");*@
             return false;
         });
     });

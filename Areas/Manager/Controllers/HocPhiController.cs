@@ -9,12 +9,17 @@ using TestDA.Areas.Manager.Models.ViewModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using TestDA.Common;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Runtime.InteropServices;
+using System.IO;
+using TestDA.Security;
 
 namespace TestDA.Areas.Manager.Controllers
 {
-    public class HocPhiController : Controller
+    public class HocPhiController : BaseController
     {
         // GET: Manager/HocPhi
+        [AuthorizeRoles("Admin", "HieuTruong", "VanThu")]
         public ActionResult Index(string hocSinh, string namHoc, string loaiHP, int? thang, int page = 1, int pageSize = 20)
         {
             //lấy ra danh sách học phí
@@ -72,6 +77,105 @@ namespace TestDA.Areas.Manager.Controllers
 
             return PartialView(data);
         }
+        //export to excel
+        public ActionResult ExportExcel(string namHoc, string loaiHP, int? thang)
+        {
+            try
+            {
+                Excel.Application application = new Excel.Application();
+                Excel.Workbook workbook = application.Workbooks.Add(System.Reflection.Missing.Value);
+                Excel.Worksheet worksheet = workbook.ActiveSheet;
+                //lấy dữ liệu
+                HocPhiManager HPM = new HocPhiManager();
+                var data = HPM.dsHocPhiNoHP(namHoc, loaiHP, thang);
+
+                worksheet.Cells[1, 1] = "Phiếu thu";
+                worksheet.Cells[1, 2] = "Mã học sinh";
+                worksheet.Cells[1, 3] = "Tên học sinh";
+                worksheet.Cells[1, 4] = "Lớp";
+                worksheet.Cells[1, 5] = "Năm học";
+                worksheet.Cells[1, 6] = "Người thu";
+                worksheet.Cells[1, 7] = "Ngày thu";
+                worksheet.Cells[1, 8] = "Tổng học phí";
+                worksheet.Cells[1, 9] = "Hình thức thu";
+                worksheet.Cells[1, 10] = "Còn nợ";
+                worksheet.Cells[1, 11] = "Ghi chú";
+
+                int row = 2;
+                foreach (var e in data)
+                {
+                    if (e.conNo != 0)
+                    {
+                        worksheet.Cells[row, 1] = e.maHocPhi;
+                        worksheet.Cells[row, 2] = e.maHocSinh;
+                        worksheet.Cells[row, 3] = e.tenHocSinh;
+                        worksheet.Cells[row, 4] = e.tenLop;
+                        worksheet.Cells[row, 5] = e.namHoc;
+                        worksheet.Cells[row, 6] = e.tenNguoiThu;
+                        worksheet.Cells[row, 7] = e.ngayThu;
+                        worksheet.Cells[row, 8] = e.tongHocPhi;
+                        if (e.loaiHP == "1")
+                        {
+                            worksheet.Cells[row, 9] = "Theo tháng";
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, 9] = "Theo năm";
+                        }
+                        worksheet.Cells[row, 10] = e.conNo;
+                        worksheet.Cells[row, 11] = e.ghiChu;
+
+                        row++;
+                    }
+                }
+                worksheet.get_Range("A1", "K1").EntireColumn.AutoFit();
+                //format heading
+                var range_heading = worksheet.get_Range("A1", "K1");
+                range_heading.Font.Bold = true;
+                //format date
+                var range_date = (Excel.Range)worksheet.Cells[1, 7];
+                range_date.EntireColumn.NumberFormat = "DD/MM/YYYY";
+
+                //format currency
+                //tổng học phí
+                var range_currency = (Excel.Range)worksheet.Cells[1, 8];
+                range_currency.NumberFormat = "#,###,###";
+                //còn nợ
+                var range_currency1 = (Excel.Range)worksheet.Cells[1, 10];
+                range_currency1.NumberFormat = "#,###,###";
+
+                //save file
+                workbook.SaveAs(@"E:\hocphino.xls");
+                workbook.Close();
+                Marshal.ReleaseComObject(workbook);
+
+                application.Quit();
+                Marshal.FinalReleaseComObject(application);
+                //// Save the Excel spreadsheet to a MemoryStream and return it to the client
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Result = ex.Message;
+            }
+            return Json("Hoàn thành tải xuống tại E:\\hocphino.xls");
+        }
+        //In ra file pdf
+        public ActionResult InHocPhi(string maHocPhi)
+        {
+            return new Rotativa.ActionAsPdf("InChiTiet", new { maHocPhi = maHocPhi }); ;
+        }
+        //in ra chi tiết
+        public ActionResult InChiTiet(string maHocPhi)
+        {
+            HocPhiManager LM = new HocPhiManager();
+            HocPhiData LD = LM.LayChiTietHP(maHocPhi);
+            ViewBag.maHocSinh = LD.maHocSinh;
+            ViewBag.namHoc = LD.namHoc;
+
+            TinhTien(LD.maHocSinh, LD.namHoc, LD.loaiHP);
+
+            return View(LD);
+        }
         //thống kê học phí thu
         public ActionResult HocPhiThu()
         {
@@ -93,38 +197,6 @@ namespace TestDA.Areas.Manager.Controllers
             return PartialView(data);
         }
         //
-        //thống kê danh sách tổng học phí thu được
-        //public ActionResult TKTongHocPhiPartial(string namHoc, int? thang)
-        //{
-        //    List<HocPhiData> list = new List<HocPhiData>();
-        //    using (DoAnTotNghiepEntities db = new DoAnTotNghiepEntities())
-        //    {
-        //        var hp = from h in db.tbl_hocphi where h.NamHoc == namHoc select h;
-        //        if (thang.HasValue)
-        //        {
-        //            hp = from t in hp where t.Thang == thang select t;
-        //        }
-        //        //////thống kê học phí theo từng năm học
-        //        var query = (from t in hp
-        //                     group t by t.Thang
-        //                         into gThang
-        //                         select new HocPhiData
-        //                         {
-        //                             thang = gThang.Key,
-        //                             loaiHP = (from m in gThang
-        //                                      group m by m.LoaiHP
-        //                                          into mLoaiHP
-        //                                          select new HocPhiData
-        //                                          {
-        //                                              loaiHP = mLoaiHP.Key,
-        //                                              tongHocPhi = mLoaiHP.Sum(t => t.TongHocPhi),
-        //                                              conNo = mLoaiHP.Sum(t => t.ConNo)
-        //                                          })
-        //                         }).ToList();
-        //        list = query;
-        //    }
-        //    return PartialView(list);
-        //}
         //set năm học
         public void setYears(string selectedID = null)
         {

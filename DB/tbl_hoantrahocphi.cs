@@ -20,6 +20,7 @@ namespace TestDA.DB
         public string NamHoc { get; set; }
         public Nullable<int> TienHoanTra { get; set; }
         public string LyDoTra { get; set; }
+        public Nullable<System.DateTime> NgayLap { get; set; }
         public string GhiChu { get; set; }
     
         public virtual tbl_hocsinh tbl_hocsinh { get; set; }

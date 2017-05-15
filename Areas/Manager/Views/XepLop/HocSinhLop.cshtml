@@ -35,7 +35,7 @@
                                 @Html.ValidationMessageFor(model => model.maLop, null, new { @class = "text-danger", @id = "error-maLop" })
                             </div>
                             <div class="form-group col-md-6">
-                                <a ref="javascript:void()" class="lnkXemHS btn btn-primary"> Xem học sinh</a><a ref="javascript:void()" class="lnkDelete btn btn-primary" style=" margin: 0 5px;"><i class="fa fa-trash-o"></i>Xóa</a>@*<a ref="javascript:void()" class="lnkUpdate btn btn-primary"><i class="fa fa-trash-o"></i>Chuyển lớp</a>*@
+                                <a ref="javascript:void()" class="lnkXemHS btn btn-primary"> Xem học sinh</a>@*<a ref="javascript:void()" class="lnkDelete btn btn-primary" style=" margin: 0 5px;"><i class="fa fa-trash-o"></i>Xóa</a>*@<a ref="javascript:void()" class="lnkUpdate btn btn-primary" style=" margin: 0 5px;">Chuyển lớp</a>
                             </div>
                             <div class="clearfix">  </div>
                         </div>
@@ -84,7 +84,7 @@
                                 {
                                     j++;
                                     <tr>
-                                        <td style="text-align:center;"><input type="checkbox" class="checkBox" value="@i.maHSLop" /></td>
+                                        <td style="text-align:center;"><input type="checkbox" class="checkBox" value="@i.maHocSinh" /></td>
                                         <td>
                                             @j.ToString()
                                         </td>
@@ -154,12 +154,9 @@
             $.validator.unobtrusive.parse($form);
             $form.validate();
             //thực hiện chuyển lớp học
-            @*$(".lnkUpdate").click(function () {
-
-                var $formCL = $('#dsHocSinhChuyenLop');
-                $.validator.unobtrusive.parse($formCL);
-                $formCL.validate();
-
+            $(".lnkUpdate").click(function () {
+                var maLop = $('#vMaLop').val();
+                var namHoc = $('#vNamHoc').val();
                 //lấy danhh sách bản ghi
                 var selectedIDs = new Array();
                 $('input:checkbox.checkBox').each(function () {
@@ -174,62 +171,24 @@
                     return false;
                 }
                 else {
-                    $("#chuyenLop").dialog({
-                        title: "Chuyển lớp cho học sinh",
-                        autoOpen: false,
-                        resizable: false,
-                        width: 300,
-                        show: { effect: 'drop', direction: "up" },
-                        modal: true,
-                        draggable: true,
-                        open: function (event, ui) {
-                            $(".ui-dialog-titlebar-close").hide();
-                        },
-                        buttons:
-                        [
-                        {
-                            "text": "Thực hiện",
-                            "class": 'btn btn-primary',
-                            click: function () {
-                                if ($formCL.valid()) {
-                                    var namHoc = $('#cNamHoc').val();
-                                    var maLop = $('#cLopHoc').val();
-                                    console.log(namHoc);;
-                                    $(this).dialog("close");
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "@(Url.Action("SuaHocSinhLop", "XepLop"))",
-                                        data: { mhSL: selectedIDs, maLop: maLop, namHoc: namHoc },
-                                        success: function (data) {
-                                            alert(data);
-                                            location.reload();
-                                        },
-                                        error: function (error) {
+                    if ($form.valid()) {
+                        $.ajax({
+                            type: "POST",
+                            url: "@(Url.Action("SuaHocSinhLop", "XepLop"))",
+                            data: { mhSL: selectedIDs, maLop: maLop, namHoc: namHoc },
+                            success: function (data) {
+                                alert(data);
+                                location.reload();
+                            },
+                            error: function (error) {
 
-                                        }
-
-                                    });
-                                    $(this).dialog("destroy");
-                                }
                             }
 
-                        },
-
-               {
-                   "text": "Đóng",
-                   "class": 'btn btn-primary',
-                   click: function () {
-                       $(this).dialog("close");
-                   }
-               }
-                        ]
-
-                    });///
-                    $("#viewClass").dialog("open");
-                    //}
+                        });
+                    }
                     return false;
                 }
-            });*@
+            });
             //tìm kiếm danh sách học sinh của một lớp
             $(".lnkXemHS").click(function () {
                 var maLop = $('#vMaLop').val();
@@ -251,7 +210,7 @@
             });
 
             //xóa một bản ghi
-            $("a.lnkDelete").on("click", function () {
+            @*$("a.lnkDelete").on("click", function () {
 
                 var selectedIDs = new Array();
                 $('input:checkbox.checkBox').each(function () {
@@ -288,7 +247,7 @@
                     // }
                 }
                 return false;
-            });//Xóa một bản ghi
+            });//Xóa một bản ghi*@
         });
     </script>
 }

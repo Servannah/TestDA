@@ -85,20 +85,52 @@
                 var namHoc = $('#tNamHoc').val();
                 var thang = $('#tThang').val();
 
-                $.ajax({
-                    type: "POST",
-                    url: '@(Url.Action("TKHocPhiPartial", "HocPhi"))',
-                    data: { namHoc: namHoc, loaiHP: loaiHP, thang: thang },
-                    success: function (data) {
-                        $('#showList').html(data);
-                    },
-                    error: function (error) {
+                if (namHoc == "") {
+                    $('.error-year').html("Chọn năm học cần xem");
+                    return false;
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        url: '@(Url.Action("TKHocPhiPartial", "HocPhi"))',
+                        data: { namHoc: namHoc, loaiHP: loaiHP, thang: thang },
+                        success: function (data) {
+                            $('#showList').html(data);
+                        },
+                        error: function (error) {
 
-                    }
-                });
+                        }
+                    });
+                }
                 return false;
 
             });////
+            //đưa ra excel những học sinh nợ học phí
+            $("a.lnkPrint").click(function () {
+                var loaiHP = $('#tLoaiHP').val();
+                var namHoc = $('#tNamHoc').val();
+                var thang = $('#tThang').val();
+
+                if (namHoc == "") {
+                    $('.error-year').html("Chọn năm học cần xem");
+                    return false;
+                }
+                else {
+                    $.ajax({
+                        type: "POST",
+                        url: '@(Url.Action("ExportExcel", "HocPhi"))',
+                        data: { namHoc: namHoc, loaiHP: loaiHP, thang: thang },
+                        success: function (data) {
+                            alert(data);                            
+                        },
+                        error: function (error) {
+
+                        }
+                    });
+                }
+                return false;
+            });
+            ///
         });
     </script>
 }

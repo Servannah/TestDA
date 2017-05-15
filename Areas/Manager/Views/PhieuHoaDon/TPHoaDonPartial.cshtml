@@ -50,22 +50,42 @@
 </table>@*bảng thành phần chi tiết thực phẩm của phiếu nhập kho*@
 
 @*xóa một bản ghi*@
-<div id="dialog-confirm" class="modal" style="display: none">
-    <p>
-        @*<i class="fa fa-warning" style="float: left; margin: 0 7px 20px 0; color:#ffd800;"></i>*@
-        <span>Bạn chắc chắn xóa bản ghi này. Tiếp tục?</span>
-    </p>
-</div>
+@*<div id="dialog-confirm" class="modal" style="display: none">
+        <p
+            <span>Bạn chắc chắn xóa bản ghi này. Tiếp tục?</span>
+        </p>
+    </div>*@
 @*kết thúc xóa một bản ghi*@
 <script>
     $(function () {
         //xóa một bản ghi
-        $("a.lnkDelete").on("click", function () {
-            //xóa một bản ghi
-            $("a.lnkDelete").on("click", function (e) {
-                var id = $(this).data('value');//lấy giá trị id của bản ghi
-                var $tr = $(this).closest('tr');//lấy hàng
-                $("#dialog-confirm").dialog({
+        $("a.lnkDelete").on("click", function (e) {
+            var id = $(this).data('value');//lấy giá trị id của bản ghi
+            var $tr = $(this).closest('tr');//lấy hàng
+            var answer = confirm("Bạn có chắc chắn xóa bài viết là " + id + " . Tiếp tục?");
+            if (answer)
+                $.ajax({
+                    type: "POST",
+                    url: "@(Url.Action("XoaCTTP", "CTHoaDon"))",
+                    data: { maHDCT: id },
+                    success: function (data) {
+                        if (data == 0) {
+                            $tr.css("background-color", "#ec645e");
+                            $tr.fadeOut(1600, "linear", function () { $tr.remove(); });
+                            location.reload();
+                            //location.href = "Url.Action("Index","PhieuHoaDon")";
+                            //hiển thị thông báo ra màn hình
+                            message_success("Xóa bản ghi thành công");
+                        } else {
+                            alert("Bản ghi này có chứa trong bảng khác. Hãy xóa những dữ liệu đó trước!");
+                        }
+                    },
+                    error: function (error) {
+
+                    }
+
+                });
+            @*$("#dialog-confirm").dialog({
                     autoOpen: false,
                     resizable: false,
                     width: 350,
@@ -116,12 +136,8 @@
             }
                         ]
                 });
-                $("#dialog-confirm").dialog("open");
-                return false;
-            });
+                $("#dialog-confirm").dialog("open");*@
+            return false;
         });
     });
 </script>
-
-
-

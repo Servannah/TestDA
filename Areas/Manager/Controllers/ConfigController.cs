@@ -11,7 +11,7 @@ using System.Data;
 
 namespace TestDA.Areas.Manager.Controllers
 {
-    public class ConfigController : Controller
+    public class ConfigController : BaseController
     {
         // GET: Manager/Config
         public ActionResult Index()

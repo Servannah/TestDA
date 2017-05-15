@@ -4,6 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TestDA.Security;
+using TestDA.DB;
+using TestDA.Areas.Manager.Models.EntityManager;
+using TestDA.Areas.Manager.Models.ViewModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace TestDA.Areas.Manager.Controllers
 {
@@ -14,7 +18,18 @@ namespace TestDA.Areas.Manager.Controllers
         public ActionResult Index()
         {
             return View();
-        }        
+        }  
+        //lấy thông tin người dùng đăng nhập
+        public ActionResult HeaderPartial()
+        {
+            var id = HttpContext.User.Identity.Name;
+            NhanVienManager NVM = new NhanVienManager();
+            NhanVienData data = NVM.LayChiTietNV(id);
+
+            ViewBag.hinhAnh = @Url.Content(data.hinhAnh);
+
+            return PartialView(data);
+        }
          public ActionResult Welcome()
          {
              return View();
