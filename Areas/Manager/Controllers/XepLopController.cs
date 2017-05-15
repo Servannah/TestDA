@@ -9,6 +9,8 @@ using TestDA.Areas.Manager.Models.ViewModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using TestDA.Security;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Runtime.InteropServices;
 
 namespace TestDA.Areas.Manager.Controllers
 {
@@ -44,7 +46,94 @@ namespace TestDA.Areas.Manager.Controllers
             ViewBag.Prev = page - 1;
             return View(hs);
         }
+         public ActionResult XemHocSinhLop()
+         {
+             setLop();
+             setNamHoc();
 
+             return View();
+         }
+         public ActionResult XemHocSinhLopPartial(int maLop, string namHoc)
+         {
+             XepLopManager xepLop = new XepLopManager();
+             XepLopData hs = new XepLopData();
+             hs.danhSachHSLop = xepLop.ListHSTheoLop(maLop, namHoc);
+
+             setLop(maLop);
+             setNamHoc(namHoc);
+
+             return PartialView(hs);
+         }
+         ////export to excel
+         public ActionResult ExportExcel(int maLop, string namHoc)
+         {
+             try
+             {
+                 Excel.Application application = new Excel.Application();
+                 Excel.Workbook workbook = application.Workbooks.Add(System.Reflection.Missing.Value);
+                 Excel.Worksheet worksheet = workbook.ActiveSheet;
+                 //lấy dữ liệu
+                 XepLopManager xepLop = new XepLopManager();
+                 var data = xepLop.ListHSTheoLop(maLop, namHoc);
+
+                 //lấy thông tin lớp:
+                 LopManager LM = new LopManager();
+                 LopData lop = LM.LayChiTietLop(maLop);
+                 var tenLop = lop.tenLop;
+                 worksheet.Cells[1, 1] = "Tên lớp: "+tenLop;
+                 worksheet.Cells[2, 1] = "Năm học: " + namHoc;
+
+                 worksheet.Cells[3, 2] = "STT";
+                 worksheet.Cells[3, 3] = "Mã học sinh";
+                 worksheet.Cells[3, 4] = "Tên học sinh";
+                 worksheet.Cells[3, 5] = "Ngày sinh";
+                 worksheet.Cells[3, 6] = "Giới tính";
+                 worksheet.Cells[3, 7] = "Quê quán";
+
+                 int row = 4;
+                 int i=1;
+                 foreach (var e in data)
+                 {
+                         worksheet.Cells[row, 2] = i;
+                         worksheet.Cells[row, 3] = e.maHocSinh;
+                         worksheet.Cells[row, 4] = e.tenHocSinh;
+                         worksheet.Cells[row, 5] = e.ngaySinh;
+                         if (e.gioiTinh == "1")
+                         {
+                             worksheet.Cells[row, 6] = "Nam";
+                         }
+                         else
+                         {
+                             worksheet.Cells[row, 6] = "Nữ";
+                         }
+                         worksheet.Cells[row, 7] = e.queQuan;
+
+                         row++;
+                         i++;
+                 }
+                 worksheet.get_Range("B3", "G3").EntireColumn.AutoFit();
+                 //format heading
+                 var range_heading = worksheet.get_Range("B3", "G3");
+                 range_heading.Font.Bold = true;
+                 //format date
+                 var range_date = (Excel.Range)worksheet.Cells[4, 4];
+                 range_date.EntireColumn.NumberFormat = "DD/MM/YYYY";
+
+                 //save file
+                 workbook.SaveAs(@"E:\dsHocSinh.xls");
+                 workbook.Close();
+                 Marshal.ReleaseComObject(workbook);
+
+                 application.Quit();
+                 Marshal.FinalReleaseComObject(application);
+                 //// Save the Excel spreadsheet to a MemoryStream and return it to the client
+             }
+             catch (Exception ex)
+             {
+                 ViewBag.Result = ex.Message;
+             }
+             return Json("Hoàn thành tải xuống tại E:\\dsHocSinh.xls");
+         }
         //hiển thị danh sách học sinh của một lớp
         public ActionResult HocSinhLop(int maLop, string namHoc)
         {

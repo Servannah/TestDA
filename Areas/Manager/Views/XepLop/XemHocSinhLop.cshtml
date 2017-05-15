@@ -1,0 +1,133 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.XepLopData
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-building-o" aria-hidden="true"></i>
+        Lớp
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Lớp</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="container body-content">
+        <h4>Xem danh sách học sinh</h4>
+        <div class="timKiem">
+            @using (Html.BeginForm("XemHocSinhLop", "XepLop", FormMethod.Post, new { @id = "dsHocSinhLop" }))
+            {
+                <div class="viewClass">
+                    <fieldset class="the-fieldset">
+                        <legend class="the-legend">Thực hiện:</legend>
+                        <div class="form-inline">
+                            <div class="form-group col-md-3">
+                                @Html.DropDownListFor(model => model.namHoc, ViewBag.namHoc as SelectList, "--Năm học-- ", new { @class = "form-control", @id = "vNamHoc" })
+                                @Html.ValidationMessageFor(model => model.namHoc, null, new { @class = "text-danger", @id = "error-namHoc" })
+                            </div>
+                            <div class="form-group col-md-3">
+                                @Html.DropDownListFor(model => model.maLop, null, "--Chọn lớp-- ", new { @class = "form-control", @id = "vMaLop" })
+                                @Html.ValidationMessageFor(model => model.maLop, null, new { @class = "text-danger", @id = "error-maLop" })
+                            </div>
+                            <div class="form-group col-md-6">
+                                <button type="submit" class="lnkXemHS btn btn-primary"> Xem học sinh</button><a href="javarscript:void()" class="lnkPrint btn btn-primary" style="margin:0 10px;"><i class=""></i>Xuất ra excel</a>
+                            </div>
+                            <div class="clearfix">  </div>
+                        </div>
+                    </fieldset>
+                </div>
+            } @*xem danh sách học sinh*@
+        </div>
+        <div class="danhSachHS">
+
+        </div>
+    </div>
+</section>
+<style>
+    input[type=checkbox] {
+        /* Double-sized Checkboxes */
+        -ms-transform: scale(1.5); /* IE */
+        -moz-transform: scale(1.5); /* FF */
+        -webkit-transform: scale(1.5); /* Safari and Chrome */
+        -o-transform: scale(1.5); /* Opera */
+    }
+
+    fieldset.the-fieldset {
+        border: 1px dotted #252424 !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+    }
+
+    legend.the-legend {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: inherit;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+</style>
+@section Scripts{
+    <script>
+        $(function () {
+            var $form = $('#dsHocSinhLop');
+            $.validator.unobtrusive.parse($form);
+            $form.validate();
+            //in danh sách học sinh của một lớp
+            $(".lnkXemHS").click(function () {
+                var maLop = $('#vMaLop').val();
+                var namHoc = $('#vNamHoc').val();
+
+                console.log(namHoc);
+
+                if ($form.valid()) {
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("XemHocSinhLopPartial", "XepLop"))",
+                        data: { maLop: maLop, namHoc: namHoc },
+                        success: function (data) {
+                            $('.danhSachHS').html(data);
+                        }
+                    });
+                    @*var url = '@Url.Action("XemHocSinhLopPartial", "XepLop")';
+                    url += '/?maLop=' + maLop + '&namHoc=' + namHoc;
+                    window.location.href = url;*@
+                }
+                return false;
+            });///kết thúc
+            //đưa ra excel danh sách học sinh
+            $("a.lnkPrint").click(function () {
+                var maLop = $('#vMaLop').val();
+                var namHoc = $('#vNamHoc').val();
+
+                console.log(namHoc);
+
+                if ($form.valid()) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@(Url.Action("ExportExcel", "XepLop"))',
+                        data: { maLop: maLop, namHoc: namHoc },
+                        success: function (data) {
+                            alert(data);
+                        },
+                        error: function (error) {
+
+                        }
+                    });
+                }
+                return false;
+            });
+            ///
+        });
+    </script>
+}
+
+

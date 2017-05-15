@@ -7,20 +7,20 @@
 <section class="content-header">
     <h1>
         <i class="fa fa-file-text-o"></i>
-        Hóa đơn
+        Tiền ăn hàng ngày
         <small></small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
-        <li class="active">Hóa đơn</li>
+        <li class="active">Tiền ăn hàng ngày</li>
     </ol>
 </section>
 <section class="content">
     <!-- Main content -->
     <div class="container body-content">
         <div class="body-style">
-            <h2>Danh sách hóa đơn</h2>
-            @using (Html.BeginForm("Index", "PhieuHoaDon", FormMethod.Get, new { @class = "form-inline", role = "search", id = "search-form", onsubmit = "return empty();" }))
+            <h2>Danh sách chi tiền ăn</h2>
+            @using (Html.BeginForm("Index", "ChiTienAn", FormMethod.Get, new { @class = "form-inline", role = "search", id = "search-form", onsubmit = "return empty();" }))
             {
                 @*@Html.AntiForgeryToken()*@
                 if (@TempData["Success"] != null)
@@ -58,7 +58,7 @@
                             <input type="text" class="form-control" placeholder="Nhập từ khóa tìm kiếm...." name="tukhoa" value="@ViewBag.TKTimKiem" id="search-box" style="width:200px;">
                         </div>
                         <div class="form-group">
-                            @*<input type="date" class="form-control textImage" placeholder="Ngày giao nhận..." id="ngayGN" name="ngayGiaoNhan">*@
+                            <input type="date" class="form-control" name="ngayLap" style="width:200px;">
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary hidden-xs"><i class="glyphicon glyphicon-search"></i>Tìm kiếm</button>
@@ -73,7 +73,7 @@
             @*thêm mới bản ghi*@
             <div class="form-inline" style=" margin: 10px 0;">
                 <div class="form-group">
-                    <a href="/Manager/PhieuHoaDon/ChucNang?type=Insert" class="btn btn-primary hidden-xs"><i class="glyphicon glyphicon-plus"></i>Thêm hóa đơn</a>
+                    <a href="/Manager/ChiTienAn/ChucNang?type=Insert" class="btn btn-primary hidden-xs"><i class="glyphicon glyphicon-plus"></i>Thêm thông tin</a>
                 </div>
                 <div class="form-group">
                     @*thêm biểu tượng in nhà cung cấp*@
@@ -88,7 +88,6 @@
                         <th>Số phiếu</th>
                         <th>Ngày tạo</th>
                         <th>Người tạo</th>
-                        <th>Thực phẩm</th>
                         <th>Tổng tiền(VND)</th>
                         <th>Ghi chú</th>
                     </tr>
@@ -105,15 +104,11 @@
                                     @*<td>@j.ToString()</td>*@
                                     <td>
                                         @Html.DisplayFor(m => i.soPhieuHD)
-                                        <br /><a href="/Manager/PhieuHoaDon/Detail?type=Detail&maHoaDon=@i.maPhieuHD" class="lnkDetail" data-value="@i.maPhieuHD" id="chiTietHD_@i.maPhieuHD">Chi tiết | </a>
-                                        <a href="/Manager/PhieuHoaDon/ChucNang?type=Edit&maPhieuHD=@i.maPhieuHD" class="lnkEdit" data-value="@i.soPhieuHD" id="phieuNK_@i.maPhieuHD">Sửa | </a>
+                                        <br/><a href="/Manager/ChiTienAn/ChucNang?type=Edit&maPhieuHD=@i.maPhieuHD" class="lnkEdit" data-value="@i.soPhieuHD" id="phieuNK_@i.maPhieuHD">Sửa | </a>
                                         <a href="javascript:void(0)" class="lnkDelete" data-value="@i.maPhieuHD" id="grouphieuHD_@i.maPhieuHD">Xóa</a>
                                     </td>
                                     <td>@Html.DisplayFor(m => i.ngayLap)</td>
                                     <td>@Html.DisplayFor(m => i.tenNguoiLap)</td>
-                                    <td>
-                                        <a href="/Manager/CTHoaDon/ChucNang?type=Edit&maPhieuHD=@i.maPhieuHD">Chi tiết</a>
-                                    </td>
                                     <td>@Html.DisplayFor(m => i.tongTien)</td>
                                     <td> @Html.DisplayFor(m => i.ghiChu)</td>
                                 </tr>
@@ -128,15 +123,6 @@
                     }
                 </tbody>
             </table>
-            @*xóa một bản ghi*@
-            <div id="dialog-confirm" class="modal" style="display: none">
-                <p>
-                    @*<i class="fa fa-warning" style="float: left; margin: 0 7px 20px 0; color:#ffd800;"></i>*@
-                    <span>Bạn chắc chắn xóa bản ghi này. Tiếp tục?</span>
-                </p>
-            </div>
-            @*kết thúc xóa một bản ghi*@
-            <!--Phân trang-->
             @if (ViewBag.TotalPage > 1)
             {
                 var pageDisplay = (int)ViewBag.MaxPage;
@@ -147,7 +133,7 @@
                 var startPageIndex = Math.Max(1, currentPage - pageDisplay / 2);
                 var endPageIndex = Math.Min(totalPage, currentPage + pageDisplay / 2);
 
-                var link = "/Manager/PhieuNhapKho/Index";
+                var link = "/Manager/ChiTienAn/Index";
                 <nav>
                     <ul class="pagination">
                         @if (currentPage > ViewBag.First)
@@ -189,11 +175,6 @@
     </div>
 </section>
 @section Scripts{
-    <script type="text/javascript">
-        //$(document).ready(function () {
-        //    $('#ngayGN').datepicker();
-        //});
-    </script>
     <script>
         $(function () {
             //xóa một bản ghi
@@ -204,13 +185,13 @@
                 if (answer)
                     $.ajax({
                         type: "POST",
-                        url: "@(Url.Action("XoaPhieuHD", "PhieuHoaDon"))",
+                        url: "@(Url.Action("XoaPhieuHD", "ChiTienAn"))",
                         data: { maPhieuHD: id },
                         success: function (data) {
                             if (data == 0) {
                                 $tr.css("background-color", "#ec645e");
                                 $tr.fadeOut(1600, "linear", function () { $tr.remove(); });
-                                location.href = "@Url.Action("Index","PhieuHoaDon")";
+                                location.href = "@Url.Action("Index","ChiTienAn")";
                                 //hiển thị thông báo ra màn hình
                                 message_success("Xóa bản ghi thành công");
                             } else {
@@ -222,57 +203,6 @@
                         }
 
                     });
-                @*$("#dialog-confirm").dialog({
-                        autoOpen: false,
-                        resizable: false,
-                        width: 350,
-                        show: { effect: 'drop', direction: "up" },
-                        modal: true,
-                        draggable: true,
-                        open: function (event, ui) {
-                            $(".ui-dialog-titlebar-close").hide();
-                        },
-                        buttons:
-                            [
-                            {
-                                "text": "Đồng ý",
-                                "class": 'btn btn-default',
-                                click: function () {
-                                    $(this).dialog("close");
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "@(Url.Action("XoaPhieuHD", "PhieuHoaDon"))",
-                                        data: { maPhieuHD: id },
-                                        success: function (data) {
-                                            if (data == 0) {
-                                                $tr.css("background-color", "#ec645e");
-                                                $tr.fadeOut(1600, "linear", function () { $tr.remove(); });
-                                                location.href = "@Url.Action("Index","PhieuHoaDon")";
-                                                //hiển thị thông báo ra màn hình
-                                                message_success("Xóa bản ghi thành công");
-                                            } else {
-                                                alert("Bản ghi này có chứa trong bảng khác. Hãy xóa những dữ liệu đó trước!");
-                                            }
-                                        },
-                                        error: function (error) {
-
-                                        }
-
-                                    });
-                                    $(this).dialog("destroy");
-                                }
-
-                            },
-                {
-                    "text": "Hủy bỏ",
-                    "class": 'btn btn-default',
-                    click: function () {
-                        $(this).dialog("close");
-                    }
-                }
-                            ]
-                    });
-                    $("#dialog-confirm").dialog("open");*@
                 return false;
             });
             //Xóa một bản ghi
@@ -287,6 +217,8 @@
         });
     </script>
 }
+
+
 
 
 

@@ -90,7 +90,7 @@ namespace TestDA.Areas.Manager.Models.EntityManager
             return list;
         }
         //danh sách học sinh còn nợ học phí
-        public List<HocPhiData> dsHocPhiNoHP(string namHoc, string loaiHP, int? thang)
+        public List<HocPhiData> dsHocPhiNoHP(string inputtext, string namHoc, string loaiHP, int? thang, int? maLop)
         {
             List<HocPhiData> list = new List<HocPhiData>();
             using (DoAnTotNghiepEntities db = new DoAnTotNghiepEntities())
@@ -107,6 +107,7 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                                  tenHDHocPhi = m.TenHDHocPhi,
                                  maHocSinh = m.MaHocSinh,
                                  tenHocSinh = n.HoTen,
+                                 maLop = l.MaLop,
                                  tenLop = l.TenLop,
                                  namHoc = m.NamHoc,
                                  thang = m.Thang,
@@ -119,6 +120,10 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                                  ghiChu = m.GhiChu
 
                              });
+                if (!String.IsNullOrEmpty(inputtext))
+                {
+                    query = (from q in query where q.maHocSinh.Contains(inputtext) || q.tenHocSinh.Contains(inputtext) || q.tenNguoiThu.Contains(inputtext) select q);
+                }
                 if (!String.IsNullOrEmpty(namHoc))
                 {
                     query = (from q in query where q.namHoc == namHoc select q);
@@ -131,6 +136,10 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                 if (thang.HasValue)
                 {
                     query = from q in query where q.thang == thang select q;
+                }
+                if (maLop.HasValue)
+                {
+                    query = from q in query where q.maLop == maLop select q;
                 }
                 var result = (from m in query
                               select new HocPhiData

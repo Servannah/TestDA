@@ -25,7 +25,7 @@ namespace TestDA.Areas.Manager.Models.ViewModel
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? ngayLap { get; set; }
         [Required(ErrorMessage = "Người lập không được bỏ trống!")]
-        [Display(Name = "Người tạo *")]
+        [Display(Name = "Người lập *")]
         public string nguoiLap { get; set; }
         public string tenNguoiLap { get; set; }
         [RegularExpression(@"[0-9]*\.?[0-9]+", ErrorMessage = "Nhập vào một số.")]
@@ -33,12 +33,6 @@ namespace TestDA.Areas.Manager.Models.ViewModel
         [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Không được bỏ trống.")]
         public double? tongTien { get; set; }
-        [Display(Name = "Đã thu")]
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        public double? daThu { get; set; }
-        [Display(Name = "Còn nợ")]
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        public double? conNo { get; set; }
         [Display(Name = "Ghi chú")]
         public string ghiChu { get; set; }
 
@@ -46,11 +40,6 @@ namespace TestDA.Areas.Manager.Models.ViewModel
 
         public List<HoaDonData> danhSachPhieuHD { get; set; }
 
-        public List<CTHoaDonData> thucPham { get; set; }
-        public HoaDonData()
-        {
-            thucPham = new List<CTHoaDonData>();
-        }
     }
 
 }

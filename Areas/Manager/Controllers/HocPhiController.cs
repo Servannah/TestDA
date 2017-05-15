@@ -13,6 +13,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 using System.IO;
 using TestDA.Security;
+using System.Web.Security;
 
 namespace TestDA.Areas.Manager.Controllers
 {
@@ -60,25 +61,32 @@ namespace TestDA.Areas.Manager.Controllers
             setYears();
             setLoaiApDung();
             setThang();
+            setLop();
 
             return View();
         }
         //thống kê danh sách những học sinh còn nợ tiền học phí theo năm, tháng
-        public ActionResult TKHocPhiPartial(string namHoc, string loaiHP, int? thang)
+        public ActionResult TKHocPhiPartial(string tukhoa, string namHoc, string loaiHP, int? thang, int? maLop)
         {
             HocPhiManager hocphi = new HocPhiManager();
             HocPhiData data = new HocPhiData();
 
-            data.danhSachHocPhi = hocphi.dsHocPhiNoHP(namHoc, loaiHP, thang);
+            if (!String.IsNullOrEmpty(tukhoa))
+            {
+                tukhoa = tukhoa.Trim();
+            }
+
+            data.danhSachHocPhi = hocphi.dsHocPhiNoHP(tukhoa, namHoc, loaiHP, thang, maLop);
 
             setYears(namHoc);
             setLoaiApDung(loaiHP);
             setThang(thang);
+            setLop(maLop);
 
             return PartialView(data);
         }
         //export to excel
-        public ActionResult ExportExcel(string namHoc, string loaiHP, int? thang)
+        public ActionResult ExportExcel(string tukhoa, string namHoc, string loaiHP, int? thang, int? maLop)
         {
             try
             {
@@ -87,7 +95,7 @@ namespace TestDA.Areas.Manager.Controllers
                 Excel.Worksheet worksheet = workbook.ActiveSheet;
                 //lấy dữ liệu
                 HocPhiManager HPM = new HocPhiManager();
-                var data = HPM.dsHocPhiNoHP(namHoc, loaiHP, thang);
+                var data = HPM.dsHocPhiNoHP(tukhoa, namHoc, loaiHP, thang, maLop);
 
                 worksheet.Cells[1, 1] = "Phiếu thu";
                 worksheet.Cells[1, 2] = "Mã học sinh";
@@ -162,7 +170,17 @@ namespace TestDA.Areas.Manager.Controllers
         //In ra file pdf
         public ActionResult InHocPhi(string maHocPhi)
         {
-            return new Rotativa.ActionAsPdf("InChiTiet", new { maHocPhi = maHocPhi }); ;
+            Dictionary<string, string> cookieCollection = new Dictionary<string, string>();
+            foreach (var key in Request.Cookies.AllKeys)
+            {
+                cookieCollection.Add(key, Request.Cookies.Get(key).Value);
+            }
+            return new Rotativa.ActionAsPdf("InChiTiet", new { maHocPhi = maHocPhi })
+            {
+                Cookies = cookieCollection,
+                CustomSwitches = "--load-error-handling ignore"
+            };
+           // return new Rotativa.ActionAsPdf("InChiTiet", new { maHocPhi = maHocPhi }); ;
         }
         //in ra chi tiết
         public ActionResult InChiTiet(string maHocPhi)
@@ -256,6 +274,12 @@ namespace TestDA.Areas.Manager.Controllers
                 Selected = false
             });
             ViewBag.loaiHP = new SelectList(SetValue, "Value", "Text", selectedID);
+        }
+        //set lớp học
+        public void setLop(int? selectedID = null)
+        {
+            LopManager LM = new LopManager();
+            ViewBag.maLop = new SelectList(LM.ListLop(), "maLop", "tenLop", selectedID);
         }
         //lấy danh sách định mức học phí trong năm học cần đóng theo tháng  hoặc theo năm
         public ActionResult KhoanPhiPartial(string maHocSinh, string namHoc, string loaiHP)

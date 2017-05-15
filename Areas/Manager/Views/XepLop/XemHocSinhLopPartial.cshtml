@@ -1,0 +1,58 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.XepLopData
+
+<h4>DANH SÁCH HỌC SINH</h4>
+<div id="listHocSinhLopHoc">
+    <table class="table table-bordered table-hover" id="dsLop">
+        <thead>
+            <tr style="background:#ffefd5;">
+                <th>STT</th>
+                <th>Mã học sinh</th>
+                <th>Tên học sinh</th>
+                <th>Ngày sinh</th>
+                <th>Giới tính</th>
+                <th>Quê quán</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (Model.danhSachHSLop.Count > 0)
+                {
+                    int j = 0;
+                    foreach (var i in Model.danhSachHSLop)
+                    {
+                        j++;
+                        <tr>
+                            <td>
+                                @j.ToString()
+                            </td>
+                            <td>
+                                @Html.DisplayFor(m => i.maHocSinh)
+                            </td>
+                            <td>@Html.DisplayFor(m => i.tenHocSinh)</td>
+                            <td>@Html.DisplayFor(m => i.ngaySinh)</td>
+                            <td>
+                                @if (i.gioiTinh == "1")
+                                {
+                                    <span class="gioiTinh">Nam</span>
+                                }
+                                else
+                                {
+                                    <span class="gioiTinh">Nữ</span>
+                                }
+                            </td>
+                            <td>@Html.DisplayFor(m => i.queQuan)</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7"> <p style="text-align:center;">Không có bản ghi nào</p></td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>@**kết thú table*@
+</div>
+

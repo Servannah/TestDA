@@ -1,0 +1,127 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.HoaDonData
+
+@{
+    ViewBag.Title = "ChucNang";
+    Layout = "~/Areas/Manager/Views/Shared/_AdminPartial.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        <i class="fa fa-file-text-o"></i>
+        Tiền ăn hàng ngày
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Trang chủ</a></li>
+        <li class="active">Tiền ăn hàng ngày</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container body-content body-hoadon">
+        <h3>@ViewBag.ChucNang </h3>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="body-style form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="row thongtinHD">
+                    <fieldset class="">
+                        <legend class=""></legend>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.maThucDon, htmlAttributes: new { @class = "col-sm-4" })
+                                <div class="col-sm-6">
+                                    @Html.DropDownListFor(model => model.maThucDon, null, "--Chọn thực đơn-- ", new { @class = "form-control", @id = "xThucDon" })
+                                    @Html.ValidationMessageFor(model => model.maThucDon, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.soPhieuHD, htmlAttributes: new { @class = "col-sm-4" })
+                                <div class="col-sm-6">
+                                    @Html.EditorFor(model => model.soPhieuHD, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.soPhieuHD, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ngayLap, htmlAttributes: new { @class = "col-sm-4" })
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(model => model.ngayLap, "{0:yyyy-MM-dd}", new { @class = "form-control", @type = "date" })
+                                    @Html.ValidationMessageFor(model => model.ngayLap, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.tongTien, htmlAttributes: new { @class = "col-sm-4" })
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(model => model.tongTien, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.tongTien, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.nguoiLap, htmlAttributes: new { @class = "col-sm-4" })
+                                <div class="col-sm-7">
+                                    @Html.DropDownListFor(model => model.nguoiLap, null, "--Người lập hóa đơn-- ", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.nguoiLap, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ghiChu, htmlAttributes: new { @class = "col-sm-4" })
+                                <div class="col-sm-8">
+                                    @Html.TextAreaFor(model => model.ghiChu, new { @class = "form-control", @rows = 5 })
+                                    @Html.ValidationMessageFor(model => model.ghiChu, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="showThucDon">
+                    @if (@ViewBag.Type == 2)
+                    {
+                        @Html.Action("ChiTietTD", "ChiTienAn", new { maThucDon = @Model.maThucDon })
+                    }
+                    @*//hiển thị thông tin thực đơn được chọn*@
+                </div>
+                <div>
+                    <div class="form-group">
+                        @Html.ActionLink("<< Quay lại danh sách", "Index", "ChiTienAn")
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="reset" class="btn btn-primary" style="margin-right:10px;"><i class="fa fa-refresh"></i>Làm mới</button><button type="submit" value="Lưu thông tin" class="btn btn-primary"><i class="fa fa-save"></i>Lưu thông tin</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts{
+    <script>
+        $(function () {
+
+            $('#xThucDon').on("change", function () {
+
+                // to get the value and id of selected option
+                var str = $('#xThucDon option:selected').text();
+                var value = $('#xThucDon option:selected').val();
+                //hiển thị chi tiết thực đơn được chọn
+                $.ajax({
+                    type: "POST",
+                    url: "@(Url.Action("ChiTietTD", "ChiTienAn"))",
+                    data: { maThucDon: value },
+                    success: function (data) {
+                        $('.showThucDon').html(data);
+                    },
+                    error: function (error) {
+
+                    }
+                });
+            });
+        });
+    </script>
+
+}
+
+
+

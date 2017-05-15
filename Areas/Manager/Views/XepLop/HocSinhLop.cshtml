@@ -35,7 +35,7 @@
                                 @Html.ValidationMessageFor(model => model.maLop, null, new { @class = "text-danger", @id = "error-maLop" })
                             </div>
                             <div class="form-group col-md-6">
-                                <a ref="javascript:void()" class="lnkXemHS btn btn-primary"> Xem học sinh</a>@*<a ref="javascript:void()" class="lnkDelete btn btn-primary" style=" margin: 0 5px;"><i class="fa fa-trash-o"></i>Xóa</a>*@<a ref="javascript:void()" class="lnkUpdate btn btn-primary" style=" margin: 0 5px;">Chuyển lớp</a>
+                                <a ref="javascript:void()" class="lnkXemHS btn btn-primary"> Xem học sinh</a><a ref="javascript:void()" class="lnkUpdate btn btn-primary" style=" margin: 0 5px;">Chuyển lớp</a><a href="javarscript:void()" class="lnkPrint btn btn-primary"><i class=""></i>Xuất ra excel</a>
                             </div>
                             <div class="clearfix">  </div>
                         </div>
@@ -149,67 +149,67 @@
 </style>
 @section Scripts{
     <script>
-        $(function () {
-            var $form = $('#dsHocSinhLop');
-            $.validator.unobtrusive.parse($form);
-            $form.validate();
-            //thực hiện chuyển lớp học
-            $(".lnkUpdate").click(function () {
-                var maLop = $('#vMaLop').val();
-                var namHoc = $('#vNamHoc').val();
-                //lấy danhh sách bản ghi
-                var selectedIDs = new Array();
-                $('input:checkbox.checkBox').each(function () {
-                    if ($(this).prop('checked')) {
-                        selectedIDs.push($(this).val());
-                    }
-                });
-                //console.log(selectedIDs.length);
-                //nếu không chọn cái nào mà nhấn click thì đưa ra thông báo
-                if (selectedIDs.length == 0) {
-                    alert("Không có bản ghi nào được chọn.");
-                    return false;
-                }
-                else {
-                    if ($form.valid()) {
-                        $.ajax({
-                            type: "POST",
-                            url: "@(Url.Action("SuaHocSinhLop", "XepLop"))",
-                            data: { mhSL: selectedIDs, maLop: maLop, namHoc: namHoc },
-                            success: function (data) {
-                                alert(data);
-                                location.reload();
-                            },
-                            error: function (error) {
-
-                            }
-
-                        });
-                    }
-                    return false;
+    $(function () {
+        var $form = $('#dsHocSinhLop');
+        $.validator.unobtrusive.parse($form);
+        $form.validate();
+        //thực hiện chuyển lớp học
+        $(".lnkUpdate").click(function () {
+            var maLop = $('#vMaLop').val();
+            var namHoc = $('#vNamHoc').val();
+            //lấy danhh sách bản ghi
+            var selectedIDs = new Array();
+            $('input:checkbox.checkBox').each(function () {
+                if ($(this).prop('checked')) {
+                    selectedIDs.push($(this).val());
                 }
             });
-            //tìm kiếm danh sách học sinh của một lớp
-            $(".lnkXemHS").click(function () {
-                var maLop = $('#vMaLop').val();
-                var namHoc = $('#vNamHoc').val();
-
-                console.log(namHoc);
-
+            //console.log(selectedIDs.length);
+            //nếu không chọn cái nào mà nhấn click thì đưa ra thông báo
+            if (selectedIDs.length == 0) {
+                alert("Không có bản ghi nào được chọn.");
+                return false;
+            }
+            else {
                 if ($form.valid()) {
-                    var url = '@Url.Action("HocSinhLop", "XepLop")';
-                    url += '/?maLop=' + maLop + '&namHoc=' + namHoc;
-                    window.location.href = url;
+                    $.ajax({
+                        type: "POST",
+                        url: "@(Url.Action("SuaHocSinhLop", "XepLop"))",
+                        data: { mhSL: selectedIDs, maLop: maLop, namHoc: namHoc },
+                        success: function (data) {
+                            alert(data);
+                            location.reload();
+                        },
+                        error: function (error) {
+
+                        }
+
+                    });
                 }
                 return false;
-            });///kết thúc
+            }
+        });
+        //tìm kiếm danh sách học sinh của một lớp
+        $(".lnkXemHS").click(function () {
+            var maLop = $('#vMaLop').val();
+            var namHoc = $('#vNamHoc').val();
 
-            //The pop() method removes the last element of an array, and returns that element.
-            $("#checkAll").click(function () {
-                $(".checkBox").prop('checked', $(this).prop('checked'));
-            });
+            console.log(namHoc);
 
-            //xóa một bản ghi
+            if ($form.valid()) {
+                var url = '@Url.Action("HocSinhLop", "XepLop")';
+                url += '/?maLop=' + maLop + '&namHoc=' + namHoc;
+                window.location.href = url;
+            }
+            return false;
+        });///kết thúc
+
+        //The pop() method removes the last element of an array, and returns that element.
+        $("#checkAll").click(function () {
+            $(".checkBox").prop('checked', $(this).prop('checked'));
+        });
+
+        //xóa một bản ghi
             @*$("a.lnkDelete").on("click", function () {
 
                 var selectedIDs = new Array();
@@ -248,6 +248,30 @@
                 }
                 return false;
             });//Xóa một bản ghi*@
+            //đưa ra excel danh sách học sinh
+            $("a.lnkPrint").click(function () {
+                var maLop = $('#vMaLop').val();
+                var namHoc = $('#vNamHoc').val();
+
+                console.log(namHoc);
+
+                if ($form.valid()) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@(Url.Action("ExportExcel", "XepLop"))',
+                        data: { maLop: maLop, namHoc: namHoc },
+                        success: function (data) {
+                            alert(data);
+                        },
+                        error: function (error) {
+
+                        }
+                    });
+                }
+                return false;
+            });
+        ///
         });
     </script>
 }
