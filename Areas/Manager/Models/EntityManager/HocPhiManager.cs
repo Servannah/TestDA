@@ -95,6 +95,55 @@ namespace TestDA.Areas.Manager.Models.EntityManager
             List<HocPhiData> list = new List<HocPhiData>();
             using (DoAnTotNghiepEntities db = new DoAnTotNghiepEntities())
             {
+                //var rt = from n in db.tbl_hocsinh
+                //         join hsl in db.tbl_hocsinhlop on n.MaHS equals hsl.MaHocSinh
+                //         join l in db.tbl_lop on hsl.MaLop equals l.MaLop
+                //         select new
+                //         {
+                //             maHocSinh = n.MaHS,
+                //             tenHocSinh = n.HoTen,
+                //             maLop = l.MaLop,
+                //             tenLop = l.TenLop,
+                //             namHoc = hsl.NamHoc
+                //         };
+                //var shp = (from m in db.tbl_hocphi
+                //           join nv in db.tbl_nhanvien on m.NguoiThu equals nv.MaNV
+                //           select new
+                //           {
+                //               maHocPhi = m.MaHocPhi,
+                //               maHocSinh = m.MaHocSinh,
+                //               tenHDHocPhi = m.TenHDHocPhi,
+                //               thang = m.Thang,
+                //               tongHocPhi = m.TongHocPhi,
+                //               nguoiThu = m.NguoiThu,
+                //               tenNguoiThu = nv.Ho + " " + nv.Ten,
+                //               ngayThu = m.NgayThu,
+                //               conNo = m.ConNo,
+                //               loaiHP = m.LoaiHP,
+                //               ghiChu = m.GhiChu
+                //           });
+
+                //var query = (from x in rt
+                //             join t in shp on x.maHocSinh equals t.maHocSinh into grouphp
+                //             from m in grouphp.DefaultIfEmpty()
+                //             select new
+                //             {
+                //                 maHocPhi = m.maHocPhi,
+                //                 tenHDHocPhi = m.tenHDHocPhi,
+                //                 maHocSinh = m.maHocSinh,
+                //                 tenHocSinh = x.tenHocSinh,
+                //                 maLop = x.maLop,
+                //                 tenLop = x.tenLop,
+                //                 namHoc = x.namHoc,
+                //                 thang = m.thang,
+                //                 tongHocPhi = m.tongHocPhi,
+                //                 nguoiThu = m.nguoiThu,
+                //                 tenNguoiThu = m.tenNguoiThu,
+                //                 ngayThu = m.ngayThu,
+                //                 conNo = m.conNo,
+                //                 loaiHP = m.loaiHP,
+                //                 ghiChu = m.ghiChu
+                //             });
                 //lấy danh sách học phí
                 var query = (from m in db.tbl_hocphi
                              join n in db.tbl_hocsinh on m.MaHocSinh equals n.MaHS
@@ -165,8 +214,8 @@ namespace TestDA.Areas.Manager.Models.EntityManager
             }
             return list;
         }
-        //lấy danh sách thu học phí
-        public List<HocPhiData> dsThuHocPhi(string namHoc, int? thang)
+        //lấy chi tiết theo từng loại học phí danh sách thu học phí
+        public List<HocPhiData> dsThuHocPhiThang(string namHoc, int? thang)
         {
             List<HocPhiData> list = new List<HocPhiData>();
             using (DoAnTotNghiepEntities db = new DoAnTotNghiepEntities())
@@ -176,11 +225,13 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                              where m.NamHoc == namHoc
                              group m by new
                              {
-                                 thang = m.Thang
+                                 thang = m.Thang,
+                                 namHoc = m.NamHoc
                              } into d
                              select new
                              {
                                  thang = d.Key.thang,
+                                 namHoc = d.Key.namHoc,
                                  tong = d.Sum(i => i.TongHocPhi),
                                  tongNo = d.Sum(i => i.ConNo)
 
@@ -193,6 +244,54 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                               select new HocPhiData
                               {
                                   thang = m.thang,
+                                  namHoc = m.namHoc,
+                                  tongHocPhi = m.tong,
+                                  conNo = m.tongNo
+                              }).ToList();
+
+                list = result;
+
+            }
+            return list;
+        }
+        //lấy chi tiết theo từng loại học phí danh sách thu học phí
+        public List<HocPhiData> dsThuHocPhi(string namHoc, int? thang)
+        {
+            List<HocPhiData> list = new List<HocPhiData>();
+            using (DoAnTotNghiepEntities db = new DoAnTotNghiepEntities())
+            {
+                //lấy danh sách học phí
+                var query = (from m in db.tbl_hocphi
+                             where m.NamHoc == namHoc
+                             group m by new
+                             {
+                                 thang = m.Thang,
+                                 loaiHP = m.LoaiHP,
+                                 namHoc = m.NamHoc
+                             } into d
+                             select new
+                             {
+                                 thang = d.Key.thang,
+                                 loaiHP = d.Key.loaiHP,
+                                 namHoc = d.Key.namHoc,
+                                 tongHS = d.Count(),
+                                 tienMienGiam = d.Sum(i => i.TienMienGiam),
+                                 tong = d.Sum(i => i.TongHocPhi),
+                                 tongNo = d.Sum(i => i.ConNo)
+
+                             });
+                if (thang.HasValue)
+                {
+                    query = from q in query where q.thang == thang select q;
+                }
+                var result = (from m in query
+                              select new HocPhiData
+                              {
+                                  thang = m.thang,
+                                  namHoc = m.namHoc,
+                                  loaiHP = m.loaiHP,
+                                  tongHS = m.tongHS,
+                                  tienMienGiam = m.tienMienGiam,
                                   tongHocPhi = m.tong,
                                   conNo = m.tongNo
                               }).ToList();

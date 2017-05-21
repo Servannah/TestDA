@@ -15,7 +15,7 @@ namespace TestDA.Areas.Manager.Models.EntityManager
     public class PhieuHoaDonManager
     {
         //lấy tất cả danh sách phiếu hóa đơn trong csdl
-        public List<HoaDonData> LayDSPhieuHD(string inputtext, ref int totalRecord, int pageIndex = 1, int pageSize = 10)
+        public List<HoaDonData> LayDSPhieuHD(string inputtext, DateTime? ngayLap, ref int totalRecord, int pageIndex = 1, int pageSize = 10)
         {
             List<HoaDonData> list = new List<HoaDonData>();
             using (DoAnTotNghiepEntities db = new DoAnTotNghiepEntities())
@@ -24,35 +24,38 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                 //lấy tổng bản ghi
                 totalRecord = db.tbl_hoadon.Count();
                 //lấy danh sách 
+                var query = (from m in db.tbl_hoadon
+                             join n in db.tbl_nhanvien on m.NguoiLap equals n.MaNV
+                             select new HoaDonData
+                             {
+                                 maPhieuHD = m.MaPhieuHD,
+                                 soPhieuHD = m.SoPhieu,
+                                 tenNguoiLap = n.Ho + " " + n.Ten,
+                                 ngayLap = m.NgayTao,
+                                 tongTien = m.TongTien,
+                                 ghiChu = m.GhiChu
+                             });
+
                 if (!String.IsNullOrEmpty(inputtext))
                 {
-                    list = (from m in db.tbl_hoadon
-                            join n in db.tbl_nhanvien on m.NguoiLap equals n.MaNV
-                            where (m.SoPhieu.Contains(inputtext))
-                            select new HoaDonData
-                            {
-                                maPhieuHD = m.MaPhieuHD,
-                                soPhieuHD = m.SoPhieu,
-                                tenNguoiLap = n.Ho + " " + n.Ten,
-                                tongTien = m.TongTien,
-                                ngayLap = m.NgayTao,
-                                ghiChu = m.GhiChu
-                            }).OrderByDescending(m => m.maPhieuHD).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+                    query = from q in query where q.tenNguoiLap.Contains(inputtext) || q.soPhieuHD == inputtext select q;
                 }
-                else
+                if (ngayLap.HasValue)
                 {
-                    list = (from m in db.tbl_hoadon
-                            join n in db.tbl_nhanvien on m.NguoiLap equals n.MaNV
-                            select new HoaDonData
-                            {
-                                maPhieuHD = m.MaPhieuHD,
-                                soPhieuHD = m.SoPhieu,
-                                tenNguoiLap = n.Ho + " " + n.Ten,
-                                ngayLap = m.NgayTao,
-                                tongTien = m.TongTien,
-                                ghiChu = m.GhiChu
-                            }).OrderByDescending(m => m.maPhieuHD).ToList();
+                    query = from q in query where q.ngayLap == ngayLap select q;
                 }
+                var result = (from m in query
+                              select new HoaDonData
+                              {
+                                  maPhieuHD = m.maPhieuHD,
+                                  soPhieuHD = m.soPhieuHD,
+                                  tenNguoiLap = m.tenNguoiLap,
+                                  ngayLap = m.ngayLap,
+                                  tongTien = m.tongTien,
+                                  ghiChu = m.ghiChu
+                              }).OrderByDescending(m => m.ngayLap).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+
+                list = result;
             }
             return list;
 
@@ -139,24 +142,6 @@ namespace TestDA.Areas.Manager.Models.EntityManager
 
                     db.tbl_hoadon.Add(phieuHD);
                     db.SaveChanges();
-                    //thêm mới danh sách thực phẩm vào bảng chi tiết hóa đơn
-                    foreach (var i in obj.thucPham)
-                    {
-                        tbl_hdchitiet ct = new tbl_hdchitiet();
-
-                        ct.MaHDCT = i.maHDCT;
-                        ct.MaPhieuHoaDon = phieuHD.MaPhieuHD;
-                        ct.MaThucPham = i.maThucPham;
-                        ct.NgayLap = DateTime.Now;
-                        ct.DonViTinh = "kg";
-                        ct.SoLuong = i.soLuong;
-                        var tp = db.tbl_thucpham.Where(o => o.MaThucPham == ct.MaThucPham).FirstOrDefault();
-                        ct.ThanhTien = i.soLuong * tp.GiaCa;
-                        ct.GhiChu = i.ghiChu;
-
-                        db.tbl_hdchitiet.Add(ct);
-                        db.SaveChanges();
-                    }
                 }
                 catch (DbEntityValidationException e)
                 {
@@ -185,27 +170,6 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                             kq.GhiChu = obj.ghiChu;
 
                             db.SaveChanges();
-                            //update lại thông tin trong bảng chi tiết hóa đơn
-                            foreach (var i in obj.thucPham)
-                            {
-                                var rs = db.tbl_hdchitiet.Where(o => o.MaHDCT == i.maHDCT);
-                                var maxId = db.tbl_hdchitiet.Max(o => o.MaHDCT);
-                                if (rs != null)
-                                {
-                                    tbl_hdchitiet ct = rs.FirstOrDefault();
-                                    ct.MaHDCT = i.maHDCT;
-                                    ct.MaPhieuHoaDon = kq.MaPhieuHD;
-                                    ct.MaThucPham = i.maThucPham;
-                                    ct.NgayLap = DateTime.Now;
-                                    ct.DonViTinh = "kg";
-                                    ct.SoLuong = i.soLuong;
-                                    var tp = db.tbl_thucpham.Where(o => o.MaThucPham == ct.MaThucPham).FirstOrDefault();
-                                    ct.ThanhTien = i.soLuong * tp.GiaCa;
-                                    ct.GhiChu = i.ghiChu;
-
-                                }
-                                 db.SaveChanges();
-                            }                           
                         }
                         dbContextTransaction.Commit();
                     }

@@ -1,0 +1,30 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.HocPhiData
+
+<table>
+    @{
+        if (Model.danhSachHocPhi.Count > 0)
+        {
+
+            foreach (var i in Model.danhSachHocPhi)
+            {
+                <tr>
+                    @if (@i.loaiHP == "1")
+                    {
+                        <td>Đóng theo tháng</td>
+                    }
+                    else
+                    {
+                        <td>Đóng theo năm</td>
+                    }
+                    @*hiển thị chi tiết khoản đóng*@
+                    @Html.Action("TKChiTietPartial", "HocPhi", new { namHoc = @i.namHoc, thang = @i.thang, loaiHP = @i.loaiHP, tongHS = @i.tongHS, tienMienGiam = @i.tienMienGiam })
+                    <td>
+                        <b>Tổng</b><br/> @Html.Raw(string.Format("{0:N0}", @i.tongHocPhi))
+
+                    </td>
+                </tr>
+            }
+
+        }
+    }
+</table>

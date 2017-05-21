@@ -1217,6 +1217,8 @@
     <Content Include="Areas\Manager\Views\ChiTienAn\ChiTietTD.cshtml" />
     <Content Include="Areas\Manager\Views\XepLop\XemHocSinhLop.cshtml" />
     <Content Include="Areas\Manager\Views\XepLop\XemHocSinhLopPartial.cshtml" />
+    <Content Include="Areas\Manager\Views\HocPhi\TKChiTietPartial.cshtml" />
+    <Content Include="Areas\Manager\Views\HocPhi\HocPhiThuThangPartial.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

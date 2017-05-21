@@ -66,6 +66,7 @@ namespace TestDA.Areas.Manager.Models.ViewModel
 
         [Display(Name = "Ghi chú")]
         public string ghiChu { get; set; }
+       public  int tongHS { get; set; }
 
         public List<HocPhiData> danhSachHocPhi { get; set; }
     }

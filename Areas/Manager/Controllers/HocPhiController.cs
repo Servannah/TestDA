@@ -180,7 +180,7 @@ namespace TestDA.Areas.Manager.Controllers
                 Cookies = cookieCollection,
                 CustomSwitches = "--load-error-handling ignore"
             };
-           // return new Rotativa.ActionAsPdf("InChiTiet", new { maHocPhi = maHocPhi }); ;
+            // return new Rotativa.ActionAsPdf("InChiTiet", new { maHocPhi = maHocPhi }); ;
         }
         //in ra chi tiết
         public ActionResult InChiTiet(string maHocPhi)
@@ -207,11 +207,31 @@ namespace TestDA.Areas.Manager.Controllers
             HocPhiManager hocphi = new HocPhiManager();
             HocPhiData data = new HocPhiData();
 
-            data.danhSachHocPhi = hocphi.dsThuHocPhi(namHoc, thang);
-
+            data.danhSachHocPhi = hocphi.dsThuHocPhiThang(namHoc, thang);
             setYears(namHoc);
             setThang(thang);
 
+            return PartialView(data);
+        }
+        public ActionResult HocPhiThuThangPartial(string namHoc, int? thang)
+        {
+            HocPhiManager hocphi = new HocPhiManager();
+            HocPhiData data = new HocPhiData();
+
+            data.danhSachHocPhi = hocphi.dsThuHocPhi(namHoc, thang);
+
+
+            return PartialView(data);
+        }
+        //liệt kê chi tiết
+        public ActionResult TKChiTietPartial(string namHoc, int? thang, string loaiHP, int tongHS, int tienMienGiam)
+        {
+            //lấy danh sách khoản đóng
+            DMHocPhiManager dm = new DMHocPhiManager();
+            DMHocPhiData data = new DMHocPhiData();
+            data.danhSachDMHocPhi = dm.DanhSachDMHocPhi(namHoc, loaiHP);
+            ViewBag.tongHS = tongHS;
+            ViewBag.tienMienGiam = tienMienGiam;
             return PartialView(data);
         }
         //

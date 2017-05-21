@@ -1,0 +1,39 @@
+﻿@model TestDA.Areas.Manager.Models.ViewModel.DMHocPhiData
+
+@{
+    if (Model.danhSachDMHocPhi.Count > 0)
+    {
+
+        foreach (var i in Model.danhSachDMHocPhi)
+        {
+            if (@i.laHPCK == "1" && @i.loaiApDung == "1")
+            {
+                <td>
+                    @Html.DisplayFor(m => i.tenLoaiChiPhi)
+                    @if (@ViewBag.tongHS != null)
+                    {
+                        int tongHS = (int)ViewBag.tongHS;
+                        int soTien = @i.soTien.Value;
+                        int tongTien = soTien * tongHS;
+                        <p>@Html.Raw(string.Format("{0:N0}", (@ViewBag.tongHS * @i.soTien - @ViewBag.tienMienGiam)))</p>
+                    }
+
+                </td>
+            }
+            else
+            {
+                <td>
+                    @if (@ViewBag.tongHS != null)
+                    {
+                        @Html.DisplayFor(m => i.tenLoaiChiPhi)
+                        <p>@Html.Raw(string.Format("{0:N0}", (@ViewBag.tongHS * @i.soTien)))</p>
+                    }
+                </td>
+            }
+
+        }
+
+    }
+}
+
+

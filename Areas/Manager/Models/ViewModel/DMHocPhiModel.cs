@@ -35,6 +35,7 @@ namespace TestDA.Areas.Manager.Models.ViewModel
         public string loaiApDung { get; set; }
         [Display(Name = "Ghi chú")]
         public string ghiChu { get; set; }
+        public string laHPCK { get; set; }
 
         public List<DMHocPhiData> danhSachDMHocPhi { get; set; }
     }

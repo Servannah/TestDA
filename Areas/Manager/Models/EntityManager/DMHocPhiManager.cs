@@ -19,72 +19,33 @@ namespace TestDA.Areas.Manager.Models.EntityManager
             List<DMHocPhiData> list = new List<DMHocPhiData>();
             using (DoAnTotNghiepEntities db = new DoAnTotNghiepEntities())
             {
-                //list = (from m in db.tbl_dmhocphi
-                //        join n in db.tbl_loaichiphi on m.MaLoaiChiPhi equals n.LoaiChiPhi
-                //        select new DMHocPhiData
-                //        {
-                //            maDMHP = m.MaDMHocPhi,
-                //            maLoaiChiPhi = m.MaLoaiChiPhi,
-                //            tenLoaiChiPhi = n.TenLoaiChiPhi,
-                //            soTien = m.SoTien,
-                //            ngayApDung = m.NgayApDung,
-                //            namHoc = m.NamHoc,
-                //            loaiApDung = m.LoaiApDung,
-                //            ghiChu = m.GhiChu
-                //        }).OrderByDescending(m => m.maDMHP).ToList();
-               var data = from m in db.tbl_dmhocphi select m;
+                var data = from m in db.tbl_dmhocphi select m;
 
                 if (!String.IsNullOrEmpty(namHoc))
                 {
-                    data = data.Where(m=>m.NamHoc==namHoc);
-                    //list = (from m in db.tbl_dmhocphi
-                    //        join n in db.tbl_loaichiphi on m.MaLoaiChiPhi equals n.LoaiChiPhi
-                    //        where m.NamHoc == namHoc
-                    //        select new DMHocPhiData
-                    //        {
-                    //            maDMHP = m.MaDMHocPhi,
-                    //            maLoaiChiPhi = m.MaLoaiChiPhi,
-                    //            tenLoaiChiPhi = n.TenLoaiChiPhi,
-                    //            soTien = m.SoTien,
-                    //            ngayApDung = m.NgayApDung,
-                    //            namHoc = m.NamHoc,
-                    //            loaiApDung = m.LoaiApDung,
-                    //            ghiChu = m.GhiChu
-                    //        }).OrderByDescending(m => m.maDMHP).ToList();
+                    data = data.Where(m => m.NamHoc == namHoc);
                 }
                 if (!String.IsNullOrEmpty(loaiApDung))
                 {
-                    data = data.Where(m=>m.LoaiApDung==loaiApDung);
-                    //list = (from m in db.tbl_dmhocphi
-                    //        join n in db.tbl_loaichiphi on m.MaLoaiChiPhi equals n.LoaiChiPhi
-                    //        where m.LoaiApDung == loaiApDung
-                    //        select new DMHocPhiData
-                    //        {
-                    //            maDMHP = m.MaDMHocPhi,
-                    //            maLoaiChiPhi = m.MaLoaiChiPhi,
-                    //            tenLoaiChiPhi = n.TenLoaiChiPhi,
-                    //            soTien = m.SoTien,
-                    //            ngayApDung = m.NgayApDung,
-                    //            namHoc = m.NamHoc,
-                    //            loaiApDung = m.LoaiApDung,
-                    //            ghiChu = m.GhiChu
-                    //        }).OrderByDescending(m => m.maDMHP).ToList();
+                    data = data.Where(m => m.LoaiApDung == loaiApDung);
                 }
                 var hp = db.tbl_loaichiphi;
 
                 var result = (from m in data
-                            join n in hp on m.MaLoaiChiPhi equals n.LoaiChiPhi
-                       select new DMHocPhiData{
-                            maDMHP = m.MaDMHocPhi,
-                            maLoaiChiPhi = m.MaLoaiChiPhi,
-                            tenLoaiChiPhi = n.TenLoaiChiPhi,
-                            soTien = m.SoTien,
-                            ngayApDung = m.NgayApDung,
-                            namHoc = m.NamHoc,
-                            loaiApDung = m.LoaiApDung,
-                            ghiChu = m.GhiChu
+                              join n in hp on m.MaLoaiChiPhi equals n.LoaiChiPhi
+                              select new DMHocPhiData
+                              {
+                                  maDMHP = m.MaDMHocPhi,
+                                  maLoaiChiPhi = m.MaLoaiChiPhi,
+                                  tenLoaiChiPhi = n.TenLoaiChiPhi,
+                                  soTien = m.SoTien,
+                                  ngayApDung = m.NgayApDung,
+                                  namHoc = m.NamHoc,
+                                  loaiApDung = m.LoaiApDung,
+                                  laHPCK = n.LaHPKhoaChinh,
+                                  ghiChu = m.GhiChu
 
-                       }).OrderByDescending(m => m.maDMHP).ToList();
+                              }).OrderByDescending(m => m.maDMHP).ToList();
 
                 list = result;
             }

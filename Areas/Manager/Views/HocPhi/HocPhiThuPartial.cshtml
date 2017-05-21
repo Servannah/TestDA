@@ -6,7 +6,6 @@
         <tr class="th-style">
             <th>Tháng</th>
             <th>Tổng học phí thu</th>
-            <th>Tổng nợ</th>
         </tr>
     </thead>
     <tbody>
@@ -18,8 +17,11 @@
                 {
                     <tr>
                         <td>@Html.DisplayFor(m => i.thang)</td>
-                        <td>@Html.DisplayFor(m => i.tongHocPhi)</td>
-                        <td>@Html.DisplayFor(m => i.conNo)</td>
+                        <td>
+                            @*hiển thị chi tiết khoản đóng*@
+                            @Html.Action("HocPhiThuThangPartial", "HocPhi", new { namHoc = @i.namHoc, thang = @i.thang})
+                            <p><b>Tổng thu:</b> @Html.Raw(string.Format("{0:N0}", @i.tongHocPhi))</p>
+                        </td>
                     </tr>
                 }
             }

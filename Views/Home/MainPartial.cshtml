@@ -31,6 +31,37 @@
     </div>
 </div>
 <!-- //banner-bottom -->
+<!--News-->
+<!-- features -->
+<div class="features">
+    <div class="container">
+        <h3 class="tittle">TIN TỨC MỚI NHẤT</h3>
+        @if (Model.listData.Count > 0)
+        {
+            // int j = 0;
+            foreach (var i in Model.listData)
+            {
+                if (@i.type == "news")
+                {
+                    <div class="col-md-4 features-left">
+                        <img src="@i.image" />
+                    </div>
+                    <div class="col-md-4 features-right">
+                        <a href="~/News/ViewNews?id=@i.temp1"><h4>@Html.DisplayFor(m => i.name)</h4></a>
+                        <p>@Html.DisplayFor(m => i.content) </p>
+                    </div>
+                }
+            }
+        }
+        @*//lấy danh sách những tin nổi bật*@
+        <div class="col-md-4 features-left">
+            @Html.Action("GetNewsHotPartial", "News")
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!-- //features -->
+<!--//News-->
 <!--Teachers-->
 <div class="teachers">
     <div class="container">
@@ -91,39 +122,9 @@
 </div>
 <!-- //our facilities -->
 <!--//Facilities-->
-<!--News-->
-<!-- features -->
-<div class="features">
-    <div class="container">
-        <h3 class="tittle">TIN TỨC MỚI NHẤT</h3>
-        @if (Model.listData.Count > 0)
-        {
-            // int j = 0;
-            foreach (var i in Model.listData)
-            {
-                if (@i.type == "news")
-                {
-                    <div class="col-md-4 features-left">
-                        <img src="@i.image" />
-                    </div>
-                    <div class="col-md-4 features-right">
-                        <a href="~/News/ViewNews?id=@i.temp1"><h4>@Html.DisplayFor(m => i.name)</h4></a>
-                        <p>@Html.DisplayFor(m => i.content) </p>
-                    </div>
-                }
-            }
-        }
-        @*//lấy danh sách những tin nổi bật*@
-        <div class="col-md-4 features-left">
-            @Html.Action("GetNewsHotPartial", "News")
-        </div>
-        <div class="clearfix"></div>
-    </div>
-</div>
-<!-- //features -->
-<!--//News-->
+
 <style>
-    
+
 </style>
 <script>
     $(function () {
