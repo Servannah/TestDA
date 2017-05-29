@@ -3,7 +3,7 @@
 <!-- banner-bottom -->
 <div class="banner-bottom">
     <div class="container">
-        <h2 class="tittle">Ưu điểm nhà trường</h2>
+        <h2 class="tittle">ƯU ĐIỂM NHÀ TRƯỜNG</h2>
         <div class="bottom-grids">
             @if (Model.listData.Count > 0)
             {
@@ -36,7 +36,7 @@
 <div class="features">
     <div class="container">
         <h3 class="tittle">TIN TỨC MỚI NHẤT</h3>
-        @if (Model.listData.Count > 0)
+        @*@if (Model.listData.Count > 0)
         {
             // int j = 0;
             foreach (var i in Model.listData)
@@ -52,9 +52,9 @@
                     </div>
                 }
             }
-        }
+        }*@
         @*//lấy danh sách những tin nổi bật*@
-        <div class="col-md-4 features-left">
+        <div class="row">
             @Html.Action("GetNewsHotPartial", "News")
         </div>
         <div class="clearfix"></div>

@@ -25,6 +25,7 @@ namespace TestDA.Areas.Manager.Models.ViewModel
         public string namHoc { get; set; }
         public string gioiTinh { get; set; }
         public string queQuan { get; set; }
+        public string ghiNhan { get; set; }
 
         public List<XepLopData> danhSachHSLop { get; set; }
 

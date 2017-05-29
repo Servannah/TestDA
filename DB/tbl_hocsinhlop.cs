@@ -18,6 +18,7 @@ namespace TestDA.DB
         public string MaHocSinh { get; set; }
         public Nullable<int> MaLop { get; set; }
         public string NamHoc { get; set; }
+        public string GhiNhan { get; set; }
     
         public virtual tbl_hocsinh tbl_hocsinh { get; set; }
         public virtual tbl_lop tbl_lop { get; set; }

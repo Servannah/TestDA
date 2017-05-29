@@ -1399,9 +1399,6 @@
     <Compile Include="DB\tbl_option.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DB\tbl_phuhuynh.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DB\tbl_quyennguoidung.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>

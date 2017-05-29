@@ -200,26 +200,29 @@ namespace TestDA.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Login(ParentData DN, string returnUrl)
+        public ActionResult Login(DangNhap DN, string returnUrl)
         {
             //validate dữ liệu nhập vào
             if (ModelState.IsValid)
             {
                 ParentManager NV = new ParentManager();
                 //lấy mật khẩu của tên người dùng nhập vào
-                string pass = NV.GetPassWord(DN.userName);
+                string pass = NV.GetPassWord(DN.tenDangNhap);
                 if (string.IsNullOrEmpty(pass))
                 {
                     ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu cung cấp không đúng!");
                 }
                 else
                 {
-                    if (Encryptor.MD5Hash(DN.pass).Equals(pass))
+                    if (Encryptor.MD5Hash(DN.matKhau).Equals(pass))
                     {
                         //lưu sesstion đăng nhập
-                        Session.Add(CommonConstants.USER_SESSION, DN);
+                        var userSession = new DangNhap();
+                        userSession.tenDangNhap = DN.tenDangNhap;
+                        userSession.matKhau = DN.matKhau;
+                        Session.Add(CommonConstants.USER_SESSION, userSession);
                         //không giữ FA cookie, bởi nó được lưu ở máy client và có thể bị đánh cắp
-                        FormsAuthentication.SetAuthCookie(DN.userName, false);
+                        FormsAuthentication.SetAuthCookie(DN.tenDangNhap, false);
                         return RedirectToAction("Index", "Home");
                     }
                     else
@@ -234,6 +237,7 @@ namespace TestDA.Controllers
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
+            Session.Abandon(); // it will clear the session at the end of request
             return RedirectToAction("Index", "Home");
         }
     }

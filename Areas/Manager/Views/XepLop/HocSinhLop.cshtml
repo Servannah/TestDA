@@ -84,7 +84,14 @@
                                 {
                                     j++;
                                     <tr>
-                                        <td style="text-align:center;"><input type="checkbox" class="checkBox" value="@i.maHocSinh" /></td>
+                                        @if (i.ghiNhan == "1")
+                                        {
+                                            <td></td>
+                                        }
+                                        else
+                                        {
+                                            <td style="text-align:center;"><input type="checkbox" class="checkBox" value="@i.maHocSinh" /></td>
+                                        }                                        
                                         <td>
                                             @j.ToString()
                                         </td>

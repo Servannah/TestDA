@@ -15,6 +15,7 @@ namespace TestDA.Areas.Manager.Controllers
     {
         // GET: Admin
         //[Authorize]
+         [AuthorizeRoles("Admin", "HieuTruong", "NhaBep", "GiaoVien", "VanThu")]
         public ActionResult Index()
         {
             return View();

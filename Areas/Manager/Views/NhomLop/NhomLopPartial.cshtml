@@ -54,7 +54,7 @@
             <thead>
                 <tr class="th-style">
                     <th>Nhóm lớp</th>
-                    <th>Học phí cần đóng</th>
+                    @*<th>Học phí cần đóng</th>*@
                     <th>Mô tả</th>
                     <th>Chức năng</th>
                 </tr>
@@ -70,9 +70,9 @@
                             <tr>
                                 @*<td>@j.ToString()</td>*@
                                 <td>@Html.DisplayFor(m => i.tenNhomLop)</td>
-                                <td>
+                                @*<td>
                                     <a href="/Manager/DMHocPhi/HPTheoNhomLop?type=Detail&maNhomLop=@i.maNhomLop" class="lnkHP">Chi tiết</a>
-                                </td>
+                                </td>*@
                                 <td> @Html.DisplayFor(m => i.ghiChu)</td>
                                 <td class="chuc-nang">
                                     <a href="javascript:void(0)" class="lnkEdit" data-value="@i.maNhomLop" id="nhomlop_@i.maNhomLop">Sửa | </a>

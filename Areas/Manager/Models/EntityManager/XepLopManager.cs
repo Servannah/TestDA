@@ -107,6 +107,7 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                             tenHocSinh = m.HoTen,
                             ngaySinh = m.NgaySinh,
                             gioiTinh = m.GioiTinh,
+                            ghiNhan = n.GhiNhan,
                             queQuan = m.QueQuan
 
                         }).OrderByDescending(m => m.maHocSinh).ToList();

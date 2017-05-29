@@ -1,15 +1,40 @@
 ﻿@model TestDA.Areas.Manager.Models.ViewModel.TinTucData
 
-<ul class="news-related">
+<div class="news-related">
     @{
         if (Model.danhSachTin.Count > 0)
         {
-            foreach (var i in Model.danhSachTin)
+            @*foreach (var i in Model.danhSachTin)
             {
 
                 <li><span class="glyphicon glyphicon-plus-sign"></span><a href="~/News/ViewNews?id=@i.maTin">@Html.DisplayFor(m => i.tieuDe)</a></li>
+            }*@
+            foreach (var i in Model.danhSachTin)
+            {
+                <div class="detail col-md-4">
+                    <a href="~/News/ViewNews?id=@i.maTin"><img src="@i.anhDaiDien" style=" float: left; width: 100%; height: 250px;" /></a>
+                    <h4><a href="~/News/ViewNews?id=@i.maTin">@Html.DisplayFor(m => i.tieuDe)</a></h4>
+                    <p><i>(Ngày cập nhật - @Html.DisplayFor(m=>i.ngaySua))</i></p>
+                    <div class="some-area">@Html.Raw(i.noiDung)</div>
+                </div>
             }
         }
+}
+</div>
+<style>
+    .detail img {
+        margin-bottom: 10px;
     }
-</ul>
 
+    .detail h4 a {
+        text-decoration: none;
+        color: #d0021b;
+    }
+</style>
+<script>
+        $(document).ready(function () {
+            $("div.some-area").text(function (index, currentText) {
+                return currentText.substr(0, 150) + "...";
+            });
+        });
+</script>

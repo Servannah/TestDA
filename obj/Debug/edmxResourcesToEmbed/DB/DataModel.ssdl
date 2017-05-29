@@ -138,6 +138,7 @@
     <Property Name="MaHocSinh" Type="varchar" MaxLength="10" />
     <Property Name="MaLop" Type="int" />
     <Property Name="NamHoc" Type="nvarchar" MaxLength="50" />
+    <Property Name="GhiNhan" Type="char" MaxLength="1" />
   </EntityType>
   <EntityType Name="tbl_loaichiphi">
     <Key>
@@ -307,14 +308,6 @@
     <Property Name="Ord" Type="int" />
     <Property Name="Type" Type="varchar" MaxLength="20" />
     <Property Name="Content" Type="nvarchar(max)" />
-  </EntityType>
-  <EntityType Name="tbl_phuhuynh">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="TenDangNhap" Type="varchar" MaxLength="10" />
-    <Property Name="MatKhau" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="tbl_quyennguoidung">
     <Key>
@@ -663,7 +656,6 @@
     <EntitySet Name="tbl_nhucaudinhduong" EntityType="Self.tbl_nhucaudinhduong" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbl_nhucaunangluong" EntityType="Self.tbl_nhucaunangluong" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbl_option" EntityType="Self.tbl_option" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="tbl_phuhuynh" EntityType="Self.tbl_phuhuynh" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbl_quyennguoidung" EntityType="Self.tbl_quyennguoidung" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbl_taikhoan" EntityType="Self.tbl_taikhoan" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tbl_thanhphanmonan" EntityType="Self.tbl_thanhphanmonan" Schema="dbo" store:Type="Tables" />

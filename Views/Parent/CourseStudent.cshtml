@@ -8,7 +8,7 @@
 <div class="courseStudent">
     <div class="container">
         <div class="course-student">
-            @using (Html.BeginForm(new { id = "formSearch" }))
+            @using (Html.BeginForm())
             {
                 <h3>Thông tin học phí </h3>
                 <hr style="border:1px solid #afacac;" />
@@ -16,6 +16,7 @@
                     <fieldset class="the-fieldset">
                         <legend class="the-legend">Thực hiện:</legend>
                         <div class="form-inline">
+                            @Html.Hidden("id", new { @value = @ViewBag.maHocSinh })
                             <div class="form-group col-md-2">
                                 @Html.DropDownList("namHoc", ViewBag.namHoc as SelectList, "--Chọn năm học-- ", new { @class = "form-control", @id = "xNamHoc" })
                                 <br /><span class="text-danger" id="error-namHoc" name="eNamHoc"></span>
@@ -25,7 +26,7 @@
                                 <span class="text-danger" id="error-loaiHP" name="eLoaiHP"></span>
                             </div>
                             <div class="form-group col-md-4">
-                                <button type="submit" class="btn btn-primary">Tìm kiếm</button><a href="javarscript:void()" class="btn btn-primary lnkViewCourse" style="margin-left:10px;">Xem học phí</a>
+                                <button type="submit" class="btn btn-primary">Tìm kiếm</button><a href="javarscript:void()" class="btn btn-primary lnkViewCourse" style="margin-left:10px;">Xem khoản phí</a>
                             </div>
                             <div class="clearfix">  </div>
                         </div>
@@ -130,6 +131,7 @@
     .table > tbody > tr > td {
         color: #5d5858;
     }
+    .ui-dialog { z-index: 1000 !important ;}
 
 </style>
 <link href="~/Content/jquery-ui-1.10.4.min.css" rel="stylesheet" />

@@ -143,6 +143,7 @@
     <EntitySetMapping Name="tbl_hocsinhlop">
       <EntityTypeMapping TypeName="DoAnTotNghiepModel.tbl_hocsinhlop">
         <MappingFragment StoreEntitySet="tbl_hocsinhlop">
+          <ScalarProperty Name="GhiNhan" ColumnName="GhiNhan" />
           <ScalarProperty Name="MaHSLop" ColumnName="MaHSLop" />
           <ScalarProperty Name="MaHocSinh" ColumnName="MaHocSinh" />
           <ScalarProperty Name="MaLop" ColumnName="MaLop" />
@@ -328,15 +329,6 @@
           <ScalarProperty Name="Ord" ColumnName="Ord" />
           <ScalarProperty Name="Type" ColumnName="Type" />
           <ScalarProperty Name="Content" ColumnName="Content" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tbl_phuhuynh">
-      <EntityTypeMapping TypeName="DoAnTotNghiepModel.tbl_phuhuynh">
-        <MappingFragment StoreEntitySet="tbl_phuhuynh">
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
-          <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

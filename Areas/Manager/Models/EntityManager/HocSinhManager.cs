@@ -189,12 +189,24 @@ namespace TestDA.Areas.Manager.Models.EntityManager
 
                     db.SaveChanges();
 
-                    //thêm tài khoản vào bảng phụ huynh
-                    tbl_phuhuynh ph = new tbl_phuhuynh();
-                    ph.TenDangNhap = hocsinh.MaHS;
-                    ph.MatKhau = Encryptor.MD5Hash("123456");
+                    ////thêm tài khoản vào bảng phụ huynh
+                    //tbl_phuhuynh ph = new tbl_phuhuynh();
+                    //ph.TenDangNhap = hocsinh.MaHS;
+                    //ph.MatKhau = Encryptor.MD5Hash("123456");
 
-                    db.tbl_phuhuynh.Add(ph);
+                    //db.tbl_phuhuynh.Add(ph);
+                    //db.SaveChanges();
+                    //thêm dữ liệu vào bảng tài khoảvà phân quyền cho người dùng
+                    tbl_taikhoan tk = new tbl_taikhoan();
+
+                    tk.TenDangNhap = hocsinh.MaHS;
+                    tk.MatKhau = Encryptor.MD5Hash("123456");
+                    tk.MaQuyen = 6;//xét quyền phụ huynh
+                    tk.DaHoatDong = true;
+                    tk.NgayTao = DateTime.Now;
+                    tk.NgaySua = DateTime.Now;
+
+                    db.tbl_taikhoan.Add(tk);
                     db.SaveChanges();
 
                 }
@@ -280,12 +292,19 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                         else
                         {
                             //Xóa ID đã chọn trong bảng tài khoản
-                            var SUP = db.tbl_phuhuynh.Where(o => o.TenDangNhap == maHocSinh);
+                            var SUP = db.tbl_taikhoan.Where(o => o.TenDangNhap == maHocSinh);
                             if (SUP.Any())
                             {
-                                db.tbl_phuhuynh.Remove(SUP.FirstOrDefault());
+                                db.tbl_taikhoan.Remove(SUP.FirstOrDefault());
                                 db.SaveChanges();
                             }
+                            ////Xóa ID đã chọn trong bảng tài khoản
+                            //var SUP = db.tbl_phuhuynh.Where(o => o.TenDangNhap == maHocSinh);
+                            //if (SUP.Any())
+                            //{
+                            //    db.tbl_phuhuynh.Remove(SUP.FirstOrDefault());
+                            //    db.SaveChanges();
+                            //}
 
                             var ID = db.tbl_hocsinh.Where(o => o.MaHS == maHocSinh);
                             //Xóa id danh mục đã chọn trong bảng

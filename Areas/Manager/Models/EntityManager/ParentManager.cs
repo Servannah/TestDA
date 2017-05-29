@@ -18,7 +18,7 @@ namespace TestDA.Areas.Manager.Models.EntityManager
         {
             using (DoAnTotNghiepEntities db = new DoAnTotNghiepEntities())
             {
-                var user = db.tbl_phuhuynh.Where(o => o.TenDangNhap.ToLower().Equals(tenDangNhap));
+                var user = db.tbl_taikhoan.Where(o => o.TenDangNhap.ToLower().Equals(tenDangNhap));
                 if (user.Any())
                 {
                     return user.FirstOrDefault().MatKhau;
@@ -38,13 +38,14 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                 {
                     try
                     {
-                        var timkiem = db.tbl_phuhuynh.Where(o => o.TenDangNhap == obj.UserName);
+                        var timkiem = db.tbl_taikhoan.Where(o => o.TenDangNhap == obj.UserName);
                         if (timkiem.Any())
                         {
-                            tbl_phuhuynh data = timkiem.FirstOrDefault();
+                            tbl_taikhoan data = timkiem.FirstOrDefault();
 
                             data.TenDangNhap = obj.UserName;
                             data.MatKhau = Encryptor.MD5Hash(obj.NewPassword);
+                            data.NgaySua = DateTime.Now;
 
                             db.SaveChanges();
                         }

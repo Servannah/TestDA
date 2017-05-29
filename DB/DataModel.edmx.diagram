@@ -27,7 +27,6 @@
         <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_nhucaudinhduong" Width="1.5" PointX="11.75" PointY="15" IsExpanded="true" />
         <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_nhucaunangluong" Width="1.5" PointX="13.75" PointY="16" IsExpanded="true" />
         <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_option" Width="1.5" PointX="15.75" PointY="16" IsExpanded="true" />
-        <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_phuhuynh" Width="1.5" PointX="7.75" PointY="19" IsExpanded="true" />
         <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_quyennguoidung" Width="1.5" PointX="17.75" PointY="10" IsExpanded="true" />
         <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_taikhoan" Width="1.5" PointX="17.75" PointY="13" IsExpanded="true" />
         <EntityTypeShape EntityType="DoAnTotNghiepModel.tbl_thanhphanmonan" Width="1.5" PointX="8.25" PointY="7.625" IsExpanded="true" />

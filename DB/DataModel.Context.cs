@@ -47,7 +47,6 @@ namespace TestDA.DB
         public virtual DbSet<tbl_nhucaudinhduong> tbl_nhucaudinhduong { get; set; }
         public virtual DbSet<tbl_nhucaunangluong> tbl_nhucaunangluong { get; set; }
         public virtual DbSet<tbl_option> tbl_option { get; set; }
-        public virtual DbSet<tbl_phuhuynh> tbl_phuhuynh { get; set; }
         public virtual DbSet<tbl_quyennguoidung> tbl_quyennguoidung { get; set; }
         public virtual DbSet<tbl_taikhoan> tbl_taikhoan { get; set; }
         public virtual DbSet<tbl_thanhphanmonan> tbl_thanhphanmonan { get; set; }

@@ -152,6 +152,7 @@
     <Property Name="NamHoc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="tbl_hocsinh" Relationship="Self.FK_tbl_hocsinhlop_tbl_hocsinh" FromRole="tbl_hocsinhlop" ToRole="tbl_hocsinh" />
     <NavigationProperty Name="tbl_lop" Relationship="Self.FK_tbl_hocsinhlop_tbl_lop" FromRole="tbl_hocsinhlop" ToRole="tbl_lop" />
+    <Property Name="GhiNhan" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
   </EntityType>
   <EntityType Name="tbl_loaichiphi">
     <Key>
@@ -328,14 +329,6 @@
     <Property Name="Ord" Type="Int32" />
     <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="tbl_phuhuynh">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="TenDangNhap" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-    <Property Name="MatKhau" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="tbl_quyennguoidung">
     <Key>
@@ -695,7 +688,6 @@
     <EntitySet Name="tbl_nhucaudinhduong" EntityType="Self.tbl_nhucaudinhduong" />
     <EntitySet Name="tbl_nhucaunangluong" EntityType="Self.tbl_nhucaunangluong" />
     <EntitySet Name="tbl_option" EntityType="Self.tbl_option" />
-    <EntitySet Name="tbl_phuhuynh" EntityType="Self.tbl_phuhuynh" />
     <EntitySet Name="tbl_quyennguoidung" EntityType="Self.tbl_quyennguoidung" />
     <EntitySet Name="tbl_taikhoan" EntityType="Self.tbl_taikhoan" />
     <EntitySet Name="tbl_thanhphanmonan" EntityType="Self.tbl_thanhphanmonan" />

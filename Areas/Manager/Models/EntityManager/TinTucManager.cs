@@ -116,10 +116,11 @@ namespace TestDA.Areas.Manager.Models.EntityManager
                              noiDung = n.NoiDung,
                              slug = n.Slug,
                              anhDaiDien = n.AnhDaiDien,
+                             ngaySua = n.NgaySua,
                              tinNoiBat = n.temp1,
                              tinhTrang = n.TinhTrang
 
-                         }).OrderByDescending(m => m.maTin).ToList();
+                         }).OrderByDescending(m => m.maTin).Take(3).ToList();
             }
             return list;
         }

@@ -8,10 +8,15 @@
 <div class="page">
     <div class="container">
         @*<div class="col-md-3 skin-blue sidebar-mini">
-            @Html.Action("SidebarPartial", "News")
-        </div>*@
-        <div class="col-md-3 new-article">
-            @Html.Action("NewArticlePartial", "News")
+                @Html.Action("SidebarPartial", "News")
+            </div>*@
+        <div class="col-md-3">
+            <div class="sidebar-category">
+                @Html.Action("SidebarPartial", "News")
+            </div>
+            <div class=" new-article">
+                @Html.Action("NewArticlePartial", "News")
+            </div>
         </div>
         <div class="col-md-9">
             <h2>@Html.DisplayFor(model => model.tieuDe)</h2>

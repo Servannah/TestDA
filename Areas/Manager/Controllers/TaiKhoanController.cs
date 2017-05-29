@@ -109,6 +109,7 @@ namespace TestDA.Areas.Manager.Controllers
         public ActionResult DangXuat()
         {
             FormsAuthentication.SignOut();
+            Session.Abandon(); // it will clear the session at the end of request
             return RedirectToAction("DangNhap", "TaiKhoan");
         }
     }

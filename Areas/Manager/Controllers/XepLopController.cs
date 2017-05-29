@@ -238,6 +238,7 @@ namespace TestDA.Areas.Manager.Controllers
                         obj.MaLop = maLop;
                         obj.NamHoc = namHoc;
                         obj.MaHocSinh = maHS;
+                        obj.GhiNhan = "1";
 
                         db.tbl_hocsinhlop.Add(obj);
 
